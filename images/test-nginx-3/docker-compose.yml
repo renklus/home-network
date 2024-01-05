@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+    nginx-test:
+        build:
+            dockerfile: Dockerfile
+        container_name: nginx-test-3-container-4
+        ports:
+            - "8084:80"
+        volumes:
+            - nginx_data:/usr/share/nginx/html
+            - nginx_config:/etc/nginx
+volumes:
+    nginx_data:
+    nginx_config:

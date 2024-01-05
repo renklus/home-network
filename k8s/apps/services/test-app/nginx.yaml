@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test-nginx-argo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-nginx
+  namespace: test-nginx-argo
+spec:
+  selector:
+    matchLabels:
+      app: my-nginx
+  template:
+    metadata:
+      labels:
+        app: my-nginx
+        x: unused
+    spec:
+      containers:
+      - name: my-nginx
+        imagePullPolicy: Always
+        image: renklus/my-nginx:0.0.4-pre
+        ports:
+        - containerPort: 80
+          name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-nginx
+  namespace: test-nginx-argo
+spec:
+  type: LoadBalancer
+  selector:
+    app: my-nginx
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: http

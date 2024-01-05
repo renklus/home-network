@@ -1,0 +1,26 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: decoy-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 10.1.0.201-10.1.0.209
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: default-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 10.1.0.210-10.1.0.254
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: default-pool-advertisement
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - default-pool

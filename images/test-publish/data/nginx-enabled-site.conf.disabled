@@ -1,0 +1,103 @@
+server {
+        listen 80;
+        server_name ssl01d.dev.local.private.renklus.ch;
+
+	location / {
+		return 444;
+	}
+
+        location /.well-known {
+                set $ssl01d http://ssl01d.dev.local.private.renklus.ch/.well-known;
+		proxy_pass $ssl01d;
+        }
+}
+
+server {
+	listen 80;
+	server_name fws02l.dev.local.private.renklus.ch;
+
+	location / {
+		return 444;
+	}
+
+	location /.well-known {
+		resolver 10.0.0.1;
+		set $fws02l http://fws02l.dev.local.private.renklus.ch:8080/.well-known;
+		proxy_pass $fws02l;
+	}
+}
+
+server {
+	listen 80;
+	server_name fws03l.dev.local.private.renklus.ch;
+
+	location / {
+		return 444;
+	}
+
+	location /.well-known {
+		resolver 10.0.0.1;
+		set $fws03l http://fws03l.dev.local.private.renklus.ch:8080/.well-known;
+		proxy_pass $fws03l;
+	}
+}
+
+server {
+	listen 80;
+	server_name fws04l.dev.local.private.renklus.ch;
+
+	location / {
+		return 444;
+	}
+
+	location /.well-known {
+		resolver 10.0.0.1;
+		set $fws04l http://fws04l.dev.local.private.renklus.ch:8080/.well-known;
+		proxy_pass $fws04l;
+	}
+}
+
+server {
+	listen 80;
+	server_name app01l.dev.local.private.renklus.ch ds416j.dev.local.private.renklus.ch;
+
+	location /.well-known/acme-challenge {
+		resolver 10.0.0.1;
+		proxy_pass $scheme://$host$request_uri;
+	}
+}
+
+server {
+	listen 80;
+	server_name app02l.dev.local.private.renklus.ch ds420j.dev.local.private.renklus.ch nas.svc.local.private.renklus.ch;
+
+	location / {
+		return 444;
+	}
+
+	location /.well-known {
+		resolver 10.0.0.1;
+		#proxy_pass $scheme://$server_name$request_uri;
+		proxy_pass $scheme://$host$request_uri;
+	}
+}
+
+server {
+	listen 80;
+	server_name "";
+	return 444;
+}
+
+server {
+	listen 80 default_server;
+	server_name _;
+
+	location / {
+		return 444;
+	}
+
+	location /.well-known {
+		set $ssl02d http://ssl02d.dev.local.private.renklus.ch/.well-known;
+		proxy_pass $ssl02d;
+	}
+}
