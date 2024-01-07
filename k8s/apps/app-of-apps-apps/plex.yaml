@@ -16,7 +16,7 @@ spec:
         - name: service.type
           value: 'LoadBalancer'
         - name: service.port
-          value: '32400'
+          value: '80'
   destination:
     namespace: plex-test-namespace
     name: in-cluster
