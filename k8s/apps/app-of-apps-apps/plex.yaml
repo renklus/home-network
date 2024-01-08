@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: plex-test
+  name: plex
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -20,7 +20,7 @@ spec:
         - name: image.tag
           value: '1.31.3.6868-28fc46b27'
   destination:
-    namespace: plex-test-namespace
+    namespace: plex
     name: in-cluster
   syncPolicy:
     automated: {}
