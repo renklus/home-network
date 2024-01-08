@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: plex-test-2
+  name: plex
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -17,11 +17,19 @@ spec:
           value: 'LoadBalancer'
         - name: service.port
           value: '32400'
+        - name: image.tag
+          value: '1.31.3.6868-28fc46b27'
   destination:
-    namespace: plex-test-namespace-2
+    namespace: plex-staging
     name: in-cluster
   syncPolicy:
     automated: {}
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+# workaround for argcod problem (leave until https://github.com/argoproj/argo-cd/issues/11143#issuecomment-1664144190 is done)
+  ignoreDifferences:
+  - group: apps
+    kind: StatefulSet
+    jqPathExpressions:
+      - '.spec.volumeClaimTemplates[]?'
