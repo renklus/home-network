@@ -19,6 +19,8 @@ spec:
           value: '32400'
         - name: image.tag
           value: '1.31.3.6868-28fc46b27'
+        - name: pms.configStorage
+          value: '10Gi'
   destination:
     namespace: plex-staging
     name: in-cluster
