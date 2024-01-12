@@ -10,7 +10,7 @@ metadata:
 spec:
   destination:
     name: in-cluster
-    namespace: argocd-infrastructure
+    namespace: argocd
   source:
     path: k8s/apps/app-of-infrastructure-apps
     repoURL: 'https://github.com/renklus/home-network'
