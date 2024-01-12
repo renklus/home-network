@@ -8,9 +8,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts/
-    chart: infisical/infisical
-    # targetRevision: '0.1.8'
+    repoURL: https://raw.githubusercontent.com/Infisical/infisical
+    chart: helm-charts/infisical
+    targetRevision: '0.4.2'
 #    helm:
 #      parameters:
 #        - name: service.type
