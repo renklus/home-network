@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: infisical2
+  name: infisical
   namespace: argocd-infrastructure
   finalizers:
   - resources-finalizer.argocd.argoproj.io
