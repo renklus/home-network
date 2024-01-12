@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts/
-    chart: infisical
+    chart: infisical/infisical
     # targetRevision: '0.1.8'
 #    helm:
 #      parameters:
