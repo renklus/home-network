@@ -11,10 +11,10 @@ spec:
     repoURL: 'https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts'
     chart: infisical
     targetRevision: '0.4.2'
-#    helm:
-#      parameters:
-#        - name: service.type
-#          value: 'LoadBalancer'
+    helm:
+      parameters:
+        - name: ingress.nginx.enabled
+          value: 'true'
 #        - name: service.port
 #          value: '32400'
 #        - name: image.tag
