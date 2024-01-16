@@ -31,6 +31,6 @@ spec:
   ignoreDifferences:
   - group: apps
     kind: StatefulSet
-    name: mongodb-error
+    name: mongodb
     jqPathExpressions:
       - '.spec.volumeClaimTemplates[]?'
