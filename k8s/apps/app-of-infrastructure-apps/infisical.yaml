@@ -15,10 +15,6 @@ spec:
       parameters:
         - name: ingress.nginx.enabled
           value: 'true'
-#        - name: service.port
-#          value: '32400'
-#        - name: image.tag
-#          value: '1.31.3.6868-28fc46b27'
   destination:
     namespace: infisical-system
     name: in-cluster
@@ -29,8 +25,8 @@ spec:
       - ServerSideApply=true
 # workaround for argcod problem (leave until https://github.com/argoproj/argo-cd/issues/11143#issuecomment-1664144190 is done)
   ignoreDifferences:
-  - group: apps
-    kind: StatefulSet
-    name: mongodb
+  - group: 'apps'
+    kind: 'StatefulSet'
+    name: 'mongodb'
     jqPathExpressions:
       - '.spec.volumeClaimTemplates[]?'
