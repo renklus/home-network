@@ -59,8 +59,6 @@ metadata:
   # Name of of this InfisicalSecret resource
   name: infisicalsecret-sample
 spec:
-  # The host that should be used to pull secrets from. If left empty, the value specified in Global configuration will be used
-  hostAPI: http://infisical-ingress-nginx-controller.infisical-system.k8s.renklus.ch//api
   resyncInterval: 60
   authentication:
     serviceToken:
