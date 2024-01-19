@@ -53,6 +53,19 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=true
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: infisical-operator-system
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: infisical-config
+  namespace: infisical-operator-system
+data:
+  hostAPI: http://infisical-ingress-nginx-controller.infisical-system.k8s.renklus.ch/api # <-- global hostAPI
+---
 apiVersion: secrets.infisical.com/v1alpha1
 kind: InfisicalSecret
 metadata:
