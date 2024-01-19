@@ -1,8 +1,6 @@
 # https://github.com/morey-tech/argo-cd-app-of-apps-demo/blob/main/app-of-apps.yaml
 # https://www.youtube.com/watch?v=2pvGL0zqf9o
 
-#Copy into ArgoCD manually
-
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
