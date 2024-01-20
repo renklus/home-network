@@ -93,4 +93,4 @@ metadata:
   namespace: infisical-system
 data:
   serviceTokenName: 'c2VydmljZS10b2tlbi0x' # 'service-token-1'
-  serviceToken: 'bm90LXBvcHVsYXRlZA==' # 'not-populated'
+  infisicalToken: 'bm90LXBvcHVsYXRlZA==' # 'not-populated'
