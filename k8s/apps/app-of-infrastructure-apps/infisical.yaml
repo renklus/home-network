@@ -64,8 +64,8 @@ metadata:
   name: infisical-config
   namespace: infisical-system
 data:
-  # hostAPI: http://infisical-ingress-nginx-controller.infisical-system.k8s.renklus.ch/api # <-- global hostAPI
-  hostAPI: https://app.infisical.com/api # <-- global hostAPI
+  hostAPI: http://asdf.renklus.ch/api # <-- global hostAPI
+  # hostAPI: https://app.infisical.com/api # <-- global hostAPI
 ---
 apiVersion: secrets.infisical.com/v1alpha1
 kind: InfisicalSecret
