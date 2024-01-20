@@ -84,3 +84,11 @@ spec:
   managedSecretReference:
     secretName: managed-secret # <-- the name of kubernetes secret that will be created
     secretNamespace: default # <-- where the kubernetes secret should be created
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: 'infisical-service-token'
+data:
+  serviceTokenName: 'c2VydmljZS10b2tlbi0x' # 'service-token-1'
+  serviceToken: 'bm90LXBvcHVsYXRlZA==' # 'not-populated'
