@@ -63,8 +63,8 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: infisical-config
-  namespace: infisical-system
+  name: infisical-config # must not change: https://infisical.com/docs/integrations/platforms/kubernetes
+  namespace: infisical-operator-system # must not change
 data:
   hostAPI: 'http://infisical-backend.infisical-system:4000/api'
   # hostAPI: https://app.infisical.com/api # <-- global hostAPI
