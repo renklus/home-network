@@ -64,7 +64,7 @@ metadata:
   name: infisical-config
   namespace: infisical-system
 data:
-  hostAPI: http://infisical-backend.infisical-system/api # <-- global hostAPI
+  hostAPI: http://infisical-backend.infisical-system:8080/api # <-- global hostAPI
   # hostAPI: https://app.infisical.com/api # <-- global hostAPI
 ---
 apiVersion: secrets.infisical.com/v1alpha1
