@@ -64,7 +64,7 @@ metadata:
   name: infisical-config
   namespace: infisical-system
 data:
-  hostAPI: http://infisical-backend.infisical-system.svc.cluster.local:4000/api
+  hostAPI: 'http://infisical-backend.infisical-system.svc.cluster.local:4000/api'
   # hostAPI: https://app.infisical.com/api # <-- global hostAPI
 ---
 apiVersion: secrets.infisical.com/v1alpha1
