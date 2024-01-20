@@ -74,7 +74,7 @@ metadata:
   name: infisicalsecret-sample
   namespace: infisical-system
 spec:
-  resyncInterval: 60
+  resyncInterval: 10
   authentication:
     serviceToken:
       serviceTokenSecretReference:
