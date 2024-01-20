@@ -77,7 +77,7 @@ spec:
     serviceToken:
       serviceTokenSecretReference:
         secretName: 'infisical-service-token'
-        secretNamespace: default
+        secretNamespace: infisical-operator-system
       secretsScope:
         envSlug: dev
         secretsPath: "/"
