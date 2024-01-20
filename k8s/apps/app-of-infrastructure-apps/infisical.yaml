@@ -84,13 +84,13 @@ spec:
         envSlug: dev
         secretsPath: "/"
   managedSecretReference:
-    secretName: managed-secret2 # <-- the name of kubernetes secret that will be created
+    secretName: managed-secret3 # <-- the name of kubernetes secret that will be created
     secretNamespace: infisical-system # <-- where the kubernetes secret should be created
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: infisical-service-token2
+  name: infisical-service-token3
   namespace: infisical-system
 data:
   infisicalToken: 'c3QuNjVhYmQ3YTI4ZGE1MzFhZDAzMTllYmYwLmUzOTZhZTE1MjgzNjY3OWUzZmRjZjg3N2ViMjY5ZDM4LmFhNjQ4ODFhMWM1OGM1YjdlMWFkODAzZjFjMDAwZTE1' # 'not-populated' (name: service-token-1)
