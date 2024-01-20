@@ -88,7 +88,8 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: 'infisical-service-token'
+  name: infisical-service-token
+  namespace: infisical-operator-system
 data:
   serviceTokenName: 'c2VydmljZS10b2tlbi0x' # 'service-token-1'
   serviceToken: 'bm90LXBvcHVsYXRlZA==' # 'not-populated'
