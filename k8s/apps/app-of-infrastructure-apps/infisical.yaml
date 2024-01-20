@@ -78,7 +78,7 @@ spec:
   authentication:
     serviceToken:
       serviceTokenSecretReference:
-        secretName: 'infisical-service-token'
+        secretName: 'infisical-service-token2'
         secretNamespace: infisical-system
       secretsScope:
         envSlug: dev
@@ -90,7 +90,7 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: infisical-service-token
+  name: infisical-service-token2
   namespace: infisical-system
 data:
   infisicalToken: 'c3QuNjVhYmQ3YTI4ZGE1MzFhZDAzMTllYmYwLmUzOTZhZTE1MjgzNjY3OWUzZmRjZjg3N2ViMjY5ZDM4LmFhNjQ4ODFhMWM1OGM1YjdlMWFkODAzZjFjMDAwZTE1' # 'not-populated' (name: service-token-1)
