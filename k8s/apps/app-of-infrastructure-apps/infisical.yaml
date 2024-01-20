@@ -54,11 +54,11 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-#---
-#apiVersion: v1
-#kind: Namespace
-#metadata:
-#  name: infisical-operator-system
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: infisical-operator-system
 ---
 apiVersion: v1
 kind: ConfigMap
