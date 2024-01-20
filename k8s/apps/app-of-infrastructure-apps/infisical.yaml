@@ -73,14 +73,14 @@ apiVersion: secrets.infisical.com/v1alpha1
 kind: InfisicalSecret
 metadata:
   # Name of of this InfisicalSecret resource
-  name: infisicalsecret-sample
+  name: infisicalsecret-demo
   namespace: infisical-operator-system
 spec:
   resyncInterval: 60
   authentication:
     serviceToken:
       serviceTokenSecretReference:
-        secretName: 'infisical-service-token'
+        secretName: 'infisical-demo-service-token'
         secretNamespace: 'infisical-operator-system'
       secretsScope:
         envSlug: dev
@@ -92,7 +92,7 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: infisical-service-token
+  name: infisical-demo-service-token
   namespace: infisical-operator-system
 data:
   infisicalToken: 'c3QuNjVhYmYzODFjYTNjNjFiZWQ4Mzc2Mjk1LmRkYzZhMzg3YjA5ZmVmZWJhNTlkMjM1OWZmMjkxYWMzLmU0MmM2NDdkZTAwNTE1ZmUwMTU1MDUxZDNmMGNkOTY3' # demo-token, no access to real secrets
