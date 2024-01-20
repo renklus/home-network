@@ -92,4 +92,4 @@ metadata:
   name: infisical-service-token
   namespace: infisical-system
 data:
-  infisicalToken: 'c3QuNjVhYmQwNTA4ZGE1MzFhZDAzMTllYmU1LjE4MjFiNjlhMjlkZmNkNDg5MzJmMGFhZjFmNjI2NTRiLmFmM2ZlOTU5YmUxMWY0NWRlNDQ2NjZhMjUzMTRmYjNl' # 'not-populated' (name: service-token-1)
+  infisicalToken: 'c3QuNjVhYmQwNTA4ZGE1MzFhZDAzMTllYmU1LjE4MjFiNjlhMjlkZmNkNDg5MzJmMGFhZjFmNjI2NTRiLmFmM2ZlOTU5YmUxMWY0NWRlNDQ2NjZhMjUzMTRmYjNm' # 'not-populated' (name: service-token-1)
