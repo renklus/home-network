@@ -78,7 +78,7 @@ spec:
   authentication:
     serviceToken:
       serviceTokenSecretReference:
-        secretName: 'infisical-service-token2'
+        secretName: 'infisical-service-token3'
         secretNamespace: infisical-system
       secretsScope:
         envSlug: dev
