@@ -52,17 +52,17 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: infisical-operator-system
+#---
+#apiVersion: v1
+#kind: Namespace
+#metadata:
+#  name: infisical-operator-system
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: infisical-config
-  namespace: infisical-operator-system
+  namespace: infisical-system
 data:
   hostAPI: http://infisical-ingress-nginx-controller.infisical-system.k8s.renklus.ch/api # <-- global hostAPI
 ---
@@ -71,6 +71,7 @@ kind: InfisicalSecret
 metadata:
   # Name of of this InfisicalSecret resource
   name: infisicalsecret-sample
+  namespace: infisical-system
 spec:
   resyncInterval: 60
   authentication:
@@ -89,7 +90,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: infisical-service-token
-  namespace: infisical-operator-system
+  namespace: infisical-system
 data:
   serviceTokenName: 'c2VydmljZS10b2tlbi0x' # 'service-token-1'
   serviceToken: 'bm90LXBvcHVsYXRlZA==' # 'not-populated'
