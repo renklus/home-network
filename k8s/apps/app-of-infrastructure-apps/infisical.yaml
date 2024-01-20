@@ -81,7 +81,7 @@ spec:
         secretNamespace: infisical-system
       secretsScope:
         envSlug: dev
-        secretsPath: "/TEST-SECRET"
+        secretsPath: "/"
   managedSecretReference:
     secretName: managed-secret # <-- the name of kubernetes secret that will be created
     secretNamespace: infisical-system # <-- where the kubernetes secret should be created
