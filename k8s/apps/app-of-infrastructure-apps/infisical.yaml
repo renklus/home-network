@@ -78,13 +78,13 @@ spec:
     serviceToken:
       serviceTokenSecretReference:
         secretName: 'infisical-service-token'
-        secretNamespace: infisical-operator-system
+        secretNamespace: infisical-system
       secretsScope:
         envSlug: dev
         secretsPath: "/"
   managedSecretReference:
     secretName: managed-secret # <-- the name of kubernetes secret that will be created
-    secretNamespace: default # <-- where the kubernetes secret should be created
+    secretNamespace: infisical-system # <-- where the kubernetes secret should be created
 ---
 apiVersion: v1
 kind: Secret
