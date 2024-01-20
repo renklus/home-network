@@ -47,7 +47,7 @@ spec:
     chart: 'secrets-operator'
     targetRevision: '0.3.3'
   destination:
-    namespace: infisical-system
+    namespace: infisical-operator-system
     name: in-cluster
   syncPolicy:
     automated: {}
@@ -55,11 +55,11 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=true
 ---
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: infisical-operator-system
----
+#apiVersion: v1
+#kind: Namespace
+#metadata:
+#  name: infisical-operator-system
+#---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -74,25 +74,25 @@ kind: InfisicalSecret
 metadata:
   # Name of of this InfisicalSecret resource
   name: infisicalsecret-sample
-  namespace: infisical-system
+  namespace: infisical-operator-system
 spec:
   resyncInterval: 60
   authentication:
     serviceToken:
       serviceTokenSecretReference:
-        secretName: 'infisical-service-token5'
-        secretNamespace: infisical-system
+        secretName: 'infisical-service-token'
+        secretNamespace: 'infisical-operator-system'
       secretsScope:
         envSlug: dev
         secretsPath: "/"
   managedSecretReference:
-    secretName: managed-secret5 # <-- the name of kubernetes secret that will be created
-    secretNamespace: infisical-system # <-- where the kubernetes secret should be created
+    secretName: managed-infisical-demo-secret # <-- the name of kubernetes secret that will be created
+    secretNamespace: infisical-operator-system # <-- where the kubernetes secret should be created
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: infisical-service-token5
-  namespace: infisical-system
+  name: infisical-service-token
+  namespace: infisical-operator-system
 data:
-  infisicalToken: 'c3QuNjVhYmUwNTljODUwNmQ1NTljYjY1YjdlLjBjYTFlNjg5MTg3Yzk3ZjNmNTNhMGE0NGM5Y2ZiMDIwLjYyZDRkNTVhNzIzNmMzN2I5ZGQwYjE3MjBmZTdmZWJj' # 'not-populated' (name: service-token-1)
+  infisicalToken: 'c3QuNjVhYmYzODFjYTNjNjFiZWQ4Mzc2Mjk1LmRkYzZhMzg3YjA5ZmVmZWJhNTlkMjM1OWZmMjkxYWMzLmU0MmM2NDdkZTAwNTE1ZmUwMTU1MDUxZDNmMGNkOTY3' # demo-token, no access to real secrets
