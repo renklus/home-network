@@ -6,7 +6,7 @@ kind: Application
 metadata:
   name: app-of-apps
   annotations:
-    argocd.argoproj.io/sync-wave:2
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   destination:
     name: in-cluster
