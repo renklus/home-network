@@ -75,6 +75,8 @@ metadata:
   # Name of of this InfisicalSecret resource
   name: infisicalsecret-demo
   namespace: infisical-operator-system
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   resyncInterval: 60
   authentication:
