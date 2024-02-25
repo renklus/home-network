@@ -1,2 +1,3 @@
+# Currently unused because it is passed as arguments when k3s is installed
 disable: "servicelb"
 cluster-domain: "k8scluster.renklus.ch"
