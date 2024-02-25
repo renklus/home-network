@@ -7,6 +7,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: app-of-infrastructure
+  namespace: argocd
 spec:
   destination:
     name: in-cluster
