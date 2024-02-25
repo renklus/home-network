@@ -1,3 +1,12 @@
 # Currently unused because it is passed as arguments when k3s is installed
+
+# can be used by following commands before installation
+# sudo mkdir /etc/rancher/
+# sudo mkdir /etc/rancher/k3s/
+# sudo touch /etc/rancher/k3s/config.yaml
+# sudo wget -O /etc/rancher/k3s/config.yaml https://raw.githubusercontent.com/renklus/home-network/master/k8s/setup/k3s/config.yaml
+
+
+
 disable: "servicelb"
 cluster-domain: "k8scluster.renklus.ch"
