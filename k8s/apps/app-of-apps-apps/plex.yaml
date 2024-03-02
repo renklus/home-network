@@ -17,8 +17,12 @@ spec:
           value: 'LoadBalancer'
         - name: 'service.port'
           value: '32400'
-        - name: image.tag
-          value: '1.31.3.6868-28fc46b27'
+        - name: 'image.tag'
+          value: '1.40.0.7998-c29d4c0c8'
+        - name: 'initContainer.image.tag'
+          value: '3.19.1'
+        - name: 'rclone.image.tag'
+          value: '1.65.2'
   destination:
     namespace: plex
     name: in-cluster
