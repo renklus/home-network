@@ -13,9 +13,9 @@ spec:
     targetRevision: '0.2.1'
     helm:
       parameters:
-        - name: service.type
+        - name: 'service.type'
           value: 'LoadBalancer'
-        - name: service.port
+        - name: 'service.port'
           value: '32400'
         - name: image.tag
           value: '1.31.3.6868-28fc46b27'
