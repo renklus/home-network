@@ -15,6 +15,8 @@ spec:
       parameters:
         - name: 'controllerManager.manager.image.tag'
           value: 'v0.3.3'
+        - name: 'controllerManager.kubeRbacProxy.image.tag'
+          value: 'v0.15.0'
   destination:
     namespace: infisical-operator-system
     name: in-cluster
