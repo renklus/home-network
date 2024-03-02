@@ -60,19 +60,17 @@ spec:
   authentication:
     serviceToken:
       serviceTokenSecretReference:
-        secretName: 'infisical-demo-service-token'
+        secretName: 'infisical-service-token'
         secretNamespace: 'infisical-operator-system'
       secretsScope:
         envSlug: dev
         secretsPath: "/demo"
   managedSecretReference:
     secretName: managed-infisical-demo-secret # <-- the name of kubernetes secret that will be created
-    secretNamespace: infisical-operator-system # <-- where the kubernetes secret should be created
+    secretNamespace: infisical-demo # <-- where the kubernetes secret should be created
 ---
 apiVersion: v1
-kind: Secret
+kind: Namespace
 metadata:
-  name: infisical-demo-service-token
-  namespace: infisical-operator-system
-data:
-  infisicalToken: 'c3QuNjVhYmYzODFjYTNjNjFiZWQ4Mzc2Mjk1LmRkYzZhMzg3YjA5ZmVmZWJhNTlkMjM1OWZmMjkxYWMzLmU0MmM2NDdkZTAwNTE1ZmUwMTU1MDUxZDNmMGNkOTY3' # demo-token, no access to real secrets
+  name: infisical-demo
+---
