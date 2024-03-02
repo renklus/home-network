@@ -4,4 +4,4 @@ kind: Kustomization
 namespace: argocd
 resources:
 - https://raw.githubusercontent.com/renklus/home-network/master/k8s/apps/k8s-infra/argo/argo-custom.yaml
-- https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+- https://raw.githubusercontent.com/argoproj/argo-cd/2.10.2/manifests/install.yaml
