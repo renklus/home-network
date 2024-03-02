@@ -17,6 +17,8 @@ spec:
           value: 'true'
         - name: 'ingress.hostName'
           value: 'infisical-ingress-nginx-controller.infisical-system.k8s.renklus.ch'
+        - name: 'backend.image.tag'
+          value: 'v0.43.19'
   destination:
     namespace: infisical-system
     name: in-cluster
