@@ -51,7 +51,7 @@ kind: InfisicalSecret
 metadata:
   # Name of of this InfisicalSecret resource
   name: infisicalsecret-demo
-  namespace: infisical-operator-system
+  namespace: infisical-demo
   annotations:
     argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
