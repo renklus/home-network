@@ -48,6 +48,10 @@ spec:
     repoURL: 'https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts'
     chart: 'secrets-operator'
     targetRevision: '0.3.3'
+    helm:
+      parameters:
+        - name: 'mongodb.image.tag'
+          value: '7.0.6-debian-12-r0'
   destination:
     namespace: infisical-operator-system
     name: in-cluster
