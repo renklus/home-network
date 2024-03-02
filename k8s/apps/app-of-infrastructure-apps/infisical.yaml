@@ -19,6 +19,8 @@ spec:
           value: 'infisical-ingress-nginx-controller.infisical-system.k8s.renklus.ch'
         - name: 'backend.image.tag'
           value: 'v0.43.19'
+        - name: 'mongodb.image.tag'
+          value: '7.0.6-debian-12-r0'
   destination:
     namespace: infisical-system
     name: in-cluster
