@@ -12,7 +12,7 @@ spec:
     chart: plex-media-server
     targetRevision: '0.1.8'
     helm:
-      values: |
+      valuesObject:
         image:
           tag: '1.32.0.6918-6f393eda1'
           registry: 'index.docker.io'
