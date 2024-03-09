@@ -14,7 +14,7 @@ spec:
     helm:
       valuesObject: # parametrization with valuesObject needed for renovate bot to detect image versions
         image:
-          tag: '1.32.0.6950-8521b7d99'
+          tag: '1.40.0.7998-c29d4c0c8'
           repository: 'plexinc/pms-docker' # repository definition needed for renovate bot to detect latest version
           registry: 'index.docker.io' # registry definition only needed if something else than docker
         initContainer:
