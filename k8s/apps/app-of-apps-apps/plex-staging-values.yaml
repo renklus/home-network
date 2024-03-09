@@ -1,0 +1,14 @@
+image:
+  tag: '1.40.0.7998-c29d4c0c8'
+  repository: 'plexinc/pms-docker'
+  registry: 'index.docker.io'
+initContainer:
+  image:
+    tag: '3.19.1'
+    repository: 'alpine'
+    registry: 'index.docker.io'
+rclone:
+  image:
+    tag: '1.65.2'
+    repository: 'rclone/rclone'
+    registry: 'index.docker.io'
