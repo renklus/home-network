@@ -14,7 +14,7 @@ spec:
     helm:
       valuesObject:
         image:
-          tag: '1.32.0.6918-6f393eda1'
+          tag: '1.32.0.6950-8521b7d99'
           registry: 'index.docker.io'
           repository: 'plexinc/pms-docker'
         initContainer:
