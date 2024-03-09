@@ -1,2 +1,4 @@
 image:
   tag: '1.31.3.6868-28fc46b27'
+  registry: 'index.docker.io'
+  repository: 'plexinc/pms-docker'
