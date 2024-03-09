@@ -7,13 +7,26 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  sources:
-  - repoURL: https://raw.githubusercontent.com/plexinc/pms-docker/gh-pages
+  source:
+    repoURL: https://raw.githubusercontent.com/plexinc/pms-docker/gh-pages
     chart: plex-media-server
     targetRevision: '0.2.1'
     helm:
-      valueFiles:
-        - $values/k8s/apps/app-of-apps-apps/plex-staging-values.yaml
+      valuesObject: # parametrization with valuesObject needed for renovate bot to detect image versions
+        image:
+          tag: '1.40.0.7998-c29d4c0c8'
+          repository: 'plexinc/pms-docker' # repository definition needed for renovate bot to detect latest version
+          registry: 'index.docker.io' # registry definition only needed if something else than docker
+        initContainer:
+          image:
+            tag: '3.19.1'
+            repository: 'alpine'
+            registry: 'index.docker.io'
+        rclone:
+          image:
+            tag: '1.65.2'
+            repository: 'rclone/rclone'
+            registry: 'index.docker.io'
       parameters:
         - name: 'service.type'
           value: 'LoadBalancer'
@@ -21,9 +34,6 @@ spec:
           value: '32400'
         - name: 'pms.configStorage'
           value: '10Gi'
-  - repoURL: 'https://github.com/renklus/home-network.git'
-    targetRevision: HEAD
-    ref: values
   destination:
     namespace: plex-staging
     name: in-cluster
