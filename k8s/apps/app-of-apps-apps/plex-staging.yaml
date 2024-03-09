@@ -20,7 +20,7 @@ spec:
         - name: pms.configStorage
           value: '10Gi'
       valueFiles:
-        - './plex-staging-values.yaml'
+        - '$values/k8s/apps/app-of-apps-apps/plex-staging-values.yaml'
   destination:
     namespace: plex-staging
     name: in-cluster
