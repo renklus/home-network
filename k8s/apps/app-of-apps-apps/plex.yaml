@@ -12,17 +12,26 @@ spec:
     chart: plex-media-server
     targetRevision: '0.2.1'
     helm:
+      valuesObject:
+        image:
+          tag: '1.40.0.7998-c29d4c0c8'
+          repository: 'plexinc/pms-docker'
+          registry: 'index.docker.io'
+        initContainer:
+          image:
+            tag: '3.19.1'
+            repository: 'alpine'
+            registry: 'index.docker.io'
+        rclone:
+          image:
+            tag: '1.65.2'
+            repository: 'rclone/rclone'
+            registry: 'index.docker.io'
       parameters:
         - name: 'service.type'
           value: 'LoadBalancer'
         - name: 'service.port'
           value: '32400'
-        - name: 'image.tag'
-          value: '1.40.0.7998-c29d4c0c8'
-        - name: 'initContainer.image.tag'
-          value: '3.19.1'
-        - name: 'rclone.image.tag'
-          value: '1.65.2'
         - name: 'rclone.configSecret'
           value: 'backblaze-readwrite'
   destination:
