@@ -9,7 +9,7 @@
   "kubernetes": {
     "fileMatch": ["k8s/.+\\.yaml$"]
   },
-  "helm": {
+  "helm-values": {
     "fileMatch": ["\\.yaml$"]
   }
 }
