@@ -12,6 +12,8 @@ spec:
     chart: plex-media-server
     targetRevision: '0.1.8'
     helm:
+      valueFiles:
+        - plex-staging-values.yaml
       parameters:
         - name: service.type
           value: 'LoadBalancer'
@@ -19,8 +21,6 @@ spec:
           value: '32400'
         - name: pms.configStorage
           value: '10Gi'
-      valueFiles:
-        - plex-staging-values.yaml
   destination:
     namespace: plex-staging
     name: in-cluster
