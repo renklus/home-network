@@ -16,12 +16,12 @@ spec:
         controllerManager:
           kubeRbacProxy:
             image:
-              repository: gcr.io/kubebuilder/kube-rbac-proxy
-              tag: v0.15.0
+              repository: 'gcr.io/kubebuilder/kube-rbac-proxy'
+              tag: 'v0.15.0'
           manager:
             image:
-              repository: infisical/kubernetes-operator
-              tag: latest
+              repository: 'infisical/kubernetes-operator'
+              tag: 'v0.3.3'
       parameters:
   destination:
     namespace: infisical-operator-system
