@@ -19,6 +19,8 @@ spec:
           value: '32400'
         - name: pms.configStorage
           value: '10Gi'
+      valueFiles:
+        - 'plex-staging-values.yaml'
   destination:
     namespace: plex-staging
     name: in-cluster
