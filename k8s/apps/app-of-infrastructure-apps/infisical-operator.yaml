@@ -12,11 +12,17 @@ spec:
     chart: 'secrets-operator'
     targetRevision: '0.3.3'
     helm:
+      valuesObject:
+        controllerManager:
+          kubeRbacProxy:
+            image:
+              repository: gcr.io/kubebuilder/kube-rbac-proxy
+              tag: v0.15.0
+          manager:
+            image:
+              repository: infisical/kubernetes-operator
+              tag: latest
       parameters:
-        - name: 'controllerManager.manager.image.tag'
-          value: 'v0.3.3'
-        - name: 'controllerManager.kubeRbacProxy.image.tag'
-          value: 'v0.15.0'
   destination:
     namespace: infisical-operator-system
     name: in-cluster
