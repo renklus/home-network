@@ -22,7 +22,7 @@ spec:
         - name: 'pms.configStorage'
           value: '10Gi'
   - repoURL: 'https://github.com/renklus/home-network.git'
-    targetRevision: dev
+    targetRevision: HEAD
     ref: values
   destination:
     namespace: plex-staging
