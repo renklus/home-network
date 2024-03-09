@@ -2,3 +2,12 @@ image:
   tag: '1.31.3.6868-28fc46b27'
   registry: 'index.docker.io'
   repository: 'plexinc/pms-docker'
+initContainer:
+  image:
+    tag: '3.18.0'
+    repository: 'alpine'
+rclone:
+  image:
+    tag: '1.62.2'
+    repository: 'rclone/rclone'
+    registry: 'index.docker.io'
