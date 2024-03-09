@@ -19,7 +19,7 @@ spec:
           repository: 'plexinc/pms-docker'
         initContainer:
           image:
-            tag: '3.18.0'
+            tag: '3.19.1'
             repository: 'alpine'
         rclone:
           image:
