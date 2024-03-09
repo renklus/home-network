@@ -4,9 +4,9 @@
     "config:recommended"
   ],
   "argocd": {
-    "fileMatch": ["k8s/apps/.+\\.yaml$", "\\.yaml$"]
+    "fileMatch": ["k8s/apps/.+\\.yaml$", "\\.yaml$", "\\.yml$"]
   },
   "kubernetes": {
-    "fileMatch": ["\\.yaml$"]
+    "fileMatch": ["\\.yaml$", "\\.yml$"]
   }
 }
