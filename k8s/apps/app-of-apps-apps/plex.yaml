@@ -34,6 +34,8 @@ spec:
           value: '32400'
         - name: 'rclone.configSecret'
           value: 'backblaze-readwrite'
+        - name: 'extraEnv.PLEX_CLAIM'
+          value: 'claim-JzRZixqMQ6jhunnigbZ1'
   destination:
     namespace: plex
     name: in-cluster
