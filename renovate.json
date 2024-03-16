@@ -20,7 +20,7 @@
     },
     {
       "matchDatasources": ["docker"],
-      "matchPackagePrefixes": ["plexinc/", "docker.io/plexinc/"],
+      "matchPackageNames": ["plexinc/pms-docker"],
       "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+\\-[a-z0-9]+)$"
     }
   ]
