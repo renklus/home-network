@@ -4,8 +4,21 @@ metadata:
   name: plex-git
   namespace: argocd
   labels:
-    argocd.argoproj.io/secret-type: repository
+    argocd.argoproj.io/secret-type: 'repository'
 stringData:
-  url: https://github.com/plexinc/pms-docker
-  type: git
-  project: default
+  url: 'https://github.com/plexinc/pms-docker'
+  type: 'git'
+  project: 'default'
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: metallb-helm
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: 'repository'
+stringData:
+  url: 'https://metallb.github.io/metallb'
+  type: 'helm'
+  project: 'default'
+  name: 'MetalLB'
