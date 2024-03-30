@@ -26,7 +26,7 @@ spec:
             repository: 'quay.io/metallb/controller'
             tag: 'v0.14.4@sha256:bbef1ee3e7d34e344b318266a18e50cba94aa08c59610fb9a5450a9947c4ade1'
   destination:
-    namespace: metallb-system
+    namespace: metallb-2
     name: in-cluster
   syncPolicy:
     automated: {}
