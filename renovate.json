@@ -21,11 +21,10 @@
     {
       "matchPackageNames": ["plexinc/pms-docker"],
       "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+\\-[a-z0-9]+)$"
+    },
+    {
+      "matchPackageNames": ["quay.io/metallb/controller", "quay.io/metallb/speaker", "quay.io/frrouting/frr"],
+      "groupName": "metalLB"
     }
-  ],
-  "groups": {
-    "metalLB": {
-      "patterns": ["quay.io/metallb/controller", "quay.io/metallb/speaker", "quay.io/frrouting/frr"]
-    }
-  }
+  ]
 }
