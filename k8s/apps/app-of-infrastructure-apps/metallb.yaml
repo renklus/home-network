@@ -13,19 +13,18 @@ spec:
     targetRevision: '0.14.3'
     helm:
       valuesObject:
-        controller:
-          image:
-            repository: 'quay.io/metallb/controller'
-            tag: 'v0.14.3'
         speaker:
           image:
             repository: 'quay.io/metallb/speaker'
             tag: 'v0.14.3'
-        speaker:
-          frr:              
+          frr:
             image:
               repository: 'quay.io/frrouting/frr'
               tag: '9.0.1'
+        controller:
+          image:
+            repository: 'quay.io/metallb/controller'
+            tag: 'v0.14.3'
   destination:
     namespace: metallb-2
     name: in-cluster
