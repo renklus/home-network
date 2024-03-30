@@ -23,7 +23,7 @@ jobs:
       #     password: ${{ secrets.GITHUB_TOKEN }}
       - name: Extract metadata
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5
         with:
           images: renklus/test-001
           tags: |
