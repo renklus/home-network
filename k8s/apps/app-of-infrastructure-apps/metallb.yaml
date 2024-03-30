@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: 'default'
+  source:
+    repoURL: 'https://metallb.github.io/metallb'
+    chart: 'metallb'
+    targetRevision: '0.14.4'
+    helm:
+      valuesObject:
+        speaker:
+          image:
+            repository: 'quay.io/metallb/speaker'
+            tag: 'v0.14.4@sha256:37611bde45a206195df4866e58824929c407f7971ffbbbebbd5ab6e4f0f20234'
+          frr:
+            image:
+              repository: 'quay.io/frrouting/frr'
+              tag: '9.1.0@sha256:f310c2ebb3827fa03b9674ee05e70a7d5eef2123bcc3b475eb2ef14dafcb52b4'
+        controller:
+          image:
+            repository: 'quay.io/metallb/controller'
+            tag: 'v0.14.4@sha256:bbef1ee3e7d34e344b318266a18e50cba94aa08c59610fb9a5450a9947c4ade1'
+  destination:
+    namespace: metallb-2
+    name: in-cluster
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
