@@ -20,7 +20,7 @@ spec:
         mongodb:
           image:
             repository: 'bitnami/mongodb'
-            tag: '7.0.8-debian-12-r1@sha256:e16aa4ac5466009da6e2d530dd670629cb363f0e3d064451dbefc964ffd1f479'
+            tag: '6.0.4-debian-11-r0' #default 6.0.4-debian-11-r0 (08.04.2024)
       parameters:
         - name: 'ingress.nginx.enabled'
           value: 'true'
