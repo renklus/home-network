@@ -28,7 +28,7 @@ spec:
         csi:
           image:
             repository: 'hashicorp/vault-csi-provider'
-            tag: '1.4.1'
+            tag: '1.4.2@sha256:cfc3c9580584fac3d9caa113c9e9d8b381980efa7b3dd57a026ab3babe4ec239'
           agent:
             image:
               repository: 'hashicorp/vault'
