@@ -8,7 +8,7 @@ metadata:
 spec:
   project: 'default'
   source:
-    repoURL: 'https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts'
+    repoURL: 'https://helm.releases.hashicorp.com'
     chart: 'vault'
     targetRevision: '0.27.2'
     helm:
