@@ -52,9 +52,7 @@ destination:
   namespace: plex-test
   name: in-cluster
 syncPolicy:
-  automated:
-    prune: false
-    selfHeal: false
+  automated: {}
   syncOptions:
     - CreateNamespace=true
     - ServerSideApply=true
