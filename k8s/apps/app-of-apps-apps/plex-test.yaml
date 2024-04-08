@@ -18,5 +18,5 @@ spec:
         envSlug: dev
         secretsPath: "/plex/backblaze-readwrite"
   managedSecretReference:
-    secretName: backblaze-readwrite # <-- the name of kubernetes secret that will be created
+    secretName: backblaze-readwrite2 # <-- the name of kubernetes secret that will be created
     secretNamespace: plex-test # <-- where the kubernetes secret should be created
