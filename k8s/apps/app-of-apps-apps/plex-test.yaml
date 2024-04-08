@@ -53,3 +53,26 @@ spec:
       kind: StatefulSet
       jqPathExpressions:
         - '.spec.volumeClaimTemplates[]?'
+---
+apiVersion: secrets.infisical.com/v1alpha1
+kind: InfisicalSecret
+metadata:
+  # Name of this InfisicalSecret resource
+  name: backblace-readwrite
+  namespace: plex-test
+#  annotations:
+#    argocd.argoproj.io/sync-wave: "1"
+#    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  resyncInterval: 60
+  authentication:
+    serviceToken:
+      serviceTokenSecretReference:
+        secretName: 'infisical-service-token'
+        secretNamespace: 'infisical-operator-system'
+      secretsScope:
+        envSlug: dev
+        secretsPath: "/plex/backblaze-readwrite"
+  managedSecretReference:
+    secretName: backblaze-readwrite2 # <-- the name of kubernetes secret that will be created
+    secretNamespace: plex-test # <-- where the kubernetes secret should be created

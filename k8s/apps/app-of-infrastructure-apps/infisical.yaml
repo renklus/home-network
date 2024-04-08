@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: infisical
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: 'default'
+  source:
+    repoURL: 'https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts'
+    chart: 'infisical'
+    targetRevision: '0.4.2'
+    helm:
+      valuesObject:
+        backend:
+          image:
+            repository: 'infisical/infisical'
+            tag: 'v0.43.19'
+        mongodb:
+          image:
+            repository: 'bitnami/mongodb'
+            tag: '6.0.4-debian-11-r0' #default 6.0.4-debian-11-r0 (08.04.2024)
+      parameters:
+        - name: 'ingress.nginx.enabled'
+          value: 'true'
+        - name: 'ingress.hostName'
+          value: 'infisical-ingress-nginx-controller.infisical-system.k8s.renklus.ch'
+  destination:
+    namespace: infisical-system
+    name: in-cluster
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+# workaround for argcod problem (leave until https://github.com/argoproj/argo-cd/issues/11143#issuecomment-1664144190 is done)
+  ignoreDifferences:
+  - group: 'apps'
+    kind: 'StatefulSet'
+    name: 'mongodb'
+    jqPathExpressions:
+      - '.spec.volumeClaimTemplates[]?'
