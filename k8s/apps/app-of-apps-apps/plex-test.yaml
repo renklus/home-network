@@ -1,3 +1,69 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: plex-test
+spec:
+  destination:
+    name: ''
+    namespace: plex-test
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: ''
+    repoURL: 'https://raw.githubusercontent.com/plexinc/pms-docker/gh-pages'
+    targetRevision: 0.3.0
+    chart: plex-media-server
+  sources: []
+  project: default
+project: default
+source:
+  repoURL: 'https://raw.githubusercontent.com/plexinc/pms-docker/gh-pages'
+  targetRevision: 0.3.0
+  helm:
+    parameters:
+      - name: service.type
+        value: LoadBalancer
+      - name: service.port
+        value: '32400'
+      - name: rclone.enabled
+        value: 'true'
+      - name: rclone.configSecret
+        value: backblaze-readwrite2
+      - name: extraEnv.PLEX_CLAIM
+        value: 'claim-GgsbQW3PLzn42zTg_Wky'
+      - name: extraEnv.ALLOWED_NETWORKS
+        value: 10.0.0.0/8
+    valuesObject:
+      image:
+        registry: index.docker.io
+        repository: plexinc/pms-docker
+        tag: 1.40.0.7998-c29d4c0c8
+      initContainer:
+        image:
+          registry: index.docker.io
+          repository: alpine
+          tag: 3.19.1
+      rclone:
+        image:
+          registry: index.docker.io
+          repository: rclone/rclone
+          tag: 1.66.0
+  chart: plex-media-server
+destination:
+  namespace: plex-test
+  name: in-cluster
+syncPolicy:
+  automated:
+    prune: false
+    selfHeal: false
+  syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
+ignoreDifferences:
+  - group: apps
+    kind: StatefulSet
+    jqPathExpressions:
+      - '.spec.volumeClaimTemplates[]?'
+---
 apiVersion: secrets.infisical.com/v1alpha1
 kind: InfisicalSecret
 metadata:
