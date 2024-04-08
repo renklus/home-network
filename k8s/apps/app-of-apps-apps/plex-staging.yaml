@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://raw.githubusercontent.com/plexinc/pms-docker/gh-pages
     chart: plex-media-server
-    targetRevision: '0.2.1'
+    targetRevision: '0.3.0'
     helm:
       valuesObject: # parametrization with valuesObject needed for renovate bot to detect image versions
         image:
