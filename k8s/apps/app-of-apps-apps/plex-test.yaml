@@ -32,8 +32,12 @@ spec:
           value: 'LoadBalancer'
         - name: 'service.port'
           value: '32400'
+        - name: rclone.enabled
+          value: 'true'
         - name: 'rclone.configSecret'
           value: 'backblaze-readwrite'
+        - name: extraEnv.ALLOWED_NETWORKS
+          value: 10.0.0.0/8
   destination:
     namespace: plex-test
     name: in-cluster
