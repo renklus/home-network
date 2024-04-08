@@ -1,0 +1,73 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: plex-test
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://raw.githubusercontent.com/plexinc/pms-docker/gh-pages
+    chart: plex-media-server
+    targetRevision: '0.3.0'
+    helm:
+      valuesObject:
+        image:
+          tag: '1.40.0.7998-c29d4c0c8'
+          repository: 'plexinc/pms-docker'
+          registry: 'index.docker.io'
+        initContainer:
+          image:
+            tag: '3.19.1'
+            repository: 'alpine'
+            registry: 'index.docker.io'
+        rclone:
+          image:
+            tag: '1.66.0'
+            repository: 'rclone/rclone'
+            registry: 'index.docker.io'
+      parameters:
+        - name: 'service.type'
+          value: 'LoadBalancer'
+        - name: 'service.port'
+          value: '32400'
+        - name: 'rclone.configSecret'
+          value: 'backblaze-readwrite'
+  destination:
+    namespace: plex-test
+    name: in-cluster
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+# workaround for argcod problem (leave until https://github.com/argoproj/argo-cd/issues/11143#issuecomment-1664144190 is done)
+  ignoreDifferences:
+  - group: apps
+    kind: StatefulSet
+    jqPathExpressions:
+      - '.spec.volumeClaimTemplates[]?'
+---
+apiVersion: secrets.infisical.com/v1alpha1
+kind: InfisicalSecret
+metadata:
+  # Name of this InfisicalSecret resource
+  name: backblace-readwrite
+  namespace: plex-test
+#  annotations:
+#    argocd.argoproj.io/sync-wave: "1"
+#    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  resyncInterval: 60
+  authentication:
+    serviceToken:
+      serviceTokenSecretReference:
+        secretName: 'infisical-service-token'
+        secretNamespace: 'infisical-operator-system'
+      secretsScope:
+        envSlug: dev
+        secretsPath: "/plex/backblaze-readwrite"
+  managedSecretReference:
+    secretName: backblaze-readwrite # <-- the name of kubernetes secret that will be created
+    secretNamespace: plex-test # <-- where the kubernetes secret should be created
