@@ -20,3 +20,8 @@ spec:
   managedSecretReference:
     secretName: backblaze-readwrite # <-- the name of kubernetes secret that will be created
     secretNamespace: plex-test # <-- where the kubernetes secret should be created
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: plex-test
