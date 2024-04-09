@@ -48,7 +48,7 @@ spec:
         - name: 'ui.serviceNodePort'
           value: 'null'
          - name: 'ui.loadBalancerSourceRanges'
-           value: '{"10.0.0.0/8"}'
+           value: '{10.0.0.0/8}'
   destination:
     namespace: 'hashicorp-vault-system'
     name: in-cluster
