@@ -34,6 +34,9 @@ spec:
             image:
               repository: 'hashicorp/vault'
               tag: '1.15.2'
+        ui:
+          loadBalancerSourceRanges:
+            - 10.0.0.0/8
       parameters:
         - name: 'global.namespace'
           value: 'hashicorp-vault-system'
@@ -47,8 +50,6 @@ spec:
           value: 'LoadBalancer'
         - name: 'ui.serviceNodePort'
           value: 'null'
-         - name: 'ui.loadBalancerSourceRanges'
-           value: '{10.0.0.0/8}'
   destination:
     namespace: 'hashicorp-vault-system'
     name: in-cluster
