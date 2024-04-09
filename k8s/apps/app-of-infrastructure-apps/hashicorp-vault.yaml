@@ -1,3 +1,4 @@
+# Helm chart changelog: https://github.com/hashicorp/vault-helm/blob/main/CHANGELOG.md
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -38,6 +39,14 @@ spec:
           value: 'hashicorp-vault-system'
         - name: 'global.namespace'
           value: 'hashicorp-vault-system'
+        # - name: 'server.service.type'
+        #   value: 'LoadBalancer'
+        - name: 'ui.enabled'
+          value: 'true'
+        - name: 'ui.serviceType'
+          value: 'LoadBalancer'
+        - name: 'ui.loadBalancerSourceRanges'
+          value: '10.0.0.0/8'
   destination:
     namespace: 'hashicorp-vault-system'
     name: in-cluster
