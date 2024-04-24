@@ -1,0 +1,67 @@
+# Helm chart changelog: https://github.com/hashicorp/vault-helm/blob/main/CHANGELOG.md
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: 'default'
+  source:
+    repoURL: 'https://helm.releases.hashicorp.com'
+    chart: 'vault'
+    targetRevision: '0.28.0'
+    helm:
+      valuesObject:
+        injector:
+          image:
+            repository: 'hashicorp/vault-k8s'
+            tag: '1.4.1@sha256:c51d565020945bec54f6ad519a6fbbb92896964513475c856cd5f8fd8a21a67f'
+        agentImage:
+          image:
+            repository: 'hashicorp/vault'
+            tag: '1.16.1@sha256:5efe43c659d4dc53539a589a95d5ffe77fffb761b407766e0408b0b18c30cad8'
+        server:
+          image:
+            repository: 'hashicorp/vault'
+            tag: '1.16.1@sha256:5efe43c659d4dc53539a589a95d5ffe77fffb761b407766e0408b0b18c30cad8'
+        csi:
+          image:
+            repository: 'hashicorp/vault-csi-provider'
+            tag: '1.4.2@sha256:cfc3c9580584fac3d9caa113c9e9d8b381980efa7b3dd57a026ab3babe4ec239'
+          agent:
+            image:
+              repository: 'hashicorp/vault'
+              tag: '1.16.1@sha256:5efe43c659d4dc53539a589a95d5ffe77fffb761b407766e0408b0b18c30cad8'
+        ui:
+          loadBalancerSourceRanges:
+            - 10.0.0.0/8
+      parameters:
+        - name: 'global.namespace'
+          value: 'vault-system'
+        - name: 'global.namespace'
+          value: 'vault-system'
+        # - name: 'server.service.type'
+        #   value: 'LoadBalancer'
+        - name: 'ui.enabled'
+          value: 'true'
+        - name: 'ui.serviceType'
+          value: 'LoadBalancer'
+        - name: 'ui.serviceNodePort'
+          value: 'null'
+  destination:
+    namespace: 'vault-system'
+    name: in-cluster
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+# workaround for argcod problem (leave until https://github.com/argoproj/argo-cd/issues/11143#issuecomment-1664144190 is done)
+  ignoreDifferences:
+  - group: 'apps'
+    kind: 'StatefulSet'
+    name: 'mongodb'
+    jqPathExpressions:
+      - '.spec.volumeClaimTemplates[]?'
