@@ -20,7 +20,7 @@ spec:
           frr:
             image:
               repository: 'quay.io/frrouting/frr'
-              tag: '9.1.0@sha256:f310c2ebb3827fa03b9674ee05e70a7d5eef2123bcc3b475eb2ef14dafcb52b4'
+              tag: '10.0.0@sha256:572c60d3d678887bbd97281e7995a976f7eceeb7f40bf43a13cbd7905d52af41'
         controller:
           image:
             repository: 'quay.io/metallb/controller'
