@@ -17,7 +17,7 @@ spec:
           kubeRbacProxy:
             image:
               repository: 'gcr.io/kubebuilder/kube-rbac-proxy'
-              tag: 'v0.16.0@sha256:771a9a173e033a3ad8b46f5c00a7036eaa88c8d8d1fbd89217325168998113ea' #default v0.15.0 (08.04.2024)
+              tag: 'v0.16.0' #default v0.15.0 (08.04.2024)
           manager:
             image:
               repository: 'infisical/kubernetes-operator'
