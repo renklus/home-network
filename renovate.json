@@ -4,7 +4,7 @@
     "config:best-practices",
     "docker:enableMajor"
   ],
-  "prHourlyLimit": "10",
+  "prHourlyLimit": 10,
   "argocd": {
     "fileMatch": ["k8s/apps/.+\\.yaml$"]
   },
