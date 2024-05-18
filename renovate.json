@@ -27,6 +27,14 @@
     {
       "matchPackageNames": ["quay.io/metallb/controller", "quay.io/metallb/speaker", "quay.io/frrouting/frr", "metallb"],
       "groupName": "MetalLB"
+    },
+    {
+      "matchPackageNames": ["hashicorp/vault-k8s", "hashicorp/vault", "hashicorp/vault-csi-provider", "vault"],
+      "groupName": "Hashicorp Vault"
+    },
+    {
+      "matchPackageNames": ["vault-secrets-operator", "gcr.io/kubebuilder/kube-rbac-proxy", "hashicorp/vault-secrets-operator"],
+      "groupName": "Hashicorp Vault Secrets Operator"
     }
   ]
 }
