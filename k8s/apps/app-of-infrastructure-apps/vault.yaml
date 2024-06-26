@@ -21,11 +21,11 @@ spec:
         agentImage:
           image:
             repository: 'hashicorp/vault'
-            tag: '1.16.1@sha256:5efe43c659d4dc53539a589a95d5ffe77fffb761b407766e0408b0b18c30cad8'
+            tag: '1.17.1@sha256:0ba7c9c2922b5645c07fb363a7862fd79eee235004b8bcf7ecba26ccfbc48526'
         server:
           image:
             repository: 'hashicorp/vault'
-            tag: '1.16.1@sha256:5efe43c659d4dc53539a589a95d5ffe77fffb761b407766e0408b0b18c30cad8'
+            tag: '1.17.1@sha256:0ba7c9c2922b5645c07fb363a7862fd79eee235004b8bcf7ecba26ccfbc48526'
         csi:
           image:
             repository: 'hashicorp/vault-csi-provider'
@@ -33,7 +33,7 @@ spec:
           agent:
             image:
               repository: 'hashicorp/vault'
-              tag: '1.16.1@sha256:5efe43c659d4dc53539a589a95d5ffe77fffb761b407766e0408b0b18c30cad8'
+              tag: '1.17.1@sha256:0ba7c9c2922b5645c07fb363a7862fd79eee235004b8bcf7ecba26ccfbc48526'
         ui:
           loadBalancerSourceRanges:
             - 10.0.0.0/8
