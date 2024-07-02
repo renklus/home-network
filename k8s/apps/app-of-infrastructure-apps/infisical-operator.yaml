@@ -21,7 +21,7 @@ spec:
           manager:
             image:
               repository: 'infisical/kubernetes-operator'
-              tag: 'v0.5.0'
+              tag: 'v0.5.0@sha256:1f28a98227506d0b1ae0a51f57e15d1ecf1140b34b7b1723febbe2cf89817832'
       parameters:
   destination:
     namespace: infisical-operator-system
