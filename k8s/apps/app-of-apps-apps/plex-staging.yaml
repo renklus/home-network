@@ -14,17 +14,17 @@ spec:
     helm:
       valuesObject: # parametrization with valuesObject needed for renovate bot to detect image versions
         image:
-          tag: '1.40.0.7998-c29d4c0c8'
+          tag: '1.40.0.7998-c29d4c0c8@sha256:aa69b9bff8a7fd56b3eecedb931c3d12e588f7b2749c25368765a2d12277b908'
           repository: 'plexinc/pms-docker' # repository definition needed for renovate bot to detect latest version
           registry: 'index.docker.io' # registry definition only needed if something else than docker
         initContainer:
           image:
-            tag: '3.19.1'
+            tag: '3.19.1@sha256:c5b1261d6d3e43071626931fc004f70149baeba2c8ec672bd4f27761f8e1ad6b'
             repository: 'alpine'
             registry: 'index.docker.io'
         rclone:
           image:
-            tag: '1.66.0'
+            tag: '1.66.0@sha256:a693c46a6b8b7585f77ffb439b5727cb192f0b865f3da66efbc049e6ef1c5c4c'
             repository: 'rclone/rclone'
             registry: 'index.docker.io'
       parameters:
