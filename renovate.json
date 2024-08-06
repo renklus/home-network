@@ -6,35 +6,64 @@
   ],
   "prHourlyLimit": 10,
   "argocd": {
-    "fileMatch": ["k8s/apps/.+\\.yaml$"]
+    "fileMatch": [
+      "k8s/apps/.+\\.yaml$"
+    ]
   },
   "kubernetes": {
-    "fileMatch": ["k8s/.+\\.yaml$"]
+    "fileMatch": [
+      "k8s/.+\\.yaml$"
+    ]
   },
   "helm-values": {
-    "fileMatch": ["\\.yaml$"]
+    "fileMatch": [
+      "\\.yaml$"
+    ]
   },
-  "ignorePaths": ["k8s/apps/app-of-infrastructure-apps/metallb-native.yaml"],
+  "ignorePaths": [
+    "k8s/apps/app-of-infrastructure-apps/metallb-native.yaml"
+  ],
   "packageRules": [
     {
-      "matchDatasources": ["docker"],
-      "matchPackagePrefixes": ["bitnami/", "docker.io/bitnami/"],
-      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?:-(?<compatibility>.+)(?<build>\\d+)-r(?<revision>\\d+))?$"
+      "matchDatasources": [
+        "docker"
+      ],
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?:-(?<compatibility>.+)(?<build>\\d+)-r(?<revision>\\d+))?$",
+      "matchPackageNames": [
+        "bitnami/{/,}**",
+        "docker.io/bitnami/{/,}**"
+      ]
     },
     {
-      "matchPackageNames": ["plexinc/pms-docker"],
+      "matchPackageNames": [
+        "plexinc/pms-docker"
+      ],
       "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+\\-[a-z0-9]+)$"
     },
     {
-      "matchPackageNames": ["quay.io/metallb/controller", "quay.io/metallb/speaker", "quay.io/frrouting/frr", "metallb"],
+      "matchPackageNames": [
+        "quay.io/metallb/controller",
+        "quay.io/metallb/speaker",
+        "quay.io/frrouting/frr",
+        "metallb"
+      ],
       "groupName": "MetalLB"
     },
     {
-      "matchPackageNames": ["hashicorp/vault-k8s", "hashicorp/vault", "hashicorp/vault-csi-provider", "vault"],
+      "matchPackageNames": [
+        "hashicorp/vault-k8s",
+        "hashicorp/vault",
+        "hashicorp/vault-csi-provider",
+        "vault"
+      ],
       "groupName": "Hashicorp Vault"
     },
     {
-      "matchPackageNames": ["vault-secrets-operator", "gcr.io/kubebuilder/kube-rbac-proxy", "hashicorp/vault-secrets-operator"],
+      "matchPackageNames": [
+        "vault-secrets-operator",
+        "gcr.io/kubebuilder/kube-rbac-proxy",
+        "hashicorp/vault-secrets-operator"
+      ],
       "groupName": "Hashicorp Vault Secrets Operator"
     }
   ]
