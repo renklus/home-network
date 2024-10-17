@@ -17,6 +17,22 @@ data:
         proxy_pass $routerUrl;
       }
     }
+    server {
+      listen 80;
+      server_name anydevicename.dev.renklus.ch;
+      location / {
+        return 444;
+      }
+      location /.well-known {
+        resolver 10.1.0.1;
+        proxy_pass $scheme://$host$request_uri;
+      }
+    }
+    server {
+      listen 80;
+      server_name "";
+      return 444;
+    }
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
