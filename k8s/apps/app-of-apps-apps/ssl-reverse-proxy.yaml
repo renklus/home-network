@@ -8,6 +8,9 @@ data:
     server { 
       listen 80; 
       server_name fws07l.dev.renklus.ch;
+      location {
+        return 444;
+      }
     }
 ---
 apiVersion: argoproj.io/v1alpha1
