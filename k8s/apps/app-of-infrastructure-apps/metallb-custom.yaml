@@ -24,3 +24,20 @@ metadata:
 spec:
   ipAddressPools:
   - default-pool
+---
+apiVersion: metallb.io/v1beta1
+metadata:
+  name: ipv6-default
+  namespace: metallb-system
+spec:
+  addresses:
+  - 2a02:169:602::d:1000-2a02:169:602::d:ffff
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: ipv6-advertisement
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - ipv6-default
