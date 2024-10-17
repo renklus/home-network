@@ -9,6 +9,11 @@ spec:
     repoURL: 'https://charts.bitnami.com/bitnami'
     chart: 'nginx'
     targetRevision: '18.2.3'
+    helm:
+      valuesObject:
+        tag: '1.27.2'
+        repository: 'bitnamicharts'
+        registry: 'registry-1.docker.io'
   destination:
     name: 'in-cluster'
     namespace: 'ssl-reverse-proxy'
