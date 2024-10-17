@@ -4,9 +4,7 @@ metadata:
   name: serverblock
   namespace: 'ssl-reverse-proxy'
 data:
-  serverBlock: |
-'
-server {
+  serverBlock: server {
         listen 80;
         server_name fws07l.dev.renklus.ch;
 
