@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: SSL Reverse Proxy
+  name: ssl-reverse-proxy
   namespace: argocd
 spec:
   destination:
