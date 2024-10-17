@@ -13,8 +13,8 @@ spec:
       valuesObject:
         image:
           tag: '1.27.2'
-          repository: 'bitnamicharts'
-          registry: 'registry-1.docker.io'
+          repository: 'bitnami/nginx'
+          registry: 'docker.io'
   destination:
     name: 'in-cluster'
     namespace: 'ssl-reverse-proxy'
