@@ -4,7 +4,8 @@ metadata:
   name: serverblock
   namespace: 'ssl-reverse-proxy'
 data:
-  serverBlock: server { listen 80; }
+  serverBlock: 
+    server { listen 80; }
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
