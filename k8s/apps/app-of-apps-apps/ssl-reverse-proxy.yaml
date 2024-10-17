@@ -8,7 +8,7 @@ data:
     server { 
       listen 80; 
       server_name fws07l.dev.renklus.ch;
-      location {
+      location / {
         return 444;
       }
     }
