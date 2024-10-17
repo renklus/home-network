@@ -11,6 +11,9 @@ data:
       location / {
         return 444;
       }
+      location /.well-known {
+        resolver 10.1.0.1;
+      }
     }
 ---
 apiVersion: argoproj.io/v1alpha1
