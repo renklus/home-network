@@ -13,6 +13,8 @@ data:
       }
       location /.well-known {
         resolver 10.1.0.1;
+        set $routerUrl $scheme://$host:8080/$request_uri;
+        proxy_pass $routerUrl;
       }
     }
 ---
