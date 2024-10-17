@@ -16,7 +16,7 @@ spec:
         backend:
           image:
             repository: 'infisical/infisical'
-            tag: 'v0.43.19'
+            tag: 'v0.43.19@sha256:a79a0ac9a4dc731ef34bfff229b1c4e7d954d449e822bf21c9b29b5436cace04'
         mongodb:
           image:
             repository: 'bitnami/mongodb'
