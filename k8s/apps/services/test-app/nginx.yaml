@@ -21,7 +21,7 @@ spec:
       containers:
       - name: my-nginx
         imagePullPolicy: Always
-        image: renklus/my-nginx:0.0.4-pre
+        image: renklus/my-nginx:0.0.4-pre@sha256:220eb5542a0dcaf76486a6b7917db33ee4ac497372bff636d01783142d609092
         ports:
         - containerPort: 80
           name: http
