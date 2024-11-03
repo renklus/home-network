@@ -1,2 +1,2 @@
 disable: "servicelb"
-cluster-domain: "k8scluster.renklus.ch"
+cluster-domain: "k8sdmz.renklus.ch"
