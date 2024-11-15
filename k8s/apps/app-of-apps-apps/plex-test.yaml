@@ -39,7 +39,7 @@ spec:
           image:
             registry: index.docker.io
             repository: rclone/rclone
-            tag: 1.66.0
+            tag: 1.68.2@sha256:74c51b8817e5431bd6d7ed27cb2a50d8ee78d77f6807b72a41ef6f898845942b
   destination:
     namespace: plex-test
     name: in-cluster
