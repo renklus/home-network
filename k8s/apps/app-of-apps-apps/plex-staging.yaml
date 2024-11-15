@@ -24,7 +24,7 @@ spec:
             registry: 'index.docker.io'
         rclone:
           image:
-            tag: '1.66.0'
+            tag: '1.68.2@sha256:74c51b8817e5431bd6d7ed27cb2a50d8ee78d77f6807b72a41ef6f898845942b'
             repository: 'rclone/rclone'
             registry: 'index.docker.io'
       parameters:
