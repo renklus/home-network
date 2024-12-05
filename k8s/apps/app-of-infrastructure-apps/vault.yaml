@@ -11,29 +11,29 @@ spec:
   source:
     repoURL: 'https://helm.releases.hashicorp.com'
     chart: 'vault'
-    targetRevision: '0.28.0'
+    targetRevision: '0.29.1'
     helm:
       valuesObject:
         injector:
           image:
             repository: 'hashicorp/vault-k8s'
-            tag: '1.4.1@sha256:c51d565020945bec54f6ad519a6fbbb92896964513475c856cd5f8fd8a21a67f'
+            tag: '1.6.0@sha256:a19f3c616cab761fdf43a8bf47657dc0a9d1a2f6d22bdfc78cab87bfb8102426'
         agentImage:
           image:
             repository: 'hashicorp/vault'
-            tag: '1.16.1@sha256:5efe43c659d4dc53539a589a95d5ffe77fffb761b407766e0408b0b18c30cad8'
+            tag: '1.18.2@sha256:2090eb7ac7a4bdef802f685698bd4dc0740de683affe8ff7df55f4fc77077ba7'
         server:
           image:
             repository: 'hashicorp/vault'
-            tag: '1.16.1@sha256:5efe43c659d4dc53539a589a95d5ffe77fffb761b407766e0408b0b18c30cad8'
+            tag: '1.18.2@sha256:2090eb7ac7a4bdef802f685698bd4dc0740de683affe8ff7df55f4fc77077ba7'
         csi:
           image:
             repository: 'hashicorp/vault-csi-provider'
-            tag: '1.4.2@sha256:cfc3c9580584fac3d9caa113c9e9d8b381980efa7b3dd57a026ab3babe4ec239'
+            tag: '1.5.0@sha256:1d27e109f69f410e6db0f2681c8367e3939ba6f103c4f9206e56209e37dba6aa'
           agent:
             image:
               repository: 'hashicorp/vault'
-              tag: '1.16.1@sha256:5efe43c659d4dc53539a589a95d5ffe77fffb761b407766e0408b0b18c30cad8'
+              tag: '1.18.2@sha256:2090eb7ac7a4bdef802f685698bd4dc0740de683affe8ff7df55f4fc77077ba7'
         ui:
           loadBalancerSourceRanges:
             - 10.0.0.0/8
