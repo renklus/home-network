@@ -10,21 +10,21 @@ spec:
   source:
     repoURL: 'https://metallb.github.io/metallb'
     chart: 'metallb'
-    targetRevision: '0.14.5'
+    targetRevision: '0.14.8'
     helm:
       valuesObject:
         speaker:
           image:
             repository: 'quay.io/metallb/speaker'
-            tag: 'v0.14.5@sha256:34e9cc2db6d83ca3ad4d92a6e2eadaf6b78be65621798e90827041749898acc0'
+            tag: 'v0.14.8@sha256:fd86bfc502601d6525739d411a0045e7085a4008a732be7e271c851800952142'
           frr:
             image:
               repository: 'quay.io/frrouting/frr'
-              tag: '10.0.0@sha256:572c60d3d678887bbd97281e7995a976f7eceeb7f40bf43a13cbd7905d52af41'
+              tag: '10.2.0@sha256:f1b62a828583ed35012c754a5746568632afd324f1467735c50277b75e99a17b'
         controller:
           image:
             repository: 'quay.io/metallb/controller'
-            tag: 'v0.14.5@sha256:3f776529447094c8d318baeb4f9efe024cf154859762ec3eefcd878b1fe8a01f'
+            tag: 'v0.14.8@sha256:93b83b39d06bbcb0aedc0eb750c9e43e3c46dc08a6f88400ed96105224d784ec'
   destination:
     namespace: metallb-system
     name: in-cluster
