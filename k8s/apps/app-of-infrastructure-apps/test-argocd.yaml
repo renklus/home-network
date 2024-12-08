@@ -32,6 +32,9 @@ spec:
           image:
             repository: 'public.ecr.aws/docker/library/redis'
             tag: '7.4.1-alpine'
+      parameters:
+        - name: 'server.service.type'
+          value: 'LoadBalancer'
   destination:
     namespace: 'test-argocd'
     name: in-cluster
