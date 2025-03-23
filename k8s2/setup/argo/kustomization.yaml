@@ -13,4 +13,4 @@ patches:
       metadata:
         name: argocd-server
       spec:
-        type: LoadBalancer
+        type: "LoadBalancer"
