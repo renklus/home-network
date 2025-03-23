@@ -9,8 +9,10 @@ resources:
 patches:
 #  - patch: svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
   - patch: |
+      apiVersion: v1
       kind: Service
       metadata:
         name: argocd-server
+        namespace: argocd
       spec:
         type: "LoadBalancer"
