@@ -7,9 +7,9 @@ resources:
 - kustomization.yaml
 ---
 apiVersion: v1
- kind: Namespace
- metadata:
-   name: argocd
+kind: Namespace
+metadata:
+  name: argocd
 ---
 # https://github.com/morey-tech/argo-cd-app-of-apps-demo/blob/main/app-of-apps.yaml
 # https://www.youtube.com/watch?v=2pvGL0zqf9o
