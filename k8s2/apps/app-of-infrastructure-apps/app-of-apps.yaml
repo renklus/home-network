@@ -12,7 +12,7 @@ spec:
     name: in-cluster
     namespace: argocd
   source:
-    path: k8s2/apps/app-of-apps-apps
+    path: k8s2/apps/app-of-apps
     repoURL: 'https://github.com/renklus/home-network'
     targetRevision: HEAD
   project: default
