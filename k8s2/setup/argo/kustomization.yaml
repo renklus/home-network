@@ -4,8 +4,8 @@ kind: Kustomization
 namespace: argocd
 resources:
 - argo-initial.yaml
-# - https://raw.githubusercontent.com/argoproj/argo-cd/v2.12.4/manifests/install.yaml
-- https://raw.githubusercontent.com/argoproj/argo-cd/refs/heads/master/manifests/ha/install.yaml
+- https://raw.githubusercontent.com/argoproj/argo-cd/v2.12.4/manifests/install.yaml
+# - https://raw.githubusercontent.com/argoproj/argo-cd/refs/heads/master/manifests/ha/install.yaml
 patches:
 #  - patch: svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
   - patch: |
