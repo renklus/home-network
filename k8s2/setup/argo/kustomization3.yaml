@@ -4,12 +4,12 @@ kind: Kustomization
 namespace: argocd
 resources:
 - https://raw.githubusercontent.com/argoproj/argo-cd/v2.12.4/manifests/install.yaml
-- kustomization.yaml
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: argocd
+patches:
+- patch: |
+    apiVersion: v1
+    kind: Namespace
+    metadata:
+      name: argocd
 ---
 # https://github.com/morey-tech/argo-cd-app-of-apps-demo/blob/main/app-of-apps.yaml
 # https://www.youtube.com/watch?v=2pvGL0zqf9o
