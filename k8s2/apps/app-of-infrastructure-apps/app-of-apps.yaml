@@ -4,7 +4,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-of-apps
+  name: app-of-apps-apps
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:
@@ -12,7 +12,7 @@ spec:
     name: in-cluster
     namespace: argocd
   source:
-    path: k8s2/apps/app-of-apps
+    path: k8s2/apps/app-of-apps-apps
     repoURL: 'https://github.com/renklus/home-network'
     targetRevision: HEAD
   project: default
