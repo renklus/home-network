@@ -17,4 +17,5 @@ patches:
       spec:
         type: "LoadBalancer"
     target:
+      kind: "Service"
       labelSelector: "app.kubernetes.io/name=argocd-server"
