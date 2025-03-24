@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: git-repo-plex
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: 'repository'
+stringData:
+  url: 'https://github.com/plexinc/pms-docker'
+  type: 'git'
+  project: 'default'
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: helm-repo-metallb
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: 'repository'
+stringData:
+  url: 'https://metallb.github.io/metallb'
+  type: 'helm'
+  project: 'default'
+  name: 'MetalLB'
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: helm-repo-hashicorp
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: 'repository'
+stringData:
+  url: 'https://helm.releases.hashicorp.com/vault'
+  type: 'helm'
+  project: 'default'
+  name: 'Hashicorp Vault'
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: helm-repo-bitnami
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: 'repository'
+stringData:
+  url: 'https://charts.bitnami.com/bitnami'
+  type: 'helm'
+  project: 'default'
+  name: 'Bitnami'
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: helm-repo-argoproj
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: 'repository'
+stringData:
+  url: 'https://argoproj.github.io/argo-helm'
+  type: 'helm'
+  project: 'default'
+  name: 'Argoproj'
