@@ -1,0 +1,12 @@
+# adapted from https://www.reddit.com/r/homelab/comments/ipsc4r/howto_k8s_metallb_and_external_dns_access_for/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  k8s_external.server: |
+    k8s2.home.arpa:53 {
+        kubernetes
+        k8s_external k8s2.home.arpa
+    }
