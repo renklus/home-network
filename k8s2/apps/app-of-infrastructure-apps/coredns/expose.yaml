@@ -1,0 +1,21 @@
+# adapted from https://www.reddit.com/r/homelab/comments/ipsc4r/howto_k8s_metallb_and_external_dns_access_for/
+apiVersion: v1
+kind: Service
+metadata:
+  name: dns-external
+  namespace: kube-system
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 172.22.47.200
+spec:
+  type: LoadBalancer
+  selector:
+    k8s-app: kube-dns
+  ports:
+  - name: "tcp-dns"
+    protocol: TCP
+    port: 53
+    targetPort: dns-tcp
+  - name: "udp-dns"
+    protocol: UDP
+    port: 53
+    targetPort: dns
