@@ -35,7 +35,7 @@ jobs:
             type=semver,pattern={{major}}
           # type=sha
       - name: Build and push
-        uses: docker/build-push-action@2cdde995de11925a030ce8070c3d77a52ffcf1c0 # v5
+        uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6
         with:
           context: ./container/images/test-publish
           file: ./container/images/test-publish/Dockerfile
