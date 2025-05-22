@@ -18,8 +18,8 @@ spec:
     path: k8s2/apps/app-of-infrastructure-apps
     repoURL: 'https://github.com/renklus/home-network'
     targetRevision: HEAD
-    directory:
-      recurse: true
+    # directory:
+    #   recurse: true
   project: default
   syncPolicy:
     automated:
