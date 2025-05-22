@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: argocd
 resources:
 - https://raw.githubusercontent.com/argoproj/argo-cd/v2.14.6/manifests/ha/install.yaml
-- argo-initial.yaml
+- https://raw.githubusercontent.com/renklus/home-network/main/k8s2/apps/app-of-infrastructure-apps2/argocd/argo-initial.yaml
 patches:
   - patch: |-
       apiVersion: v1
