@@ -1,12 +1,12 @@
 apiVersion: v1
-kind: Namespace
+# kind: Namespace
 metadata:
   name: argocd
 ---
 # https://github.com/morey-tech/argo-cd-app-of-apps-demo/blob/main/app-of-apps.yaml
 # https://www.youtube.com/watch?v=2pvGL0zqf9o
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+# kind: Application
 metadata:
   name: app-of-argo
   namespace: argocd-k
