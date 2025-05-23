@@ -1,21 +1,19 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: argocd
----
 # https://github.com/morey-tech/argo-cd-app-of-apps-demo/blob/main/app-of-apps.yaml
 # https://www.youtube.com/watch?v=2pvGL0zqf9o
+
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-of-infrastructure-apps
+  name: app-of-apps-apps
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   destination:
     name: in-cluster
     namespace: argocd
   source:
-    path: k8s2/apps/app-of-infrastructure-apps
+    path: k8s/apps/app-of-apps-apps
     repoURL: 'https://github.com/renklus/home-network'
     targetRevision: HEAD
   project: default
