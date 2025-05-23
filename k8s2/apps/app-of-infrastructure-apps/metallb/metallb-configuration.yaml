@@ -7,13 +7,14 @@
 #   addresses:
 #   - 10.1.0.201-10.1.0.209
 # ---
+
+# Because MetalLB is installed as an application these resources also need to be referenced from the MetalLB application and live in this subfolder - not be part of the root Application
+# Otherwise the CRD for IPAddressPool and L2Advertisement would not be available
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
   name: default-pool
   namespace: metallb-system
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
 spec:
   addresses:
   - 10.1.0.210-10.1.0.254
@@ -23,8 +24,6 @@ kind: L2Advertisement
 metadata:
   name: default-pool-advertisement
   namespace: metallb-system
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
 spec:
   ipAddressPools:
   - default-pool
