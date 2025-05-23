@@ -30,7 +30,7 @@ spec:
           image:
             repository: 'quay.io/metallb/controller'
             tag: 'v0.14.8@sha256:93b83b39d06bbcb0aedc0eb750c9e43e3c46dc08a6f88400ed96105224d784ec'
-  - path: k8s2\apps\app-of-infrastructure-apps\metallb
+  - path: k8s2/apps/app-of-infrastructure-apps/metallb
     repoURL: 'https://github.com/renklus/home-network'
     targetRevision: HEAD
   destination:
