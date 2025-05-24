@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-self-managed
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/argoproj/argo-helm.git
+    targetRevision: HEAD # or e.g., "main"
+    path: charts/argo-cd
+    helm:
+      values: |
+        controller:
+          metrics:
+            enabled: true
+        server:
+          service:
+            type: LoadBalancer
+          ingress:
+            enabled: false
+  destination:
+    namespace: argocd
+    name: in-cluster
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
