@@ -14,9 +14,9 @@ spec:
     helm:
       parameters:
         - name: 'global.affinity.nodeAffinity.type'
-          value: 'none'
+          value: 'hard'
         - name: 'global.affinity.podAntiAffinity'
-          value: 'none'
+          value: 'soft'
         - name: 'server.service.type'
           value: 'LoadBalancer'        
       valuesObject:
