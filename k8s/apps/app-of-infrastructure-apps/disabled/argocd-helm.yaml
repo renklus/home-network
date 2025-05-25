@@ -19,6 +19,10 @@ spec:
           value: none
         - name: server.service.type
           value: LoadBalancer
+        - name: global.image.tag
+          value: v2.14.6
+        - name: global.image.repository
+          value: quay.io/argoproj/argocd
   destination:
     namespace: argocd
     name: in-cluster
