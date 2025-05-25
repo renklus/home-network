@@ -17,8 +17,7 @@ spec:
           affinity:
             nodeAffinity:
               type: 'none'
-            podAntiAffinity:
-              type: 'none'
+            podAntiAffinity: 'none'
           image:
             repository: 'quay.io/argoproj/argocd'
             tag: 'v3.0.2'
