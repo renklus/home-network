@@ -23,7 +23,7 @@ spec:
           value: v3.0.2
         - name: global.image.repository
           value: quay.io/argoproj/argocd
-        - name: configs.cm.admin.enabled
+        - name: 'configs.cm."admin.enabled"'
           value: 'true'
         # - name: configs.cm."users.session.duration"
         #   value: '23h'
