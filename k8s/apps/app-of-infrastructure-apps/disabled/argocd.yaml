@@ -17,8 +17,10 @@ spec:
     helm:
       parameters:
         - name: global.affinity.nodeAffinity.type
-          value: soft
-        - name: server.metrics.service.type
+          value: none
+        - name: global.affinity.podAntiAffinity
+          value: none
+        - name: server.service.type
           value: LoadBalancer
   sources: []
   project: default
@@ -26,3 +28,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
