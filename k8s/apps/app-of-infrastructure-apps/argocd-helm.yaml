@@ -12,21 +12,26 @@ spec:
     chart: 'argo-cd'
     targetRevision: '8.0.9'
     helm:
-      parameters:
-        - name: global.affinity.nodeAffinity.type
-          value: none
-        - name: global.affinity.podAntiAffinity
-          value: none
-        - name: server.service.type
-          value: LoadBalancer
-        - name: global.image.tag
-          value: v3.0.2
-        - name: global.image.repository
-          value: quay.io/argoproj/argocd
-        - name: 'configs.cm.admin.enabled'
-          value: 'false'
-        - name: configs.cm.users.session.duration
-          value: '23h'
+      valuesObject:
+        global:
+          affinity:
+            nodeAffinity:
+              type: 'none'
+            podAntiAffinity:
+              type: 'none'
+          image:
+            repository: 'quay.io/argoproj/argocd'
+            tag: 'v3.0.2'
+        server:
+          service:
+            type: 'LoadBalancer'
+        configs:
+          cm:
+            admin:
+              enabled: 'true'
+            users:
+              session:
+                duration: '22h'
   destination:
     namespace: argocd
     name: in-cluster
