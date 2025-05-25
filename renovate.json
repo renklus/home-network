@@ -21,7 +21,7 @@
     ]
   },
   "ignorePaths": [
-    "k8s/apps/app-of-infrastructure-apps/metallb-native.yaml"
+    "/k8s-old1/**"
   ],
   "packageRules": [
     {
