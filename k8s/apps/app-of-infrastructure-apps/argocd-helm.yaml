@@ -19,7 +19,7 @@ spec:
         global:
           image:
             repository: 'quay.io/argoproj/argocd'
-            tag: 'v3.0.2'
+            tag: 'v3.0.3@sha256:95b5cf7ba6fe9b3a336de3209748475350d4fbc918c3ce508eb4cb2aa7ac2d1e'
         server:
           extensions:
             image:
