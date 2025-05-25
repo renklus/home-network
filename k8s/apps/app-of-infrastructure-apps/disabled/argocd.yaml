@@ -6,14 +6,11 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  destination:
-    namespace: argocd
-    server: https://kubernetes.default.svc
+  project: 'default'
   source:
-    path: ''
     repoURL: https://argoproj.github.io/argo-helm
-    targetRevision: 8.0.9
-    chart: argo-cd
+    chart: 'argo-cd'
+    targetRevision: '8.0.9'
     helm:
       parameters:
         - name: global.affinity.nodeAffinity.type
@@ -22,11 +19,13 @@ spec:
           value: none
         - name: server.service.type
           value: LoadBalancer
-  sources: []
-  project: default
+  destination:
+    namespace: argocd
+    name: in-cluster
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true
