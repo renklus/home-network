@@ -13,10 +13,6 @@ spec:
     targetRevision: '8.0.9'
     helm:
       parameters:
-        - name: 'global.affinity.nodeAffinity.type'
-          value: 'hard'
-        - name: 'global.affinity.podAntiAffinity'
-          value: 'soft'
         - name: 'server.service.type'
           value: 'LoadBalancer'        
       valuesObject:
