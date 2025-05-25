@@ -26,8 +26,7 @@ spec:
             type: 'LoadBalancer'
         configs:
           cm:
-            "admin.enabled": 'true'
-            "users.session.duration": '21h'
+            "users.session.duration": '22h'
   destination:
     namespace: argocd
     name: in-cluster
