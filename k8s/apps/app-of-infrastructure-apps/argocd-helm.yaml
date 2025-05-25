@@ -12,18 +12,18 @@ spec:
     chart: 'argo-cd'
     targetRevision: '8.0.9'
     helm:
+      parameters:
+        - name: 'global.affinity.nodeAffinity.type'
+          value: 'none'
+        - name: 'global.affinity.podAntiAffinity'
+          value: 'none'
+        - name: 'server.service.type'
+          value: 'LoadBalancer'        
       valuesObject:
         global:
-          affinity:
-            nodeAffinity:
-              type: 'none'
-            podAntiAffinity: 'none'
           image:
             repository: 'quay.io/argoproj/argocd'
             tag: 'v3.0.2'
-        server:
-          service:
-            type: 'LoadBalancer'
         configs:
           cm:
             "users.session.duration": '22h'
