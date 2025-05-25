@@ -17,23 +17,23 @@ spec:
         injector:
           image:
             repository: 'hashicorp/vault-k8s'
-            tag: '1.4.1@sha256:c51d565020945bec54f6ad519a6fbbb92896964513475c856cd5f8fd8a21a67f'
+            tag: '1.6.2@sha256:103a2d817a7474a8b678d830b0d6ed2d570cc878e4bc8c146d8d35ec436a8d49'
         agentImage:
           image:
             repository: 'hashicorp/vault'
-            tag: '1.16.1@sha256:5efe43c659d4dc53539a589a95d5ffe77fffb761b407766e0408b0b18c30cad8'
+            tag: '1.19.4@sha256:b5f675b0bf681568cd7354c697fe4ce953024312d6d23ee7216deda60c192bad'
         server:
           image:
             repository: 'hashicorp/vault'
-            tag: '1.16.1@sha256:5efe43c659d4dc53539a589a95d5ffe77fffb761b407766e0408b0b18c30cad8'
+            tag: '1.19.4@sha256:b5f675b0bf681568cd7354c697fe4ce953024312d6d23ee7216deda60c192bad'
         csi:
           image:
             repository: 'hashicorp/vault-csi-provider'
-            tag: '1.4.2@sha256:cfc3c9580584fac3d9caa113c9e9d8b381980efa7b3dd57a026ab3babe4ec239'
+            tag: '1.5.0@sha256:1d27e109f69f410e6db0f2681c8367e3939ba6f103c4f9206e56209e37dba6aa'
           agent:
             image:
               repository: 'hashicorp/vault'
-              tag: '1.16.1@sha256:5efe43c659d4dc53539a589a95d5ffe77fffb761b407766e0408b0b18c30cad8'
+              tag: '1.19.4@sha256:b5f675b0bf681568cd7354c697fe4ce953024312d6d23ee7216deda60c192bad'
         ui:
           loadBalancerSourceRanges:
             - 10.0.0.0/8
