@@ -24,6 +24,30 @@ spec:
           image:
             repository: 'quay.io/argoproj/argocd'
             tag: 'v3.0.2'
+        server:
+          extensions:
+            image:
+              repository: 'quay.io/argoprojlabs/argocd-extension-installer'
+              tag: 'v0.0.8'
+        dex:
+          image:
+            repository: 'ghcr.io/dexidp/dex'
+            tag: 'v2.43.1'
+        redis:
+          exporter:
+            image:
+              repository: 'ghcr.io/oliver006/redis_exporter'
+              tag: 'v1.73.0'
+          image:
+            repository: 'public.ecr.aws/docker/library/redis'
+            tag: '7.2.8-alpine'
+        redis-ha:
+          exporter:
+            image: 'ghcr.io/oliver006/redis_exporter'
+            tag: 'v1.69.0'
+          image:
+            repository: 'public.ecr.aws/docker/library/redis'
+            tag: '7.2.8-alpine'
         configs:
           cm:
             "users.session.duration": '22h'
