@@ -20,7 +20,7 @@ spec:
         - name: server.service.type
           value: LoadBalancer
         - name: global.image.tag
-          value: v2.14.6
+          value: v3.0.2
         - name: global.image.repository
           value: quay.io/argoproj/argocd
   destination:
