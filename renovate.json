@@ -79,7 +79,7 @@
     },
     {
       "matchPackageNames": [
-        "https://ghcr.io/oliver006/redis_exporter"
+        "image: 'ghcr.io/oliver006/redis_exporter'"
       ],
       "enabled": false
     }
