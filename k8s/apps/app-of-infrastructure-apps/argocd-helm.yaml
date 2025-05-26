@@ -33,7 +33,7 @@ spec:
           exporter:
             image:
               repository: 'ghcr.io/oliver006/redis_exporter'
-              tag: 'v1.72.0'
+              tag: 'v1.73.0@sha256:1a8f5e48b2af0fb02d182be3ddd623e7e39881b6464bdb5bf843b1f6d45ed050'
           image:
             repository: 'public.ecr.aws/docker/library/redis'
             tag: '8.0.0-alpine'
