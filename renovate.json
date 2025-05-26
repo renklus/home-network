@@ -20,6 +20,17 @@
       "/\\.yaml$/"
     ]
   },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/k8s/apps/.+\\.yaml$/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s\\S+?:(?<currentValue>\\S+)"
+      ]
+    }
+  ],
   "ignorePaths": [
     "k8s-old1/**"
   ],
