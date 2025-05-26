@@ -81,7 +81,7 @@
       "matchPackageNames": [
         "ghcr.io/oliver006/redis_exporter"
       ],
-      "enabled": false
+      "enabled": true
     }
   ]
 }
