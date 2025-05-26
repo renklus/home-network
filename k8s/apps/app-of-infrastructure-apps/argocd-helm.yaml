@@ -24,26 +24,26 @@ spec:
           extensions:
             image:
               repository: 'quay.io/argoprojlabs/argocd-extension-installer'
-              tag: 'v0.0.8'
+              tag: 'v0.0.8@sha256:e7cb054207620566286fce2d809b4f298a72474e0d8779ffa8ec92c3b630f054'
         dex:
           image:
             repository: 'ghcr.io/dexidp/dex'
-            tag: 'v2.43.1'
+            tag: 'v2.43.1@sha256:0881d3c9359b436d585b2061736ce271c100331e073be9178ef405ce5bf09557'
         redis:
           exporter:
             image:
               repository: 'ghcr.io/oliver006/redis_exporter'
-              tag: 'v1.73.0'
+              tag: 'v1.73.0@sha256:1a8f5e48b2af0fb02d182be3ddd623e7e39881b6464bdb5bf843b1f6d45ed050'
           image:
             repository: 'public.ecr.aws/docker/library/redis'
-            tag: '7.2.8-alpine'
+            tag: '7.2.8-alpine@sha256:c88ea2979a49ca497bbf7d39241b237f86c98e58cb2f6b1bc2dd167621f819bb'
         redis-ha:
           exporter:
-            image: 'ghcr.io/oliver006/redis_exporter'
+            image: 'ghcr.io/oliver006/redis_exporter@sha256:1a8f5e48b2af0fb02d182be3ddd623e7e39881b6464bdb5bf843b1f6d45ed050'
             tag: 'v1.69.0'
           image:
             repository: 'public.ecr.aws/docker/library/redis'
-            tag: '7.2.8-alpine'
+            tag: '7.2.8-alpine@sha256:c88ea2979a49ca497bbf7d39241b237f86c98e58cb2f6b1bc2dd167621f819bb'
         configs:
           cm:
             "users.session.duration": '22h'
