@@ -10,6 +10,11 @@
       "/k8s/apps/.+\\.yaml$/"
     ]
   },
+  "helm-values": {
+    "managerFilePatterns": [
+      "/\\.yaml$/"
+    ]
+  },
   "customManagers": [
     {
       "customType": "regex",
