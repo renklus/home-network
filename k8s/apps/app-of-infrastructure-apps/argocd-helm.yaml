@@ -27,12 +27,12 @@ spec:
               tag: 'v0.0.8@sha256:e7cb054207620566286fce2d809b4f298a72474e0d8779ffa8ec92c3b630f054'
         dex:
           image:
-            repository: 'https://ghcr.io/dexidp/dex'
+            repository: 'ghcr.io/dexidp/dex'
             tag: 'v2.43.1'
         redis:
           exporter:
             image:
-              repository: 'https://ghcr.io/oliver006/redis_exporter'
+              repository: 'ghcr.io/oliver006/redis_exporter'
               tag: 'v1.73.0@sha256:1a8f5e48b2af0fb02d182be3ddd623e7e39881b6464bdb5bf843b1f6d45ed050'
           image:
             repository: 'public.ecr.aws/docker/library/redis'

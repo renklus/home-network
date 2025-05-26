@@ -76,6 +76,12 @@
         "hashicorp/vault-secrets-operator"
       ],
       "groupName": "Hashicorp Vault Secrets Operator"
+    },
+    {
+      "matchPackageNames": [
+        "https://ghcr.io/oliver006/redis_exporter"
+      ],
+      "enabled": false
     }
   ]
 }
