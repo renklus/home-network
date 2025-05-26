@@ -5,6 +5,11 @@
     "docker:enableMajor"
   ],
   "prHourlyLimit": 10,
+  "argocd": {
+    "managerFilePatterns": [
+      "/k8s/apps/.+\\.yaml$/"
+    ]
+  },
   "customManagers": [
     {
       "customType": "regex",
