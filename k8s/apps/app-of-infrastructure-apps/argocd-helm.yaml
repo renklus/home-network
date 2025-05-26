@@ -40,7 +40,7 @@ spec:
         redis-ha:
           exporter:
             image: 'ghcr.io/oliver006/redis_exporter'
-            # renovate: datasource=docker depName=ghcr.io/oliver006/redis_exporter
+            # renovate: datasource=docker depName=oliver006/redis_exporter registryUrl=https://ghcr.io
             tag: v1.68.0
           image:
             repository: 'public.ecr.aws/docker/library/redis'
