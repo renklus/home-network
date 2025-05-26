@@ -48,7 +48,7 @@ spec:
     helm:
       valuesObject:
         image:
-          tag: '1.27.2@sha256:aa28b3a02d09e4a2332be5e438e172aa8bfcad33046e88a1d23deb86b856be9b'
+          tag: '1.27.2@sha256:9a0550b139386d419d415f3fd2915e74f59a3738f84f95a196ffe111ec38803a'
           repository: 'bitnami/nginx'
           registry: 'docker.io'
       parameters:
