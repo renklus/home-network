@@ -27,7 +27,7 @@
         "/k8s/apps/.+\\.yaml$/"
       ],
       "matchStrings": [
-        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\n\\s+\\S+?:\\s?(?<currentValue>\\S+)"
+        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\n\\s+\\S+?:\\s?\\'(?<currentValue>\\S+)\\'"
       ]
     }
   ],
