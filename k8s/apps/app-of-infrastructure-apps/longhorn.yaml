@@ -12,7 +12,7 @@ spec:
   source:
     path: ''
     repoURL: https://charts.longhorn.io/
-    targetRevision: 1.8.1
+    targetRevision: 1.9.0
     chart: longhorn
     helm:
       parameters:
