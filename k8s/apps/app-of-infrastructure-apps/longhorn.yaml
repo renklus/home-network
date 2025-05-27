@@ -33,4 +33,4 @@ spec:
     kind: 'CustomResourceDefinition'
     name: 'engineimages.longhorn.io'
     jsonPointers:
-      - '/preserveUnknownFields'
+      - '/spec/preserveUnknownFields'
