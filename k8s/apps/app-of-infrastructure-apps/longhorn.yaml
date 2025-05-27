@@ -16,8 +16,10 @@ spec:
     chart: longhorn
     helm:
       parameters:
-        - name: service.ui.type
-          value: LoadBalancer
+        - name: 'service.ui.type'
+          value: 'LoadBalancer'
+        - name: 'preUpgradeChecker.jobEnabled'
+          value: 'false'
   project: default
   syncPolicy:
     automated:
