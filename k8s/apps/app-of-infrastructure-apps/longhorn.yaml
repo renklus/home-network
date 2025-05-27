@@ -28,3 +28,9 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=false
+  ignoreDifferences:
+  - group: 'apiextensions.k8s.io'
+    kind: 'CustomResourceDefinition'
+    name: 'engineimages.longhorn.io'
+    jsonPointers:
+      - '/preserveUnknownFields'
