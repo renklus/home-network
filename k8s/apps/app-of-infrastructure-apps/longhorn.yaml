@@ -29,11 +29,7 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=false
   ignoreDifferences:
-  - group: 'core'
-    kind: 'Service'
-    name: 'longhorn-frontend'
-    namespace: 'longhorn-system'
-    jqPathExpressions:
+  - jqPathExpressions:
       - '.spec.ports[] | select(.name=="http") | .nodePort'
   - group: 'apiextensions.k8s.io'
     kind: 'CustomResourceDefinition'
