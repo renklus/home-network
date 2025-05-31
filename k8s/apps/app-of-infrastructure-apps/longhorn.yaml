@@ -31,11 +31,10 @@ spec:
   ignoreDifferences:
   - group: 'core'
     kind: 'Service'
-    name: 'longhorn-frontend'
-    namespace: 'longhorn-system'
     jqPathExpressions:
       - '.spec.ports[] | select(.name=="http") | .nodePort'
   - group: 'apiextensions.k8s.io'
     kind: 'CustomResourceDefinition'
     jsonPointers:
       - '/spec/preserveUnknownFields'
+    # could also specify name: 'engines.longhorn.io' to make it explicit
