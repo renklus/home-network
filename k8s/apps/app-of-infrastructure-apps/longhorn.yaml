@@ -30,11 +30,13 @@ spec:
       - ServerSideApply=false
   ignoreDifferences:
     - name: 'longhorn-frontend'
+      namespace: 'longhorn-system'
       kind: 'Service'
       jqPathExpressions:
         - '.spec.ports[] | select(.name=="http") | .nodePort'
 
     - group: 'apiextensions.k8s.io'
+      namespace: 'longhorn-system'
       kind: 'CustomResourceDefinition'
       jsonPointers:
         - '/spec/preserveUnknownFields'
