@@ -29,8 +29,7 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=false
   ignoreDifferences:
-    - group: 'core'
-      kind: Service
+    - kind: Service
       jsonPointers:
         - /spec/ports/0/nodePort
 
