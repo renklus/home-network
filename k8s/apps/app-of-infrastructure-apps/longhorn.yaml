@@ -29,7 +29,8 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=false
   ignoreDifferences:
-    - kind: Service
+    - name: 'longhorn-frontend'
+      kind: 'Service'
       jqPathExpressions:
         - '.spec.ports[] | select(.name=="http") | .nodePort'
 
