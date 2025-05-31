@@ -37,6 +37,13 @@
   ],
   "packageRules": [
     {
+      "matchPackageNames": [
+        "argocd",
+        "argo-cd"
+      ],
+      "groupName": "argocd"
+    },
+    {
       "matchDatasources": [
         "docker"
       ],
