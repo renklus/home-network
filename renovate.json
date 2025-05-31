@@ -38,6 +38,12 @@
   ],
   "packageRules": [
     {
+      "matchFileNames": [
+        "k8s/apps/app-of-apps-apps/*.yaml"
+      ],
+      "groupName": "{{packageFile}}"
+    },
+    {
       "matchPackageNames": [
         "/argocd/",
         "/argo-cd/"
