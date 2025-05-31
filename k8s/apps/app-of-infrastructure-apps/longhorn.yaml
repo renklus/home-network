@@ -36,7 +36,7 @@ spec:
         - '.spec.ports[] | select(.name=="http") | .nodePort'
 
     - group: 'apiextensions.k8s.io'
-      namespace: 'longhorn-system'
+      namespace: ''
       kind: 'CustomResourceDefinition'
       jsonPointers:
         - '/spec/preserveUnknownFields'
