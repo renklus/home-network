@@ -3,7 +3,8 @@
   "extends": [
     "config:best-practices",
     "docker:enableMajor",
-    "group:monorepos"
+    "group:monorepos",
+    "group:recommended"
   ],
   "prHourlyLimit": 10,
   "argocd": {
