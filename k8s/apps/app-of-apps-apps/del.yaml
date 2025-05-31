@@ -48,7 +48,7 @@ spec:
     helm:
       valuesObject:
         image:
-          tag: '1.28.0-debian-12-r3'
+          tag: '1.28.0-debian-12-r2'
           repository: 'bitnami/nginx'
           registry: 'docker.io'
       parameters:
