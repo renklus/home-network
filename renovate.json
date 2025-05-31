@@ -38,8 +38,8 @@
   "packageRules": [
     {
       "matchPackageNames": [
-        "argocd",
-        "argo-cd"
+        "/argocd/",
+        "/argo-cd/"
       ],
       "groupName": "argocd"
     },
