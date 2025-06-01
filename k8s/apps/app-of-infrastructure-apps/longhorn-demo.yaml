@@ -1,40 +1,25 @@
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: longhorn-default
+  name: longhorn-demo
+  namespace: 'longhorn-demo'
 provisioner: driver.longhorn.io
 allowVolumeExpansion: true
 parameters:
-  numberOfReplicas: "1"
+  numberOfReplicas: "2"
   staleReplicaTimeout: "2880" # 48 hours in minutes
   fromBackup: ""
   fsType: "ext4"
-#  backupTargetName: "default"
-#  mkfsParams: "-I 256 -b 4096 -O ^metadata_csum,^64bit"
-#  diskSelector: "ssd,fast"
-#  nodeSelector: "storage,fast"
-#  recurringJobSelector: '[
-#   {
-#     "name":"snap",
-#     "isGroup":true,
-#   },
-#   {
-#     "name":"backup",
-#     "isGroup":false,
-#   }
-#  ]'
-
-# see https://longhorn.io/docs/1.9.0/references/storage-class-parameters/ for details
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: longhorn-volv-pvc
-  namespace: 'default'
+  name: longhorn-demo-pvc
+  namespace: 'longhorn-demo'
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: longhorn-default
+  storageClassName: longhorn-demo
   resources:
     requests:
       storage: 1Mi
@@ -42,11 +27,11 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: volume-test
-  namespace: default
+  name: volume-demo
+  namespace: 'longhorn-demo'
 spec:
   containers:
-  - name: volume-test
+  - name: volume-demo
     image: nginx:stable-alpine
     imagePullPolicy: IfNotPresent
     volumeMounts:
@@ -57,4 +42,4 @@ spec:
   volumes:
   - name: volv
     persistentVolumeClaim:
-      claimName: longhorn-volv-pvc
+      claimName: longhorn-demo-pvc
