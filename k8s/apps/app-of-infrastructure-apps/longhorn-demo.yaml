@@ -28,23 +28,3 @@ spec:
   resources:
     requests:
       storage: 1Mi
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: volume-demo
-  namespace: 'longhorn-demo'
-spec:
-  containers:
-  - name: volume-demo
-    image: nginx:stable-alpine
-    imagePullPolicy: IfNotPresent
-    volumeMounts:
-    - name: volv
-      mountPath: /data
-    ports:
-    - containerPort: 80
-  volumes:
-  - name: volv
-    persistentVolumeClaim:
-      claimName: longhorn-demo-pvc
