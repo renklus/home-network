@@ -61,7 +61,6 @@ stringData:
   type: 'helm'
   project: 'default'
   name: 'Argoproj'
-
 ---
 apiVersion: v1
 kind: Secret
@@ -75,3 +74,16 @@ stringData:
   type: 'helm'
   project: 'default'
   name: 'Longhorn'
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: helm-repo-k8sdashboard
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: 'repository'
+stringData:
+  url: 'https://kubernetes.github.io/dashboard/'
+  type: 'helm'
+  project: 'default'
+  name: 'k8s dashboard'
