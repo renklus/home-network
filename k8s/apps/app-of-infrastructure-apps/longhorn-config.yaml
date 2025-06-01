@@ -25,15 +25,15 @@ parameters:
 #  ]'
 
 # see https://longhorn.io/docs/1.9.0/references/storage-class-parameters/ for details
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: longhorn-volv-pvc
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   storageClassName: longhorn-default
-#   resources:
-#     requests:
-#       storage: 1Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: longhorn-volv-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn-default
+  resources:
+    requests:
+      storage: 1Mi
