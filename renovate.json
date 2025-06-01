@@ -41,14 +41,13 @@
       "matchFileNames": [
         "k8s/apps/app-of-apps-apps/*.yaml"
       ],
-      "groupName": "{{{replace 'k8s\\/apps\\/app-of-apps-apps\\/(?<FileName>.*)\\.yaml' '$<FileName> app' packageFile}}}"
+      "groupName": "{{{replace 'k8s\\/apps\\/app-of-apps-apps\\/(?<FileName>.*)\\.yaml' 'app $<FileName>' packageFile}}}"
     },
     {
-      "matchPackageNames": [
-        "/argocd/",
-        "/argo-cd/"
+      "matchFileNames": [
+        "k8s/apps/app-of-infrastructure-apps/*.yaml"
       ],
-      "groupName": "argocd"
+      "groupName": "{{{replace 'k8s\\/apps\\/app-of-infrastructure-apps\\/(?<FileName>.*)\\.yaml' 'infrastructure $<FileName>' packageFile}}}"
     },
     {
       "matchDatasources": [
@@ -65,32 +64,6 @@
         "plexinc/pms-docker"
       ],
       "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+\\-[a-z0-9]+)$"
-    },
-    {
-      "matchPackageNames": [
-        "quay.io/metallb/controller",
-        "quay.io/metallb/speaker",
-        "quay.io/frrouting/frr",
-        "metallb"
-      ],
-      "groupName": "MetalLB"
-    },
-    {
-      "matchPackageNames": [
-        "hashicorp/vault-k8s",
-        "hashicorp/vault",
-        "hashicorp/vault-csi-provider",
-        "vault"
-      ],
-      "groupName": "Hashicorp Vault"
-    },
-    {
-      "matchPackageNames": [
-        "vault-secrets-operator",
-        "gcr.io/kubebuilder/kube-rbac-proxy",
-        "hashicorp/vault-secrets-operator"
-      ],
-      "groupName": "Hashicorp Vault Secrets Operator"
     },
     {
       "matchPackageNames": [
