@@ -35,9 +35,9 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app.kubernetes.io/name: kubernetes-dashboard-web
+    app.kubernetes.io/name: kubernetes-dashboard
   ports:
   - name: "tcp-dns"
     protocol: TCP
-    port: 80
-    targetPort: 8000
+    port: 443
+    targetPort: 8443
