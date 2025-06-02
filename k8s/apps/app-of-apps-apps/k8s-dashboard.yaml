@@ -18,6 +18,8 @@ spec:
       parameters:
         - name: 'web.service.type'
           value: 'LoadBalancer'
+        - name: 'web.containers.ports.containerPort'
+          value: '443'
   project: default
   syncPolicy:
     automated:
