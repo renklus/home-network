@@ -50,7 +50,7 @@ subjects:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: admin
+  name: admin-user-bearer-token
   namespace: kubernetes-dashboard
   annotations:
     kubernetes.io/service-account.name: "admin"
