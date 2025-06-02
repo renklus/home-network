@@ -30,14 +30,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: kubernetes-lb-service
-  namespace: kubernetes-dashboard
+  name: kubernetes-dashboard-lb
+  namespace: kube-system
 spec:
   type: LoadBalancer
-  selector:
-    app.kubernetes.io/name: kubernetes-dashboard-web
   ports:
-  - name: "tcp-dns"
-    protocol: TCP
-    port: 443
-    targetPort: 8443
+    - port: 443
+      protocol: TCP
+      targetPort: 8443
+  selector:
+    k8s-app: kubernetes-dashboard
