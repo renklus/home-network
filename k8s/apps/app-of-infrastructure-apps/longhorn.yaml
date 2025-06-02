@@ -41,3 +41,32 @@ spec:
       jsonPointers:
         - '/spec/preserveUnknownFields'
       # could also specify name: 'engines.longhorn.io' to make it explicit
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: longhorn-default
+  namespace: longhorn-system
+provisioner: driver.longhorn.io
+allowVolumeExpansion: true
+parameters:
+  numberOfReplicas: "1"
+  staleReplicaTimeout: "2880" # 48 hours in minutes
+  fromBackup: ""
+  fsType: "ext4"
+#  backupTargetName: "default"
+#  mkfsParams: "-I 256 -b 4096 -O ^metadata_csum,^64bit"
+#  diskSelector: "ssd,fast"
+#  nodeSelector: "storage,fast"
+#  recurringJobSelector: '[
+#   {
+#     "name":"snap",
+#     "isGroup":true,
+#   },
+#   {
+#     "name":"backup",
+#     "isGroup":false,
+#   }
+#  ]'
+
+# see https://longhorn.io/docs/1.9.0/references/storage-class-parameters/ for details
