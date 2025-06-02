@@ -46,3 +46,12 @@ subjects:
 - kind: ServiceAccount
   name: admin
   namespace: kubernetes-dashboard
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: admin
+  namespace: kubernetes-dashboard
+  annotations:
+    kubernetes.io/service-account.name: "admin"
+type: kubernetes.io/service-account-token  
