@@ -26,17 +26,3 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=false
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: kubernetes-dashboard-lb
-#   namespace: kube-system
-# spec:
-#   type: LoadBalancer
-#   ports:
-#     - port: 443
-#       protocol: TCP
-#       targetPort: 8000
-#   selector:
-#     k8s-app: kubernetes-dashboard-web
