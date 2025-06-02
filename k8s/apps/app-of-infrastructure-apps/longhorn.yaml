@@ -70,16 +70,3 @@ parameters:
 #  ]'
 
 # see https://longhorn.io/docs/1.9.0/references/storage-class-parameters/ for details
----
-kind: StorageClass
-apiVersion: storage.k8s.io/v1
-metadata:
-  name: longhorn-default2
-  namespace: longhorn-system
-provisioner: driver.longhorn.io
-allowVolumeExpansion: true
-parameters:
-  numberOfReplicas: "1"
-  staleReplicaTimeout: "2880" # 48 hours in minutes
-  fromBackup: ""
-  fsType: "ext4"
