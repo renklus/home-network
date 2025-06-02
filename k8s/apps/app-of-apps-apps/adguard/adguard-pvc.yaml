@@ -9,5 +9,5 @@ spec:
   resources:
     requests:
       storage: 100Mi
-  storageClassName: "longhorn-default" # your storage class name
+  storageClassName: 'longhorn-default'
   volumeName: adguard-pv
