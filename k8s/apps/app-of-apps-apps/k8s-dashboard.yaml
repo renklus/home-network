@@ -14,12 +14,10 @@ spec:
     repoURL: https://kubernetes.github.io/dashboard/
     targetRevision: 7.13.0
     chart: kubernetes-dashboard
-    helm:
-      parameters:
-        - name: 'web.service.type'
-          value: 'LoadBalancer'
-        - name: 'web.containers.ports[0].containerPort'
-          value: '80'
+    # helm:
+    #   parameters:
+    #     - name: 'web.service.type'
+    #       value: 'LoadBalancer'
   project: default
   syncPolicy:
     automated:
@@ -28,3 +26,18 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubernetes-lb-service
+  namespace: kubernetes-dashboard
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: kubernetes-dashboard-web
+  ports:
+  - name: "tcp-dns"
+    protocol: TCP
+    port: 80
+    targetPort: 8000
