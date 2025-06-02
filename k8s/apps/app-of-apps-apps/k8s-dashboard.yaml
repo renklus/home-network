@@ -14,10 +14,10 @@ spec:
     repoURL: https://kubernetes.github.io/dashboard/
     targetRevision: 7.13.0
     chart: kubernetes-dashboard
-    # helm:
-    #   parameters:
-    #     - name: 'web.service.type'
-    #       value: 'LoadBalancer'
+    helm:
+      parameters:
+        - name: 'kong.proxy.type'
+          value: 'LoadBalancer'
   project: default
   syncPolicy:
     automated:
