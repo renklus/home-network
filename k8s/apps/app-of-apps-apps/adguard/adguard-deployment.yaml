@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: adguard-home
-        image: adguard/adguardhome:v0.107.61
+        image: adguard/adguardhome:v0.107.62@sha256:b04764acecf1f663a23f55e95724a3c7ca0dc7f3a6f957d29005728b6bd036f2
         env:
         - name: AGH_CONFIG
           valueFrom:
