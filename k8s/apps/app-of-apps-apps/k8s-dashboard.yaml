@@ -39,4 +39,4 @@ spec:
       protocol: TCP
       targetPort: 8000
   selector:
-    k8s-app: kubernetes-dashboard
+    k8s-app: kubernetes-dashboard-web
