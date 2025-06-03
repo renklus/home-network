@@ -5,17 +5,15 @@ metadata:
   namespace: adguard
 data:
   AdGuardHome.yaml: |
-    users:
-      - name: "admin"
-        password: "admin"
-
-    dns:
-      bind_hosts:
-        - "0.0.0.0"
-      ratelimit: 0
-      refuse_any: false
-      upstream_dns:
-        - "10.1.0.1"
-
-    dhcp:
-      enabled: false
+    bind_host: 0.0.0.0
+    bind_port: 3000
+    auth_name: "admin"
+    auth_pass: "admin"
+    language: "en"
+    rlimit_nofile: 0
+    rlimit_nproc: 0
+    log_file: ""
+    log_syslog: false
+    log_syslog_srv: ""
+    pid_file: ""
+    verbose: false
