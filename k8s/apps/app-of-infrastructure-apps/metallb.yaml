@@ -15,21 +15,21 @@ spec:
   sources:
   - repoURL: 'https://metallb.github.io/metallb'
     chart: 'metallb'
-    targetRevision: '0.14.9'
+    targetRevision: '0.15.2'
     helm:
       valuesObject:
         speaker:
           image:
             repository: 'quay.io/metallb/speaker'
-            tag: 'v0.14.9@sha256:b09a1dfcf330938950b65115cd58f6989108c0c21d3c096040e7fe9a25a92993'
+            tag: 'v0.15.2@sha256:260c9406f957c0830d4e6cd2e9ac8c05e51ac959dd2462c4c2269ac43076665a'
           frr:
             image:
               repository: 'quay.io/frrouting/frr'
-              tag: '10.3.0@sha256:c26f183a7ac0ece17565bc147d2e7126d6f24a55b178c6a5275b4902b921692b'
+              tag: '10.3.1@sha256:f90d26a9fd5c14fc5795a73b4254ac88bc3186c45bbeb220a225fb6182de812c'
         controller:
           image:
             repository: 'quay.io/metallb/controller'
-            tag: 'v0.14.9@sha256:86261567e5ff03978893bf03ea865275283ad1e3f0f20dd342ed501b651fdf78'
+            tag: 'v0.15.2@sha256:417cdb6d6f9f2c410cceb84047d3a4da3bfb78b5ddfa30f4cf35ea5c667e8c2e'
   - path: k8s/apps/app-of-infrastructure-apps/metallb
     repoURL: 'https://github.com/renklus/home-network'
     targetRevision: HEAD
