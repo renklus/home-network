@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://argoproj.github.io/argo-helm
     chart: 'argo-cd'
-    targetRevision: '8.0.14'
+    targetRevision: '8.1.1'
     helm:
       parameters:
         - name: 'server.service.type'
@@ -19,7 +19,7 @@ spec:
         global:
           image:
             repository: 'quay.io/argoproj/argocd'
-            tag: 'v3.0.5@sha256:868c96b0d1abf1a13864f1bb9830bd98707c2953eaab06d22874747456b5bf30'
+            tag: 'v3.0.9@sha256:bdfe4d0cb6b04d43f1a310018275fe1ec9e023d917f0eda3c7bf4832f38edad4'
         server:
           extensions:
             image:
@@ -33,7 +33,7 @@ spec:
           exporter:
             image:
               repository: 'ghcr.io/oliver006/redis_exporter'
-              tag: 'v1.73.0@sha256:1a8f5e48b2af0fb02d182be3ddd623e7e39881b6464bdb5bf843b1f6d45ed050'
+              tag: 'v1.74.0@sha256:88862b6fc5004ead3495c16d5ba548b14e898fe6d22e7c5b93bf3df83823a9a5'
           image:
             repository: 'public.ecr.aws/docker/library/redis'
             tag: '8.0.2-alpine@sha256:48501c5ad00d5563bc30c075c7bcef41d7d98de3e9a1e6c752068c66f0a8463b'
