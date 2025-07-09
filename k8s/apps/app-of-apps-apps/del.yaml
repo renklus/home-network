@@ -44,7 +44,7 @@ spec:
   source:
     repoURL: 'https://charts.bitnami.com/bitnami'
     chart: 'nginx'
-    targetRevision: '20.0.5'
+    targetRevision: '21.0.6'
     helm:
       valuesObject:
         image:
