@@ -44,11 +44,11 @@ spec:
   source:
     repoURL: 'https://charts.bitnami.com/bitnami'
     chart: 'nginx'
-    targetRevision: '20.0.5'
+    targetRevision: '20.1.4'
     helm:
       valuesObject:
         image:
-          tag: '1.28.0-debian-12-r3@sha256:87bcf55ef3f60eea347e46bf779c4abe5d9fda3df1bab560a6e7e1dd609ac417'
+          tag: '1.29.0-debian-12-r4@sha256:fb10fc2fe49fd24a4e86b59b76b48cc054cd857fde663a5f4bf48ac97492445c'
           repository: 'bitnami/nginx'
           registry: 'docker.io'
       parameters:
