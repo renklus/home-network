@@ -17,3 +17,9 @@ data:
     log_syslog_srv: ""
     pid_file: ""
     verbose: false
+#TODO: https://github.com/AdguardTeam/AdGuardHome/issues/1964#issuecomment-2204388305
+# alternative: 
+# - config in a PVC like: https://stackoverflow.com/questions/76941771/why-does-my-microk8s-adguard-home-container-need-to-be-reconfigured-every-time-i
+# - sync to manually deployed replicas like this: https://github.com/bakito/adguardhome-sync
+
+#also look at https://github.com/0xERR0R/blocky?tab=readme-ov-file
