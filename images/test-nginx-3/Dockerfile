@@ -1,4 +1,4 @@
-FROM nginx:latest@sha256:fb39280b7b9eba5727c884a3c7810002e69e8f961cc373b89c92f14961d903a0
+FROM nginx:latest@sha256:d5f28ef21aabddd098f3dbc21fe5b7a7d7a184720bc07da0b6c9b9820e97f25e
 COPY data/index.html /usr/share/nginx/html/index.html
 VOLUME /usr/share/nginx/html
 VOLUME /etc/nginx
