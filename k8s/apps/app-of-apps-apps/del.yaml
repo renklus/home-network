@@ -42,20 +42,30 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://charts.bitnami.com/bitnami'
-    chart: 'nginx'
-    targetRevision: '20.0.5'
+    repoURL: 'https://helm.nginx.com/stable'
+    chart: 'nginx-ingress'
+    targetRevision: '2.3.0'
     helm:
       valuesObject:
-        image:
-          tag: '1.28.0-debian-12-r3@sha256:87bcf55ef3f60eea347e46bf779c4abe5d9fda3df1bab560a6e7e1dd609ac417'
-          repository: 'bitnami/nginx'
-          registry: 'docker.io'
-      parameters:
-        - name: 'existingServerBlockConfigmap'
-          value: 'serverblock'
-        - name: 'service.type'
-          value: 'LoadBalancer'
+        controller:
+          appprotect:
+            configManager:
+              image:
+                tag: '5.8.0'
+                repository: 'private-registry.nginx.com/nap/waf-config-mgr'
+            enforcer:
+              image:
+                tag: '5.8.0'
+                repository: 'private-registry.nginx.com/nap/waf-enforcer'
+#        image:
+#          tag: '1.29.1-debian-12-r0@sha256:b2e803958eda5723aae1e36ed0e418f6e0c79e7ce890820eba9cad85a6381286'
+#          repository: 'bitnami/nginx'
+#          registry: 'docker.io'
+#      parameters:
+#        - name: 'existingServerBlockConfigmap'
+#          value: 'serverblock'
+#        - name: 'service.type'
+#          value: 'LoadBalancer'
   destination:
     name: 'in-cluster'
     namespace: 'ssl-reverse-proxy'
