@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: csi-nfs-demo
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: csi-nfs-demo
+  namespace: 'csi-nfs-demo'
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 'app02l.dev.renklus.ch'
+  share: '/'
+  # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
+  # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
+  # csi.storage.k8s.io/provisioner-secret-namespace: "default"
+reclaimPolicy: 'Delete'
+volumeBindingMode: 'Immediate'
+allowVolumeExpansion: true
+mountOptions:
+  - nfsvers=4.1
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: csi-nfs-demo-pvc
+  namespace: 'csi-nfs-demo'
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: csi-nfs-demo
+  resources:
+    requests:
+      storage: 1Mi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: csi-volume-demo
+  namespace: 'csi-nfs-demo'
+spec:
+  containers:
+  - name: volume-demo
+    image: nginx:stable-alpine@sha256:aed99734248e851764f1f2146835ecad42b5f994081fa6631cc5d79240891ec9
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+    - name: volv
+      mountPath: /data
+    ports:
+    - containerPort: 80
+  volumes:
+  - name: volv
+    persistentVolumeClaim:
+      claimName: csi-nfs-demo-pvc
