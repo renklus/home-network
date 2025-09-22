@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: csi-nfs
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: csi-nfs-system
+    server: https://kubernetes.default.svc
+  source:
+    path: ''
+    repoURL: 'https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts'
+    targetRevision: 4.11.0
+    chart: csi-driver-nfs
+    helm:
+      valuesObject:
+        image:
+          csiProvisioner:
+            repository: 'registry.k8s.io/sig-storage/csi-provisioner'
+            tag: 'v5.2.0'
+          csiResizer:
+            repository: 'registry.k8s.io/sig-storage/csi-resizer'
+            tag: 'v1.13.1'
+          csiSnapshotter:
+            repository: 'registry.k8s.io/sig-storage/csi-snapshotter'
+            tag: 'v8.2.0'
+          externalSnapshotter:
+            repository: 'registry.k8s.io/sig-storage/snapshot-controller'
+            tag: 'v8.2.0'
+          livenessProbe:
+            repository: 'registry.k8s.io/sig-storage/livenessprobe'
+            tag: 'v2.15.0'
+          nfs:
+            repository: 'registry.k8s.io/sig-storage/nfsplugin'
+            tag: 'v4.11.0'
+          nodeDriverRegistrar:
+            repository: 'registry.k8s.io/sig-storage/csi-node-driver-registrar'
+            tag: 'v2.13.0'
+      parameters:
+        - name: 'controller.name'
+          value: 'csi-nfs-controller'
+  sources: []
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=false

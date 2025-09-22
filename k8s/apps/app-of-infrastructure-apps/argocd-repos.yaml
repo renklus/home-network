@@ -87,3 +87,16 @@ stringData:
   type: 'helm'
   project: 'default'
   name: 'k8s dashboard'
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: nfs-csi
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: 'repository'
+stringData:
+  url: 'https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts'
+  type: 'helm'
+  project: 'default'
+  name: 'NFS CSI driver'
