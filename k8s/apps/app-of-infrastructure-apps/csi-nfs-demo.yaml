@@ -21,3 +21,23 @@ allowVolumeExpansion: true
 mountOptions:
   - soft
   - nfsvers=4.1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: csi-volume-demo
+  namespace: 'csi-nfs-demo'
+spec:
+  containers:
+  - name: volume-demo
+    image: nginx:stable-alpine@sha256:aed99734248e851764f1f2146835ecad42b5f994081fa6631cc5d79240891ec9
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+    - name: volv
+      mountPath: /data
+    ports:
+    - containerPort: 80
+  volumes:
+  - name: volv
+    persistentVolumeClaim:
+      claimName: csi-nfs-demo-pvc
