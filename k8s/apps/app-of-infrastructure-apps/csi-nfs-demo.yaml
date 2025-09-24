@@ -19,6 +19,7 @@ reclaimPolicy: 'Delete'
 volumeBindingMode: 'Immediate'
 allowVolumeExpansion: true
 mountOptions:
+  - hard
   - nfsvers=4.1
 ---
 apiVersion: v1
