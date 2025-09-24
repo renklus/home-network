@@ -23,19 +23,6 @@ mountOptions:
   - nfsvers=4.1
 ---
 apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: csi-nfs-demo-pvc
-  namespace: 'csi-nfs-demo'
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: csi-nfs-demo
-  resources:
-    requests:
-      storage: 1Mi
----
-apiVersion: v1
 kind: Pod
 metadata:
   name: csi-volume-demo
