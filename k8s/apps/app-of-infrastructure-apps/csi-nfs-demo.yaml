@@ -22,6 +22,21 @@ mountOptions:
   - hard
   - nfsvers=4.1
 ---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: csi-nfs-demo2
+  namespace: 'csi-nfs-demo'
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 'app02l.dev.renklus.ch'
+  share: '/volume9/k8sNfs'
+reclaimPolicy: 'Delete'
+volumeBindingMode: 'Immediate'
+allowVolumeExpansion: true
+mountOptions:
+  - nfsvers=4.1
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -38,12 +53,12 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: csi-nfs-demo-pvc2
+  name: csi-nfs-demo-pvc3
   namespace: 'csi-nfs-demo'
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: csi-nfs-demo
+  storageClassName: csi-nfs-demo2
   resources:
     requests:
       storage: 1Mi
