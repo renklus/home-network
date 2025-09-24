@@ -29,7 +29,7 @@ metadata:
   namespace: 'csi-nfs-demo'
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: csi-nfs-demo
   resources:
     requests:
