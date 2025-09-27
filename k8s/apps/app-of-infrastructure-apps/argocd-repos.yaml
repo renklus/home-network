@@ -100,3 +100,16 @@ stringData:
   type: 'helm'
   project: 'default'
   name: 'NFS CSI driver'
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: bjw-s
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: 'repository'
+stringData:
+  url: 'bjw-s https://bjw-s-labs.github.io/helm-charts'
+  type: 'helm'
+  project: 'default'
+  name: 'bjw-s'
