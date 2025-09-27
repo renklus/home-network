@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://argoproj.github.io/argo-helm
     chart: 'argo-cd'
-    targetRevision: '8.5.4'
+    targetRevision: '8.5.7'
     helm:
       parameters:
         - name: 'server.service.type'
@@ -19,7 +19,7 @@ spec:
         global:
           image:
             repository: 'quay.io/argoproj/argocd'
-            tag: 'v3.1.6@sha256:76290eb39df4b9b6bd6afb5d6038bb18a208b14b468bff329b9edc8f9b2aa714'
+            tag: 'v3.1.7@sha256:ca72b3237de8c612c504e309a1604fa3bbdd9660ac81901a49de2a3544f65272'
         server:
           extensions:
             image:
