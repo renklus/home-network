@@ -113,3 +113,16 @@ stringData:
   type: 'helm'
   project: 'default'
   name: 'bjw-s'
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gabe565
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: 'repository'
+stringData:
+  url: 'https://charts.gabe565.com'
+  type: 'helm'
+  project: 'default'
+  name: 'gabe565'
