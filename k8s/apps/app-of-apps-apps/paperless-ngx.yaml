@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: paperless-ngx
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: 'paperless-ngx'
+    server: https://kubernetes.default.svc
+  source:
+    path: ''
+    repoURL: https://charts.gabe565.com
+    targetRevision: 0.24.1
+    chart: paperless-ngx
+    # helm:
+    #   parameters:
+    #     - name: 'kong.proxy.type'
+    #       value: 'LoadBalancer'
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=false
