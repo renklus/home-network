@@ -50,3 +50,27 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=false
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: csi-nfs
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: csi-nfs
+  namespace: 'csi-nfs'
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 'app02l.dev.renklus.ch'
+  share: '/volume9/k8sNfs'
+  # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
+  # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
+  # csi.storage.k8s.io/provisioner-secret-namespace: "default"
+reclaimPolicy: 'Delete'
+volumeBindingMode: 'Immediate'
+allowVolumeExpansion: true
+mountOptions:
+  - soft
+  - nfsvers=4.1
