@@ -27,6 +27,11 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=false
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: paperless-ngx
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -53,26 +58,26 @@ metadata:
               - name: PAPERLESS_URL
                 value: "https://todo.renklus.ch"
             volumeMounts:
-              - name: paperless
+              - name: 'paperless'
                 mountPath: /usr/src/paperless/data
                 subPath: data
-              - name: paperless
+              - name: 'paperless'
                 mountPath: /usr/src/paperless/media
                 subPath: media
         volumes:
-          - name: paperless
+          - name: 'paperless'
             persistentVolumeClaim:
-              claimName: paperless-ngx-pvc
+              claimName: 'paperless-ngx-pvc'
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: paperless-ngx-pvc
+  name: 'paperless-ngx-pvc'
   namespace: 'paperless-ngx'
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: csi-nfs
+  storageClassName: 'csi-nfs'
   resources:
     requests:
       storage: 10Mi
