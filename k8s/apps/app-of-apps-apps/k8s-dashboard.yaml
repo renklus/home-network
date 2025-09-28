@@ -18,6 +18,8 @@ spec:
       parameters:
         - name: 'kong.proxy.type'
           value: 'LoadBalancer'
+        - name: 'web.service.type'
+          value: 'LoadBalancer'
   project: default
   syncPolicy:
     automated:
