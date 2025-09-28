@@ -26,3 +26,53 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paperless-ngx
+  namespace: paperless-ngx
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: paperless-ngx
+    template:
+      metadata:
+        labels:
+          app: paperless-ngx
+      spec:
+        containers:
+          - name: webserver
+            image: ghcr.io/paperless-ngx/paperless-ngx:latest
+            ports:
+              - containerPort: 8000
+            env:
+              - name: PAPERLESS_URL
+                value: "https://todo.renklus.ch"
+            volumeMounts:
+              - name: paperless
+                mountPath: /usr/src/paperless/data
+                subPath: data
+              - name: paperless
+                mountPath: /usr/src/paperless/media
+                subPath: media
+        volumes:
+          - name: paperless
+            persistentVolumeClaim:
+              claimName: paperless-ngx-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-ngx-pvc
+  namespace: 'paperless-ngx'
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: csi-nfs
+  resources:
+    requests:
+      storage: 10Mi
