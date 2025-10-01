@@ -6,26 +6,19 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: paperless-ngx
+  name: webserver
   namespace: paperless-ngx
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: paperless-ngx
+      app: paperless-ngx-webserver
   template:
     metadata:
       labels:
-        app: paperless-ngx
+        app: paperless-ngx-werbserver
     spec:
-      hostname: paperless
       containers:
-        - name: broker
-          image: docker.io/library/redis:8
-          volumeMounts:
-            - name: 'paperless'
-              mountPath: '/data'
-              subPath: 'redisdata'
         - name: webserver
           image: ghcr.io/paperless-ngx/paperless-ngx:latest
           ports:
@@ -34,16 +27,44 @@ spec:
             - name: PAPERLESS_URL
               value: "https://paperless.paperless-ngx.k8s.renklus.ch"
             - name: PAPERLESS_REDIS
-              value: "redis://localhost:6379"
+              value: "redis://paperless-ngx-broker:6379"
           volumeMounts:
-            - name: 'paperless'
+            - name: 'paperless-ngx-webserver'
               mountPath: /usr/src/paperless/data
               subPath: data
-            - name: 'paperless'
+            - name: 'paperless-ngx-webserver'
               mountPath: /usr/src/paperless/media
               subPath: media
       volumes:
-        - name: 'paperless'
+        - name: 'paperless-ngx-webserver'
+          persistentVolumeClaim:
+            claimName: 'paperless-ngx-pvc'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broker
+  namespace: paperless-ngx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paperless-ngx-broker
+  template:
+    metadata:
+      labels:
+        app: paperless-ngx-broker
+    spec:
+      hostname: paperless-ngx-broker
+      containers:
+        - name: broker
+          image: docker.io/library/redis:8
+          volumeMounts:
+            - name: 'paperless-ngx-broker'
+              mountPath: '/data'
+              subPath: 'redisdata'
+      volumes:
+        - name: 'paperless-ngx-broker'
           persistentVolumeClaim:
             claimName: 'paperless-ngx-pvc'
 ---
