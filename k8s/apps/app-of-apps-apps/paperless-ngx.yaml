@@ -75,7 +75,8 @@ metadata:
   namespace: paperless-ngx
 spec:
   selector:
-    app.kubernetes.io/name: paperless-ngx-broker
+    matchLabels:
+      app: paperless-ngx-broker
   ports:
     - name: paperless-ngx-broker
       port: 6379
