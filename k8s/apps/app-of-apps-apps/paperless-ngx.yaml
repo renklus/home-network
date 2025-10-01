@@ -48,7 +48,8 @@ metadata:
 spec:
   replicas: 1
   selector:
-    app: paperless-ngx-broker
+    matchLabels:
+      app: paperless-ngx-broker
   template:
     metadata:
       labels:
@@ -73,8 +74,7 @@ metadata:
   namespace: paperless-ngx
 spec:
   selector:
-    matchLabels:
-      app: paperless-ngx-broker
+    app: paperless-ngx-broker
   ports:
     - name: paperless-ngx-broker
       port: 6379
