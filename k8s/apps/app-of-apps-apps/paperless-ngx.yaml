@@ -6,7 +6,7 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webserver
+  name: paperless-ngx-webserver
   namespace: paperless-ngx
 spec:
   replicas: 1
@@ -43,7 +43,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: broker
+  name: paperless-ngx-broker
   namespace: paperless-ngx
 spec:
   replicas: 1
