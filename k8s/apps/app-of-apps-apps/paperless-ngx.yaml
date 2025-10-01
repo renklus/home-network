@@ -37,35 +37,35 @@ kind: Deployment
 metadata:
   name: paperless-ngx
   namespace: paperless-ngx
-  spec:
-    replicas: 1
-    selector:
-      matchLabels:
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paperless-ngx
+  template:
+    metadata:
+      labels:
         app: paperless-ngx
-    template:
-      metadata:
-        labels:
-          app: paperless-ngx
-      spec:
-        containers:
-          - name: webserver
-            image: ghcr.io/paperless-ngx/paperless-ngx:latest
-            ports:
-              - containerPort: 8000
-            env:
-              - name: PAPERLESS_URL
-                value: "https://todo.renklus.ch"
-            volumeMounts:
-              - name: 'paperless'
-                mountPath: /usr/src/paperless/data
-                subPath: data
-              - name: 'paperless'
-                mountPath: /usr/src/paperless/media
-                subPath: media
-        volumes:
-          - name: 'paperless'
-            persistentVolumeClaim:
-              claimName: 'paperless-ngx-pvc'
+    spec:
+      containers:
+        - name: webserver
+          image: ghcr.io/paperless-ngx/paperless-ngx:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: PAPERLESS_URL
+              value: "https://todo.renklus.ch"
+          volumeMounts:
+            - name: 'paperless'
+              mountPath: /usr/src/paperless/data
+              subPath: data
+            - name: 'paperless'
+              mountPath: /usr/src/paperless/media
+              subPath: media
+      volumes:
+        - name: 'paperless'
+          persistentVolumeClaim:
+            claimName: 'paperless-ngx-pvc'
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
