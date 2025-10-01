@@ -48,8 +48,7 @@ metadata:
 spec:
   replicas: 1
   selector:
-    matchLabels:
-      app: paperless-ngx-broker-app
+    app: paperless-ngx-broker-app
   template:
     metadata:
       labels:
