@@ -27,7 +27,7 @@ spec:
             - name: PAPERLESS_URL
               value: "https://paperless.paperless-ngx.k8s.renklus.ch"
             - name: PAPERLESS_REDIS
-              value: "redis://paperless-ngx-broker:6379"
+              value: "redis://paperless-ngx-broker.paperless-ngx:6379"
           volumeMounts:
             - name: 'paperless-ngx-webserver'
               mountPath: /usr/src/paperless/data
