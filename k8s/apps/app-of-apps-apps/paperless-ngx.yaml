@@ -27,7 +27,7 @@ spec:
             - name: PAPERLESS_URL
               value: "https://paperless.paperless-ngx.k8s.renklus.ch"
             - name: PAPERLESS_REDIS
-              value: "redis://paperless-ngx-broker.sd.paperless-ngx.svc.k8s2.home.arpa:6379"
+              value: "redis://paperless-ngx-broker.paperless-ngx.svc.k8s2.home.arpa:6379"
           volumeMounts:
             - name: 'paperless-ngx-webserver'
               mountPath: /usr/src/paperless/data
@@ -56,7 +56,6 @@ spec:
         app: paperless-ngx-broker
     spec:
       hostname: paperless-ngx-broker
-      subdomain: sd
       containers:
         - name: broker
           image: docker.io/library/redis:8
