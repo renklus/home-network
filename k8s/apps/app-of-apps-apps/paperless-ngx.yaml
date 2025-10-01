@@ -49,13 +49,12 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: paperless-ngx-broker
+      app: paperless-ngx-broker-app
   template:
     metadata:
       labels:
         app: paperless-ngx-broker
     spec:
-      hostname: paperless-ngx-broker
       containers:
         - name: broker
           image: docker.io/library/redis:8
@@ -76,7 +75,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: paperless-ngx-broker
+      app: paperless-ngx-broker-app
   ports:
     - name: paperless-ngx-broker
       port: 6379
