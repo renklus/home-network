@@ -34,7 +34,7 @@ spec:
             - name: PAPERLESS_URL
               value: "https://paperless.paperless-ngx.k8s.renklus.ch"
             - name: PAPERLESS_REDIS
-              value: "redis://paperless:6379"
+              value: "redis://localhost:6379"
           volumeMounts:
             - name: 'paperless'
               mountPath: /usr/src/paperless/data
