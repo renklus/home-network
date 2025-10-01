@@ -69,6 +69,18 @@ spec:
             claimName: 'paperless-ngx-pvc'
 ---
 apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ngx-broker
+spec:
+  selector:
+    app.kubernetes.io/name: paperless-ngx-broker
+  ports:
+    - name: paperless-ngx-broker
+      port: 6379
+      
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: 'paperless-ngx-pvc'
