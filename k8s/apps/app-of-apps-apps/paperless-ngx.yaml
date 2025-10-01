@@ -16,7 +16,7 @@ spec:
   template:
     metadata:
       labels:
-        app: paperless-ngx-werbserver
+        app: paperless-ngx-webserver
     spec:
       containers:
         - name: webserver
