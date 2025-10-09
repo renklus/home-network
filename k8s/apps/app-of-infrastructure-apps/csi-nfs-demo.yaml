@@ -43,7 +43,7 @@ metadata:
 spec:
   containers:
   - name: volume-demo
-    image: nginx:stable-alpine@sha256:aed99734248e851764f1f2146835ecad42b5f994081fa6631cc5d79240891ec9
+    image: nginx:stable-alpine@sha256:91786fc3554a00f445f9639d4f21a8564b6fd4f1ad39d17ed32f00faae24bc7c
     imagePullPolicy: IfNotPresent
     volumeMounts:
     - name: volv
