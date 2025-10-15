@@ -40,6 +40,8 @@ spec:
             #   value: ""
             - name: PAPERLESS_OCR_LANGUAGE
               value: "deu+eng"
+            - name: PAPERLESS_ENABLE_FLOWER
+              value: "SET"
           volumeMounts:
             - name: 'paperless-ngx-webserver'
               mountPath: /usr/src/paperless/data
@@ -113,6 +115,20 @@ spec:
     - name: paperless-ngx-webserver
       port: 80
       targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ngx-flower
+  namespace: paperless-ngx
+spec:
+  selector:
+    app: paperless-ngx-webserver
+  type: LoadBalancer
+  ports:
+    - name: paperless-ngx-flower
+      port: 80
+      targetPort: 5555
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
