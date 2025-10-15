@@ -28,8 +28,6 @@ spec:
               value: "https://paperless.paperless-ngx.k8s.renklus.ch"
             - name: PAPERLESS_REDIS
               value: "redis://paperless-ngx-broker.paperless-ngx.svc.k8s2.home.arpa:6379"
-            - name: PAPERLESS_EMPTY_TRASH_DELAY
-              value: "1800" #5 years
           volumeMounts:
             - name: 'paperless-ngx-webserver'
               mountPath: /usr/src/paperless/data
