@@ -43,7 +43,7 @@ spec:
             - name: PAPERLESS_TIME_ZONE
               value: "Europe/Zurich"
             - name: PAPERLESS_DATE_PARSER_LANGUAGES
-              value: "de-CH+en-CH+de+en"
+              value: "de-CH+en-CH"
             #   # set to birth date. Do through hashicorp for privacy
             # - name: PAPERLESS_IGNORE_DATES
             #   value: ""
