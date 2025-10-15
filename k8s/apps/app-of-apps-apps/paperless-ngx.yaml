@@ -50,6 +50,12 @@ spec:
           resources:
             limits:
               cpu: 0.4
+          startupProbe:
+            httpGet:
+              path: /
+              port: 8000
+            failureThreshold: 30
+            periodSeconds: 10
       volumes:
         - name: 'paperless-ngx-webserver'
           persistentVolumeClaim:
