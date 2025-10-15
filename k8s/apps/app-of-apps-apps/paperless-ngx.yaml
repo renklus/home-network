@@ -36,8 +36,8 @@ spec:
             - name: PAPERLESS_FILENAME_FORMAT
               value: "{{ created_year }}/{{ correspondent }}/{{ created }} - {{ title }} - {{ doc_pk }}"
             #   # https://docs.paperless-ngx.com/configuration/#PAPERLESS_ENABLE_FLOWER
-            # - name: PAPERLESS_ENABLE_FLOWER
-            #   value: ""
+            - name: PAPERLESS_ENABLE_FLOWER
+              value: "SET"
             - name: PAPERLESS_OCR_LANGUAGE
               value: "deu+eng"
             - name: PAPERLESS_TIME_ZONE
@@ -47,8 +47,6 @@ spec:
             #   # set to birth date. Do through hashicorp for privacy
             # - name: PAPERLESS_IGNORE_DATES
             #   value: ""
-            - name: PAPERLESS_ENABLE_FLOWER
-              value: "SET"
           volumeMounts:
             - name: 'paperless-ngx-webserver'
               mountPath: /usr/src/paperless/data
