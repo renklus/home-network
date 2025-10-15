@@ -44,7 +44,7 @@ spec:
               subPath: media
           resources:
             limits:
-              cpu: 0.5
+              cpu: 0.1
       volumes:
         - name: 'paperless-ngx-webserver'
           persistentVolumeClaim:
