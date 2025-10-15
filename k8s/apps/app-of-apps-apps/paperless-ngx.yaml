@@ -37,6 +37,9 @@ spec:
             - name: 'paperless-ngx-webserver'
               mountPath: /usr/src/paperless/media
               subPath: media
+          resources:
+            limits:
+              cpu: 0.5
       volumes:
         - name: 'paperless-ngx-webserver'
           persistentVolumeClaim:
