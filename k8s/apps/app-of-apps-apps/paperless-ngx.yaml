@@ -60,6 +60,8 @@ spec:
               subPath: media
             - name: 'paperless-ngx-webserver-consume'
               mountPath: /usr/src/paperless/consume
+            - name: 'paperless-ngx-webserver-backup-target'
+              mountPath: /usr/src/backup-target
           resources:
             limits:
               cpu: 0.2
@@ -76,6 +78,9 @@ spec:
         - name: 'paperless-ngx-webserver-consume'
           persistentVolumeClaim:
             claimName: 'consume'
+        - name: 'paperless-ngx-webserver-backup-target'
+          persistentVolumeClaim:
+            claimName: 'backup-target'
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -169,3 +174,16 @@ spec:
   resources:
     requests:
       storage: 500Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: 'backup-target'
+  namespace: 'paperless-ngx'
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: 'csi-nfs-strong-named'
+  resources:
+    requests:
+      storage: 100Gi
