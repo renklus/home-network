@@ -38,6 +38,10 @@ spec:
             #   # https://docs.paperless-ngx.com/configuration/#PAPERLESS_ENABLE_FLOWER
             - name: PAPERLESS_ENABLE_FLOWER
               value: "SET"
+            - name: PAPERLESS_CONSUMER_POLLING
+              value: "30" # seconds
+            - name: PAPERLESS_CONSUMER_POLLING_RETRY_COUNT
+              value: "10"
             - name: PAPERLESS_OCR_LANGUAGE
               value: "deu+eng"
             - name: PAPERLESS_TIME_ZONE
