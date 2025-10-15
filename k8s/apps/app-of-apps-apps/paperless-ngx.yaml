@@ -35,6 +35,11 @@ spec:
             #   value: "/usr/src/paperless/trash-empty-dir" # storage of PDFs after trash was emptied
             - name: PAPERLESS_FILENAME_FORMAT
               value: "{{ created_year }}/{{ correspondent }}/{{ created }} - {{ title }} - {{ doc_pk }}"
+            #   # https://docs.paperless-ngx.com/configuration/#PAPERLESS_ENABLE_FLOWER
+            # - name: PAPERLESS_ENABLE_FLOWER
+            #   value: ""
+            - name: PAPERLESS_OCR_LANGUAGE
+              value: "deu+eng"
           volumeMounts:
             - name: 'paperless-ngx-webserver'
               mountPath: /usr/src/paperless/data
