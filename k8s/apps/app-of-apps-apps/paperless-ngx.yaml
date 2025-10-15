@@ -40,6 +40,8 @@ spec:
             #   value: ""
             - name: PAPERLESS_OCR_LANGUAGE
               value: "deu+eng"
+            - name: PAPERLESS_TIME_ZONE
+              value: "Europe/Zurich"
             - name: PAPERLESS_ENABLE_FLOWER
               value: "SET"
           volumeMounts:
