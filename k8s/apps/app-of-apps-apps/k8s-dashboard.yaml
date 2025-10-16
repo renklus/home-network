@@ -1,0 +1,59 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubernetes-dashboard
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: 'kubernetes-dashboard'
+    server: https://kubernetes.default.svc
+  source:
+    path: ''
+    repoURL: https://kubernetes.github.io/dashboard/
+    targetRevision: 7.13.0
+    chart: kubernetes-dashboard
+    helm:
+      parameters:
+        # - name: 'kong.proxy.type'
+        #   value: 'LoadBalancer'
+        - name: 'web.service.type'
+          value: 'LoadBalancer'
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=false
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+#  namespace: kubernetes-dashboard
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: admin-user-bearer-token
+#   namespace: kubernetes-dashboard
+#   annotations:
+#     kubernetes.io/service-account.name: "admin"
+# type: kubernetes.io/service-account-token
