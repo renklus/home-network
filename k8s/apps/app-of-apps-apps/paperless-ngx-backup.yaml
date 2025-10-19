@@ -66,11 +66,13 @@ spec:
                 #   mountPath: /usr/src/paperless/data
                 #   subPath: data
                 - name: 'paperless-ngx-webserver'
+                  namespace: 'paperless-ngx'
                   mountPath: /usr/src/paperless/media
                   subPath: media
                 # - name: 'paperless-ngx-webserver-consume'
                 #   mountPath: /usr/src/paperless/consume
                 - name: 'paperless-ngx-webserver-backup-target'
+                  namespace: 'paperless-ngx'
                   mountPath: /usr/src/backup-target
           # volumes:
           #   # - name: 'paperless-ngx-backup-broker'
