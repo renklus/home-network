@@ -22,10 +22,10 @@ spec:
               #     subPath: 'redisdata'
             - name: paperless-backup-webserver
               image: ghcr.io/paperless-ngx/paperless-ngx:latest
-              command:
-              - /bin/sh
-              - -c
-              - document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target
+              # command:
+              # - /bin/sh
+              # - -c
+              # - document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target
               ports:
                 - containerPort: 8000
               env:
