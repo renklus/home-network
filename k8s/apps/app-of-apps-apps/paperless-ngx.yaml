@@ -76,7 +76,7 @@ spec:
       volumes:
         - name: 'paperless-ngx-webserver'
           persistentVolumeClaim:
-            claimName: 'paperless-ngx-pvc-1'
+            claimName: 'paperless-ngx-pvc'
         - name: 'paperless-ngx-webserver-consume'
           persistentVolumeClaim:
             claimName: 'consume'
@@ -109,7 +109,7 @@ spec:
       volumes:
         - name: 'paperless-ngx-broker'
           persistentVolumeClaim:
-            claimName: 'paperless-ngx-pvc-1'
+            claimName: 'paperless-ngx-pvc'
 ---
 apiVersion: v1
 kind: Service
@@ -154,15 +154,15 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: 'paperless-ngx-pvc-1'
+  name: 'paperless-ngx-pvc'
   namespace: 'paperless-ngx'
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: 'csi-nfs'
   resources:
     requests:
-      storage: 10Mi
+      storage: 40Gi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
