@@ -1,14 +1,9 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: paperless-ngx-backup
----
 # https://stackoverflow.com/questions/41192053/cron-jobs-in-kubernetes-connect-to-existing-pod-execute-script
 apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: 'create-paperless-backup'
-  namespace: 'paperless-ngx-backup'
+  namespace: 'paperless-ngx'
 spec:
   schedule: "0 */4 * * *"
   startingDeadlineSeconds: 10800 # 3h (less than 4h)
@@ -35,7 +30,7 @@ spec:
                 - containerPort: 8000
               env:
                 - name: PAPERLESS_URL
-                  value: "https://paperless.paperless-ngx-backup.k8s.renklus.ch"
+                  value: "https://undefined.paperless-ngx.k8s.renklus.ch"
                 - name: PAPERLESS_REDIS
                   value: "redis://localhost:6379"
                 - name: PAPERLESS_EMPTY_TRASH_DELAY
@@ -66,13 +61,11 @@ spec:
                 #   mountPath: /usr/src/paperless/data
                 #   subPath: data
                 - name: 'paperless-ngx-webserver'
-                  namespace: 'paperless-ngx'
                   mountPath: /usr/src/paperless/media
                   subPath: media
                 # - name: 'paperless-ngx-webserver-consume'
                 #   mountPath: /usr/src/paperless/consume
                 - name: 'paperless-ngx-webserver-backup-target'
-                  namespace: 'paperless-ngx'
                   mountPath: /usr/src/backup-target
           # volumes:
           #   # - name: 'paperless-ngx-backup-broker'
