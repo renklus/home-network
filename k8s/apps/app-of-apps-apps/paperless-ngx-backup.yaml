@@ -57,9 +57,9 @@ spec:
                 # # - name: PAPERLESS_IGNORE_DATES
                 # #   value: ""
               volumeMounts:
-                # - name: 'paperless-ngx-webserver'
-                #   mountPath: /usr/src/paperless/data
-                #   subPath: data
+                - name: 'paperless-ngx-webserver-backup'
+                  mountPath: /usr/src/paperless/data
+                  subPath: data
                 - name: 'paperless-ngx-webserver-backup'
                   mountPath: /usr/src/paperless/media
                   subPath: media
