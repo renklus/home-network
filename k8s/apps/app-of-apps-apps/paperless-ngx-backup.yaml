@@ -22,10 +22,23 @@ spec:
               #     subPath: 'redisdata'
             - name: paperless-backup-webserver
               image: ghcr.io/paperless-ngx/paperless-ngx:latest
-              # command:
-              # - /bin/sh
-              # - -c
-              # - document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  # Wait for webserver to be ready (startupProbe uses HTTP / on port 8000)
+                  echo "waiting for webserver at http://localhost:8000/ to become available..."
+                  for i in $(seq 1 120); do
+                    if curl -sSf http://localhost:8000/ >/dev/null 2>&1; then
+                      echo webserver is up
+                      break
+                    fi
+                    sleep 5
+                  done
+                  # Run the document_exporter once the webserver is reachable
+                  document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target
+                  kill 1
+                  exit
               ports:
                 - containerPort: 8000
               env:
