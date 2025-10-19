@@ -11,7 +11,7 @@ metadata:
   name: paperless-ngx-webserver
   namespace: paperless-ngx
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: paperless-ngx-webserver
@@ -90,7 +90,7 @@ metadata:
   name: paperless-ngx-broker
   namespace: paperless-ngx
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: paperless-ngx-broker
