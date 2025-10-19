@@ -1,3 +1,5 @@
+# Backup: on k8s host: sudo k3s kubectl exec --stdin --tty paperless-ngx-webserver-7c9fcb467-wzrls -n paperless-ngx -- /bin/bash
+# then run: document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -187,3 +189,94 @@ spec:
   resources:
     requests:
       storage: 100Gi
+# https://stackoverflow.com/questions/41192053/cron-jobs-in-kubernetes-connect-to-existing-pod-execute-script
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: 'create-paperless-backup'
+  namespace: 'paperless-ngx-backup'
+spec:
+  schedule: "0 */4 * * *"
+  startingDeadlineSeconds: 10800 # 3h (less than 4h)
+  concurrencyPolicy: Forbid
+  timeZone: Europe/Zurich
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: paperless-backup-broker
+              image: docker.io/library/redis:8
+              # volumeMounts:
+              #   - name: 'paperless-ngx-backup-broker'
+              #     mountPath: '/data'
+              #     subPath: 'redisdata'
+            - name: paperless-backup-webserver
+              image: ghcr.io/paperless-ngx/paperless-ngx:
+              command:
+              - /bin/sh
+              - -c
+              - document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target
+              ports:
+                - containerPort: 8000
+              env:
+                - name: PAPERLESS_URL
+                  value: "https://paperless.paperless-ngx-backup.k8s.renklus.ch"
+                - name: PAPERLESS_REDIS
+                  value: "redis://localhost:6379"
+                - name: PAPERLESS_EMPTY_TRASH_DELAY
+                  value: "2000" # more than production deployment
+                #   # must exist before configuring this setting (could be helpful: https://docs.paperless-ngx.com/advanced_usage/#custom-container-initialization)
+                # - name: PAPERLESS_EMPTY_TRASH_DIR
+                #   value: "/usr/src/paperless/trash-empty-dir" # storage of PDFs after trash was emptied
+                - name: PAPERLESS_FILENAME_FORMAT
+                  value: "{{ created_year }}/{{ correspondent }}/{{ created }} - {{ title }} - {{ doc_pk }}"
+                #   # https://docs.paperless-ngx.com/configuration/#PAPERLESS_ENABLE_FLOWER
+                - name: PAPERLESS_ENABLE_FLOWER
+                  value: "SET"
+                # - name: PAPERLESS_CONSUMER_POLLING
+                #   value: "30" # seconds
+                # - name: PAPERLESS_CONSUMER_POLLING_RETRY_COUNT
+                #   value: "10"
+                # - name: PAPERLESS_OCR_LANGUAGE
+                #   value: "deu+eng"
+                # - name: PAPERLESS_TIME_ZONE
+                #   value: "Europe/Zurich"
+                # - name: PAPERLESS_DATE_PARSER_LANGUAGES
+                #   value: "de-CH+en-CH"
+                # #   # set to birth date. Do through hashicorp for privacy
+                # # - name: PAPERLESS_IGNORE_DATES
+                # #   value: ""
+              volumeMounts:
+                # - name: 'paperless-ngx-webserver'
+                #   mountPath: /usr/src/paperless/data
+                #   subPath: data
+                - name: 'paperless-ngx-webserver'
+                  mountPath: /usr/src/paperless/media
+                  subPath: media
+                # - name: 'paperless-ngx-webserver-consume'
+                #   mountPath: /usr/src/paperless/consume
+                - name: 'paperless-ngx-webserver-backup-target'
+                  mountPath: /usr/src/backup-target
+          # volumes:
+          #   # - name: 'paperless-ngx-backup-broker'
+          #   #   persistentVolumeClaim:
+          #   #     claimName: 'paperless-ngx-backup-pvc'
+          #   - name: 'paperless-ngx-webserver'
+          #     persistentVolumeClaim:
+          #       claimName: 'paperless-ngx-pvc'
+          #   # - name: 'paperless-ngx-webserver-consume'
+          #   #   persistentVolumeClaim:
+          #   #     claimName: 'consume'
+          #   - name: 'paperless-ngx-webserver-backup-target'
+          #     persistentVolumeClaim:
+          #       claimName: 'backup-target'
+          # - name: hello
+          #   image: busybox:1.28
+          #   imagePullPolicy: IfNotPresent
+          #   command:
+          #   - /bin/sh
+          #   - -c
+          #   - date; echo Hello from the Kubernetes cluster
+          # restartPolicy: OnFailure
