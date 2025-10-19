@@ -158,7 +158,7 @@ metadata:
   namespace: 'paperless-ngx'
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: 'csi-nfs'
   resources:
     requests:
