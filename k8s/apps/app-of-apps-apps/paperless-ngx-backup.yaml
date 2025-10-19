@@ -22,7 +22,7 @@ spec:
               #     mountPath: '/data'
               #     subPath: 'redisdata'
             - name: paperless-backup-webserver
-              image: ghcr.io/paperless-ngx/paperless-ngx:
+              image: ghcr.io/paperless-ngx/paperless-ngx:latest
               command:
               - /bin/sh
               - -c
