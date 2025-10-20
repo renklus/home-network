@@ -22,9 +22,7 @@ spec:
               #     subPath: 'redisdata'
             - name: paperless-backup-webserver
               image: ghcr.io/paperless-ngx/paperless-ngx:latest
-              command:
-                - /bin/sh
-                - -c
+              args:
                 - |
                   echo "Starting /init"
                   /init
