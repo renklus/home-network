@@ -26,6 +26,8 @@ spec:
                 - /bin/sh
                 - -c
                 - |
+                  echo "Starting /init"
+                  /init &
                   # Wait for webserver to be ready (startupProbe uses HTTP / on port 8000)
                   echo "waiting for webserver at http://localhost:8000/ to become available..."
                   for i in $(seq 1 120); do
@@ -33,6 +35,7 @@ spec:
                       echo webserver is up
                       break
                     fi
+                    webserver not yet up...
                     sleep 5
                   done
                   # Run the document_exporter once the webserver is reachable
