@@ -27,7 +27,7 @@ spec:
                 - -c
                 - |
                   echo "Starting /init"
-                  /init &
+                  /init
                   # Wait for webserver to be ready (startupProbe uses HTTP / on port 8000)
                   echo "waiting for webserver at http://localhost:8000/ to become available..."
                   for i in $(seq 1 120); do
