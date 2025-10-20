@@ -22,20 +22,9 @@ spec:
               #     subPath: 'redisdata'
             - name: paperless-backup-webserver
               image: ghcr.io/paperless-ngx/paperless-ngx:latest
-              # args:
-              #   - |
-              #     echo "waiting for webserver at http://localhost:8000/ to become available...";
-              #     for i in $(seq 1 120); do;
-              #       if curl -sSf http://localhost:8000/ >/dev/null 2>&1; then;
-              #         echo webserver is up;
-              #         break;
-              #       fi;
-              #       echo webserver not yet up...;
-              #       sleep 5;
-              #     done;
-              #     document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target;
-              #     kill 1;
-              #     exit;
+              args:
+                - |
+                  echo "waiting for webserver at http://localhost:8000/ to become available..."; for i in $(seq 1 120); do if curl -sSf http://localhost:8000/ >/dev/null 2>&1; then echo "webserver is up"; break; fi; echo "webserver not yet up"; sleep 5; done; document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target;
               ports:
                 - containerPort: 8000
               env:
