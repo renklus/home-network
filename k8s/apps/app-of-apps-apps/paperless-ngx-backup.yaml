@@ -35,7 +35,7 @@ spec:
                       echo webserver is up
                       break
                     fi
-                    webserver not yet up...
+                    echo webserver not yet up...
                     sleep 5
                   done
                   # Run the document_exporter once the webserver is reachable
