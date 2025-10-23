@@ -15,13 +15,13 @@ spec:
         spec:
           containers:
             - name: paperless-backup-broker
-              image: docker.io/library/redis:8
+              image: docker.io/library/redis:8@sha256:4521b581dbddea6e7d81f8fe95ede93f5648aaa66a9dacd581611bf6fe7527bd
               # volumeMounts:
               #   - name: 'paperless-ngx-backup-broker'
               #     mountPath: '/data'
               #     subPath: 'redisdata'
             - name: paperless-backup-webserver
-              image: ghcr.io/paperless-ngx/paperless-ngx:latest
+              image: ghcr.io/paperless-ngx/paperless-ngx:latest@sha256:e1e0026cdacda4bb157c024a8a1a343bd16b34d8900e7f3958598b9afebd0d38
               args:
                 - |
                   echo "test"
