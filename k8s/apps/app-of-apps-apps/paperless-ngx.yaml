@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: webserver
-          image: ghcr.io/paperless-ngx/paperless-ngx:latest
+          image: ghcr.io/paperless-ngx/paperless-ngx:latest@sha256:321ca858e4b6ce9dc416dbcb7c0691d545e3e9b0f44cf420f75c22098854ca25
           ports:
             - containerPort: 8000
           env:
@@ -101,7 +101,7 @@ spec:
     spec:
       containers:
         - name: broker
-          image: docker.io/library/redis:8
+          image: docker.io/library/redis:8@sha256:4521b581dbddea6e7d81f8fe95ede93f5648aaa66a9dacd581611bf6fe7527bd
           volumeMounts:
             - name: 'paperless-ngx-broker'
               mountPath: '/data'
