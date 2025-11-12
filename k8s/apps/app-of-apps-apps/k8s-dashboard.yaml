@@ -29,6 +29,7 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=false
 ---
+# get login secret with sudo k3s kubectl get secret admin-user -n kubernetes-dashboard -o jsonpath="{.data.token}" | base64 -d
 apiVersion: v1
 kind: ServiceAccount
 metadata:

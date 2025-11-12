@@ -1,4 +1,4 @@
-# Backup: on k8s host: sudo k3s kubectl exec --stdin --tty paperless-ngx-webserver-7c9fcb467-wzrls -n paperless-ngx -- /bin/bash
+# Backup: on k8s host: sudo k3s kubectl exec --stdin --tty paperless-ngx-webserver-65f8bd67cc-7bkbm -n paperless-ngx -- /bin/bash
 # then run: document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target
 apiVersion: v1
 kind: Namespace
@@ -38,6 +38,8 @@ spec:
             - name: PAPERLESS_FILENAME_FORMAT
               value: "{{ created_year }}/{{ correspondent }}/{{ created }} - {{ title }} - {{ doc_pk }}"
             #   # https://docs.paperless-ngx.com/configuration/#PAPERLESS_ENABLE_FLOWER
+            - name: PAPERLESS_WORKER_TIMEOUT
+              value: "7200" # default: 1800 seconds
             - name: PAPERLESS_ENABLE_FLOWER
               value: "SET"
             - name: PAPERLESS_CONSUMER_POLLING
