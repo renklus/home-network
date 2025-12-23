@@ -6,7 +6,7 @@
     "group:monorepos",
     "group:recommended"
   ],
-  "prHourlyLimit": 10,
+  "prHourlyLimit": 100,
   "argocd": {
     "managerFilePatterns": [
       "/k8s/apps/.+\\.yaml$/"
