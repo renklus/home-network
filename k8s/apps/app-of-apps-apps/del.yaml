@@ -44,7 +44,7 @@ spec:
   source:
     repoURL: 'https://helm.nginx.com/stable'
     chart: 'nginx-ingress'
-    targetRevision: '2.3.0'
+    targetRevision: '2.4.1'
     helm:
       valuesObject:
         controller:
