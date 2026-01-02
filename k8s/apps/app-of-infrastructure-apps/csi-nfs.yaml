@@ -114,7 +114,7 @@ allowVolumeExpansion: true
 mountOptions:
   - soft
   - noatime
-  - nfsvers=4.1
+  - nfsvers=4.2
 ---
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
@@ -135,4 +135,4 @@ allowVolumeExpansion: true
 mountOptions:
   - hard
   - noatime
-  - nfsvers=4.1
+  - nfsvers=4.2
