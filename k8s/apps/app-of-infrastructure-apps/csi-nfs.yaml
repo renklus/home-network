@@ -1,138 +1,138 @@
-# apiVersion: argoproj.io/v1alpha1
-# kind: Application
-# metadata:
-#   name: csi-nfs
-#   namespace: argocd
-#   finalizers:
-#     - resources-finalizer.argocd.argoproj.io
-# spec:
-#   destination:
-#     namespace: csi-nfs-system
-#     server: https://kubernetes.default.svc
-#   source:
-#     path: ''
-#     repoURL: 'https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts'
-#     targetRevision: 4.12.1
-#     chart: csi-driver-nfs
-#     helm:
-#       valuesObject:
-#         image:
-#           csiProvisioner:
-#             repository: 'registry.k8s.io/sig-storage/csi-provisioner'
-#             tag: 'v5.2.0'
-#           csiResizer:
-#             repository: 'registry.k8s.io/sig-storage/csi-resizer'
-#             tag: 'v1.13.1'
-#           csiSnapshotter:
-#             repository: 'registry.k8s.io/sig-storage/csi-snapshotter'
-#             tag: 'v8.2.0'
-#           externalSnapshotter:
-#             repository: 'registry.k8s.io/sig-storage/snapshot-controller'
-#             tag: 'v8.2.0'
-#           livenessProbe:
-#             repository: 'registry.k8s.io/sig-storage/livenessprobe'
-#             tag: 'v2.15.0'
-#           nfs:
-#             repository: 'registry.k8s.io/sig-storage/nfsplugin'
-#             tag: 'v4.11.0'
-#           nodeDriverRegistrar:
-#             repository: 'registry.k8s.io/sig-storage/csi-node-driver-registrar'
-#             tag: 'v2.13.0'
-#       parameters:
-#         - name: 'controller.name'
-#           value: 'csi-nfs-controller'
-#   sources: []
-#   project: default
-#   syncPolicy:
-#     automated:
-#       prune: true
-#       selfHeal: true
-#     syncOptions:
-#       - CreateNamespace=true
-#       - ServerSideApply=false
-# ---
-# apiVersion: v1
-# kind: Namespace
-# metadata:
-#   name: csi-nfs
-# ---
-# kind: StorageClass
-# apiVersion: storage.k8s.io/v1
-# metadata:
-#   name: csi-nfs
-#   namespace: 'csi-nfs'
-# provisioner: nfs.csi.k8s.io
-# parameters:
-#   server: 'app02l.dev.renklus.ch'
-#   share: '/volume9/k8sNfs'
-#   # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
-#   # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
-#   # csi.storage.k8s.io/provisioner-secret-namespace: "default"
-# reclaimPolicy: 'Delete'
-# volumeBindingMode: 'Immediate'
-# allowVolumeExpansion: true
-# mountOptions:
-#   - soft
-#   - nfsvers=4.1
-# ---
-# kind: StorageClass
-# apiVersion: storage.k8s.io/v1
-# metadata:
-#   name: csi-nfs-strong-named
-#   namespace: 'csi-nfs'
-# provisioner: nfs.csi.k8s.io
-# parameters:
-#   server: 'app02l.dev.renklus.ch'
-#   share: '/volume9/k8sNfs'
-#   subdir: '${pvc.metadata.namespace}--${pvc.metadata.name}'
-#   # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
-#   # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
-#   # csi.storage.k8s.io/provisioner-secret-namespace: "default"
-# reclaimPolicy: 'Delete'
-# volumeBindingMode: 'Immediate'
-# allowVolumeExpansion: true
-# mountOptions:
-#   - soft
-#   - nfsvers=4.1
-# ---
-# kind: StorageClass
-# apiVersion: storage.k8s.io/v1
-# metadata:
-#   name: truenas-nfs-soft
-#   namespace: 'csi-nfs'
-# provisioner: nfs.csi.k8s.io
-# parameters:
-#   server: 'app03l.dev.renklus.ch'
-#   share: '/mnt/hdd-pool/general/k8s'
-#   subdir: '${pvc.metadata.namespace}--${pvc.metadata.name}'
-#   # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
-#   # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
-#   # csi.storage.k8s.io/provisioner-secret-namespace: "default"
-# reclaimPolicy: 'Delete'
-# volumeBindingMode: 'Immediate'
-# allowVolumeExpansion: true
-# mountOptions:
-#   - soft
-#   - noatime
-#   - nfsvers=4.2
-# ---
-# kind: StorageClass
-# apiVersion: storage.k8s.io/v1
-# metadata:
-#   name: truenas-nfs-hard
-#   namespace: 'csi-nfs'
-# provisioner: nfs.csi.k8s.io
-# parameters:
-#   server: 'app03l.dev.renklus.ch'
-#   share: '/mnt/hdd-pool/general/k8s'
-#   subdir: '${pvc.metadata.namespace}--${pvc.metadata.name}'
-#   # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
-#   # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
-#   # csi.storage.k8s.io/provisioner-secret-namespace: "default"
-# reclaimPolicy: 'Delete'
-# volumeBindingMode: 'Immediate'
-# allowVolumeExpansion: true
-# mountOptions:
-#   - hard
-#   - noatime
-#   - nfsvers=4.2
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: csi-nfs
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: csi-nfs-system
+    server: https://kubernetes.default.svc
+  source:
+    path: ''
+    repoURL: 'https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts'
+    targetRevision: 4.12.1
+    chart: csi-driver-nfs
+    helm:
+      valuesObject:
+        image:
+          csiProvisioner:
+            repository: 'registry.k8s.io/sig-storage/csi-provisioner'
+            tag: 'v5.2.0'
+          csiResizer:
+            repository: 'registry.k8s.io/sig-storage/csi-resizer'
+            tag: 'v1.13.1'
+          csiSnapshotter:
+            repository: 'registry.k8s.io/sig-storage/csi-snapshotter'
+            tag: 'v8.2.0'
+          externalSnapshotter:
+            repository: 'registry.k8s.io/sig-storage/snapshot-controller'
+            tag: 'v8.2.0'
+          livenessProbe:
+            repository: 'registry.k8s.io/sig-storage/livenessprobe'
+            tag: 'v2.15.0'
+          nfs:
+            repository: 'registry.k8s.io/sig-storage/nfsplugin'
+            tag: 'v4.11.0'
+          nodeDriverRegistrar:
+            repository: 'registry.k8s.io/sig-storage/csi-node-driver-registrar'
+            tag: 'v2.13.0'
+      parameters:
+        - name: 'controller.name'
+          value: 'csi-nfs-controller'
+  sources: []
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=false
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: csi-nfs
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: csi-nfs
+  namespace: 'csi-nfs'
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 'app02l.dev.renklus.ch'
+  share: '/volume9/k8sNfs'
+  # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
+  # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
+  # csi.storage.k8s.io/provisioner-secret-namespace: "default"
+reclaimPolicy: 'Delete'
+volumeBindingMode: 'Immediate'
+allowVolumeExpansion: true
+mountOptions:
+  - soft
+  - nfsvers=4.1
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: csi-nfs-strong-named
+  namespace: 'csi-nfs'
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 'app02l.dev.renklus.ch'
+  share: '/volume9/k8sNfs'
+  subdir: '${pvc.metadata.namespace}--${pvc.metadata.name}'
+  # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
+  # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
+  # csi.storage.k8s.io/provisioner-secret-namespace: "default"
+reclaimPolicy: 'Delete'
+volumeBindingMode: 'Immediate'
+allowVolumeExpansion: true
+mountOptions:
+  - soft
+  - nfsvers=4.1
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: truenas-nfs-soft
+  namespace: 'csi-nfs'
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 'app03l.dev.renklus.ch'
+  share: '/mnt/hdd-pool/general/k8s'
+  subdir: '${pvc.metadata.namespace}--${pvc.metadata.name}'
+  # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
+  # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
+  # csi.storage.k8s.io/provisioner-secret-namespace: "default"
+reclaimPolicy: 'Delete'
+volumeBindingMode: 'Immediate'
+allowVolumeExpansion: true
+mountOptions:
+  - soft
+  - noatime
+  - nfsvers=4.2
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: truenas-nfs-hard
+  namespace: 'csi-nfs'
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 'app03l.dev.renklus.ch'
+  share: '/mnt/hdd-pool/general/k8s'
+  subdir: '${pvc.metadata.namespace}--${pvc.metadata.name}'
+  # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
+  # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
+  # csi.storage.k8s.io/provisioner-secret-namespace: "default"
+reclaimPolicy: 'Delete'
+volumeBindingMode: 'Immediate'
+allowVolumeExpansion: true
+mountOptions:
+  - hard
+  - noatime
+  - nfsvers=4.2
