@@ -161,7 +161,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: 'truenas-nfs'
+  storageClassName: 'truenas-nfs-hard'
   resources:
     requests:
       storage: 100Gi
@@ -174,7 +174,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: 'truenas-nfs'
+  storageClassName: 'truenas-nfs-hard'
   resources:
     requests:
       storage: 5Gi
@@ -187,7 +187,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: 'truenas-nfs'
+  storageClassName: 'truenas-nfs-hard'
   resources:
     requests:
       storage: 100Gi

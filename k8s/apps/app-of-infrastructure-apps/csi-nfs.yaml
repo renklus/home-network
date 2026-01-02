@@ -115,3 +115,24 @@ mountOptions:
   - soft
   - noatime
   - nfsvers=4.1
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: truenas-nfs-hard
+  namespace: 'csi-nfs'
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 'app03l.dev.renklus.ch'
+  share: '/mnt/hdd-pool/general/k8s'
+  subdir: '${pvc.metadata.namespace}--${pvc.metadata.name}'
+  # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
+  # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
+  # csi.storage.k8s.io/provisioner-secret-namespace: "default"
+reclaimPolicy: 'Delete'
+volumeBindingMode: 'Immediate'
+allowVolumeExpansion: true
+mountOptions:
+  - hard
+  - noatime
+  - nfsvers=4.1
