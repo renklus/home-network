@@ -49,6 +49,18 @@
   ],
   "packageRules": [
     {
+      "matchFileNames": [
+        "k8s/apps/app-of-apps-apps/*.yaml"
+      ],
+      "groupName": "{{{replace 'k8s\\/apps\\/app-of-apps-apps\\/(?<FileName>.*)\\.yaml' 'app $<FileName>' packageFile}}}"
+    },
+    {
+      "matchFileNames": [
+        "k8s/apps/app-of-infrastructure-apps/*.yaml"
+      ],
+      "groupName": "{{{replace 'k8s\\/apps\\/app-of-infrastructure-apps\\/(?<FileName>.*)\\.yaml' 'infrastructure $<FileName>' packageFile}}}"
+    },
+    {
       "matchDatasources": [
         "docker"
       ],
