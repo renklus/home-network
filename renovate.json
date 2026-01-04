@@ -41,7 +41,8 @@
         "(?ms)repository:\\s*'(?<depName>[^']+)'[\\s]*?tag:\\s*'(?<currentValue>[^'@]+)(?:@(?<currentDigest>[^']+))?'"
       ],
       "datasourceTemplate": "docker",
-      "depNameTemplate": "{{{depName}}}"
+      "depNameTemplate": "{{{depName}}}",
+      "autoReplaceStringTemplate": "{{{newValue}}}@{{{newDigest}}}"
     }
   ],
   "ignorePaths": [
