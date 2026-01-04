@@ -19,23 +19,28 @@ spec:
         global:
           image:
             repository: 'quay.io/argoproj/argocd'
+            # this prevents detection by renovate custom regex manager
             tag: 'v3.2.3@sha256:9ab6baab65a6b283044a7d7b7dbe50f589564de9c8898d67c77d84b2b5df46bc'
         server:
           extensions:
             image:
               repository: 'quay.io/argoprojlabs/argocd-extension-installer'
+              # this prevents detection by renovate custom regex manager
               tag: 'v0.0.9@sha256:d2b43c18ac1401f579f6d27878f45e253d1e3f30287471ae74e6a4315ceb0611'
         dex:
           image:
             repository: 'ghcr.io/dexidp/dex'
+            # this prevents detection by renovate custom regex manager
             tag: 'v2.44.0@sha256:5d0656fce7d453c0e3b2706abf40c0d0ce5b371fb0b73b3cf714d05f35fa5f86'
         redis:
           exporter:
             image:
               repository: 'ghcr.io/oliver006/redis_exporter'
+              # this prevents detection by renovate custom regex manager
               tag: 'v1.80.1@sha256:bac9872da2b48e6eebbffb11517a5dcda59958eda51e1e4231eeb5dd516b4a5f'
           image:
             repository: 'public.ecr.aws/docker/library/redis'
+            # this prevents detection by renovate custom regex manager
             tag: '8.4.0-alpine@sha256:6cbef353e480a8a6e7f10ec545f13d7d3fa85a212cdcc5ffaf5a1c818b9d3798'
         redis-ha:
           # disabled because renovate cannot dela with it and it is currently unused
@@ -45,6 +50,7 @@ spec:
           #   tag: 'v1.73.0@sha256:1a8f5e48b2af0fb02d182be3ddd623e7e39881b6464bdb5bf843b1f6d45ed050'
           image:
             repository: 'public.ecr.aws/docker/library/redis'
+            # this prevents detection by renovate custom regex manager
             tag: '8.4.0-alpine@sha256:6cbef353e480a8a6e7f10ec545f13d7d3fa85a212cdcc5ffaf5a1c818b9d3798'
         configs:
           cm:
