@@ -38,7 +38,7 @@
         "/k8s/apps/.+\\.yaml$/"
       ],
       "matchStrings": [
-        "(?ms)tag:\\s*'(?<depName>[^']+)'[\\s]*?repository:\\s*'(?<currentValue>[^']+)'"
+        "(?ms)repository:\\s*'(?<depName>[^']+)'[\\s]*?tag:\\s*'(?<currentValue>[^']+)'"
       ],
       "datasourceTemplate": "docker",
       "depNameTemplate": "{{{depName}}}"

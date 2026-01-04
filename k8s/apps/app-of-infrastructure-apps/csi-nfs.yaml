@@ -19,26 +19,26 @@ spec:
         image:
         # 'tag' before 'repository' to allow custom regex manager of renovate to detect it
           csiProvisioner:
-            tag: 'v5.2.0'
             repository: 'registry.k8s.io/sig-storage/csi-provisioner'
+            tag: 'v5.2.0'
           csiResizer:
-            tag: 'v1.13.1'
             repository: 'registry.k8s.io/sig-storage/csi-resizer'
+            tag: 'v1.13.1'
           csiSnapshotter:
-            tag: 'v8.2.0'
             repository: 'registry.k8s.io/sig-storage/csi-snapshotter'
-          externalSnapshotter:
             tag: 'v8.2.0'
+          externalSnapshotter:
             repository: 'registry.k8s.io/sig-storage/snapshot-controller'
+            tag: 'v8.2.0'
           livenessProbe:
-            tag: 'v2.15.0'
             repository: 'registry.k8s.io/sig-storage/livenessprobe'
+            tag: 'v2.15.0'
           nfs:
-            tag: 'v4.11.0'
             repository: 'registry.k8s.io/sig-storage/nfsplugin'
+            tag: 'v4.11.0'
           nodeDriverRegistrar:
-            tag: 'v2.13.0'
             repository: 'registry.k8s.io/sig-storage/csi-node-driver-registrar'
+            tag: 'v2.13.0'
       parameters:
         - name: 'controller.name'
           value: 'csi-nfs-controller'
