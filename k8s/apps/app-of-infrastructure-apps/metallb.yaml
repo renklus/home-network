@@ -21,17 +21,14 @@ spec:
         speaker:
           image:
             repository: 'quay.io/metallb/speaker'
-            # this prevents detection by renovate custom regex manager
             tag: 'v0.15.3@sha256:c6a5b25b2e1fba610a57b2db4bb8141d7c133569d561a8cc29e38ca5113efbc4'
           frr:
             image:
               repository: 'quay.io/frrouting/frr'
-              # this prevents detection by renovate custom regex manager
               tag: '10.5.0@sha256:fc7f887ab4d8da06f481a4f8d59afded88b3c5823f03610a7e808f7eba45eeea'
         controller:
           image:
             repository: 'quay.io/metallb/controller'
-            # this prevents detection by renovate custom regex manager
             tag: 'v0.15.3@sha256:6698ccc54c380913816ed1fd0758637ec87dd79da419c4ab170a2c26c158ab89'
   - path: k8s/apps/app-of-infrastructure-apps/metallb
     repoURL: 'https://github.com/renklus/home-network'

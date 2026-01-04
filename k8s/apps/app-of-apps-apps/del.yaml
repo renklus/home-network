@@ -52,12 +52,10 @@ spec:
             configManager:
               image:
                 tag: '5.8.0'
-                # this prevents detection by renovate custom regex manager
                 repository: 'private-registry.nginx.com/nap/waf-config-mgr'
             enforcer:
               image:
                 tag: '5.8.0'
-                # this prevents detection by renovate custom regex manager
                 repository: 'private-registry.nginx.com/nap/waf-enforcer'
 #        image:
 #          tag: '1.29.1-debian-12-r0@sha256:b2e803958eda5723aae1e36ed0e418f6e0c79e7ce890820eba9cad85a6381286'
