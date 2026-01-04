@@ -17,6 +17,7 @@ spec:
     helm:
       valuesObject:
         image:
+        # 'tag' before 'repository' to allow custom regex manager of renovate to detect it
           csiProvisioner:
             tag: 'v5.2.0'
             repository: 'registry.k8s.io/sig-storage/csi-provisioner'
