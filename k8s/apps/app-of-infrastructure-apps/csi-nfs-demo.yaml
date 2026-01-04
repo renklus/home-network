@@ -1,56 +1,56 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: csi-nfs-demo
----
-kind: StorageClass
-apiVersion: storage.k8s.io/v1
-metadata:
-  name: csi-nfs-demo
-  namespace: 'csi-nfs-demo'
-provisioner: nfs.csi.k8s.io
-parameters:
-  server: 'app02l.dev.renklus.ch'
-  share: '/volume9/k8sNfs'
-  # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
-  # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
-  # csi.storage.k8s.io/provisioner-secret-namespace: "default"
-reclaimPolicy: 'Delete'
-volumeBindingMode: 'Immediate'
-allowVolumeExpansion: true
-mountOptions:
-  - soft
-  - nfsvers=4.1
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: csi-nfs-demo-pvc
-  namespace: 'csi-nfs-demo'
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: csi-nfs-demo
-  resources:
-    requests:
-      storage: 1Mi
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: csi-volume-demo
-  namespace: 'csi-nfs-demo'
-spec:
-  containers:
-  - name: volume-demo
-    image: nginx:stable-alpine@sha256:1ce7f79aab3e1d651dce1ff05b1bcd471cd0d5086838a77961feab6b49fbc0b5
-    imagePullPolicy: IfNotPresent
-    volumeMounts:
-    - name: volv
-      mountPath: /data
-    ports:
-    - containerPort: 80
-  volumes:
-  - name: volv
-    persistentVolumeClaim:
-      claimName: csi-nfs-demo-pvc
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: csi-nfs-demo
+# ---
+# kind: StorageClass
+# apiVersion: storage.k8s.io/v1
+# metadata:
+#   name: csi-nfs-demo
+#   namespace: 'csi-nfs-demo'
+# provisioner: nfs.csi.k8s.io
+# parameters:
+#   server: 'app02l.dev.renklus.ch'
+#   share: '/volume9/k8sNfs'
+#   # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
+#   # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
+#   # csi.storage.k8s.io/provisioner-secret-namespace: "default"
+# reclaimPolicy: 'Delete'
+# volumeBindingMode: 'Immediate'
+# allowVolumeExpansion: true
+# mountOptions:
+#   - soft
+#   - nfsvers=4.1
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: csi-nfs-demo-pvc
+#   namespace: 'csi-nfs-demo'
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   storageClassName: csi-nfs-demo
+#   resources:
+#     requests:
+#       storage: 1Mi
+# ---
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: csi-volume-demo
+#   namespace: 'csi-nfs-demo'
+# spec:
+#   containers:
+#   - name: volume-demo
+#     image: nginx:stable-alpine@sha256:1ce7f79aab3e1d651dce1ff05b1bcd471cd0d5086838a77961feab6b49fbc0b5
+#     imagePullPolicy: IfNotPresent
+#     volumeMounts:
+#     - name: volv
+#       mountPath: /data
+#     ports:
+#     - containerPort: 80
+#   volumes:
+#   - name: volv
+#     persistentVolumeClaim:
+#       claimName: csi-nfs-demo-pvc
