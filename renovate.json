@@ -42,7 +42,7 @@
       ],
       "datasourceTemplate": "docker",
       "depNameTemplate": "{{{depName}}}",
-      "autoReplaceStringTemplate": "{{{newValue}}}@{{{newDigest}}}"
+      "autoReplaceStringTemplate": "{{{indentation}}}repository: '{{{depName}}}'\\n{{{indentation}}}tag: '{{{newValue}}}@{{{newDigest}}}'"
     }
   ],
   "ignorePaths": [
