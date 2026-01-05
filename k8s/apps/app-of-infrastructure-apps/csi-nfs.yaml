@@ -19,9 +19,11 @@ spec:
         image:
           csiProvisioner:
             repository: 'registry.k8s.io/sig-storage/csi-provisioner'
+            # renovate
             tag: 'v5.2.0'
           csiResizer:
             repository: 'registry.k8s.io/sig-storage/csi-resizer'
+            # renovate
             tag: 'v1.13.1'
           csiSnapshotter:
             repository: 'registry.k8s.io/sig-storage/csi-snapshotter'
