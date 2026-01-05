@@ -40,8 +40,7 @@
       "matchStrings": [
         "(?ms)^(?<indentation>\\s*)repository:\\s*'(?<depName>[^']+)'[\\s]*?tag:\\s*'(?<currentValue>[^'@]+)(?:@(?<currentDigest>[^']+))?'"
       ],
-      "datasourceTemplate": "docker",
-      "autoReplaceStringTemplate": "{{{indentation}}}repository: '{{{depName}}}'\\n{{{indentation}}}tag: '{{{newValue}}}'"
+      "datasourceTemplate": "docker"
     }
   ],
   "ignorePaths": [
