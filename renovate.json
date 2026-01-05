@@ -7,6 +7,7 @@
     "group:recommended"
   ],
   "prHourlyLimit": 100,
+  "pinDigests": true,
   "argocd": {
     "managerFilePatterns": [
       "/k8s/apps/.+\\.yaml$/"
