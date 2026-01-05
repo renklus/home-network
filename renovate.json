@@ -40,7 +40,8 @@
       "matchStrings": [
         "(?ms)^(?<indentation>\\s*)repository:\\s*'(?<depName>[^']+)'[\\s]*?tag:\\s*'(?<currentValue>[^'@]+)'"
       ],
-      "datasourceTemplate": "docker"
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker"
     }
   ],
   "ignorePaths": [
