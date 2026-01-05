@@ -31,6 +31,16 @@
       "matchStrings": [
         "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\n\\s+\\S+?:\\s?\\'(?<currentValue>[^\\s\\@]+)(\\@(?<currentDigest>\\S+))?\\'"
       ]
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/k8s/apps/.+\\.yaml$/"
+      ],
+      "matchStrings": [
+        "(?ms)^(?<indentation>\\s*)repository:\\s*'(?<depName>[^']+)'[\\s]*?tag:\\s*'(?<currentValue>[^'@]+)'"
+      ],
+      "datasourceTemplate": "docker"
     }
   ],
   "ignorePaths": [
