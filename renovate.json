@@ -26,6 +26,7 @@
   "customManagers": [
     {
       "customType": "regex",
+      "fileFormat": "yaml",
       "managerFilePatterns": [
         "/k8s/apps/.+\\.yaml$/"
       ],
@@ -43,7 +44,7 @@
         "(?ms)^(?<indentation>\\s*)repository:\\s*'(?<packageName>[^']+)'[\\s]*?tag:\\s*'(?<currentValue>[^'@]+)(?:@(?<currentDigest>[^']+))?'",
         "https://github.com/renovatebot/renovate/issues/24559"
       ],
-      "autoReplaceStringTemplate": "            repository: '{{packageName}}'\\n            tag: '{{newValue}}{{#if isPinDigest}}@{{newDigest}}{{/if}}'",
+      "autoReplaceStringTemplate": "            repository: '{{packageName}}'            tag: '{{newValue}}{{#if isPinDigest}}@{{newDigest}}{{/if}}'",
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker"
     }
