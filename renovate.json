@@ -8,7 +8,6 @@
   ],
   "prHourlyLimit": 100,
   "pinDigests": true,
-  "logLevel": "trace",
   "argocd": {
     "managerFilePatterns": [
       "/k8s/apps/.+\\.yaml$/"
@@ -40,9 +39,10 @@
         "/k8s/apps/.+\\.yaml$/"
       ],
       "matchStrings": [
-        "(?ms)^(?<indentation>\\s*)repository:\\s*'(?<depName>[^']+)'[\\s]*?tag:\\s*'(?<currentValue>[^'@]+)'"
+        "(?ms)^(?<indentation>\\s*)repository:\\s*'(?<depName>[^']+)'[\\s]*?tag:\\s*'(?<currentValue>[^'@]+)'",
+        "https://github.com/renovatebot/renovate/issues/24559"
       ],
-      "autoReplaceStringTemplate": "            repository: '{{depName}}'            tag: '{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}'",
+      "autoReplaceStringTemplate": "            repository: '{{depName}}'            tag: '{{newValue}}{{#if isPinDigest}}@{{newDigest}}{{/if}}'",
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker"
     }
