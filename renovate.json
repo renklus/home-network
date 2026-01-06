@@ -39,7 +39,7 @@
         "/k8s/apps/.+\\.yaml$/"
       ],
       "matchStrings": [
-        "(?ms)^(?<indentation>\\s*)repository:\\s*'(?<packageName>[^']+)'[\\s]*?tag:\\s*'(?<currentValue>[^'@]+)'",
+        "(?ms)^(?<indentation>\\s*)repository:\\s*'(?<packageName>[^']+)'[\\s]*?tag:\\s*'(?<currentValue>[^'@]+)(?:@(?<currentDigest>[^']+))'",
         "https://github.com/renovatebot/renovate/issues/24559"
       ],
       "autoReplaceStringTemplate": "            repository: '{{packageName}}'            tag: '{{newValue}}{{#if isPinDigest}}@{{newDigest}}{{/if}}'",
