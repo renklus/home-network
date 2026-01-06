@@ -36,7 +36,6 @@
     },
     {
       "customType": "regex",
-      "fileFormat": "yaml",
       "managerFilePatterns": [
         "/k8s/apps/.+\\.yaml$/"
       ],
