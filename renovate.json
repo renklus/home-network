@@ -41,7 +41,7 @@
       "matchStrings": [
         "(?ms)^(?<indentation>\\s*)repository:\\s*'(?<depName>[^']+)'[\\s]*?tag:\\s*'(?<currentValue>[^'@]+)'"
       ],
-      "autoReplaceStringTemplate": "            repository: '{{depName}}'\n            tag: '{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}'",
+      "autoReplaceStringTemplate": "            repository: '{{depName}}'\\n            tag: '{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}'",
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker"
     }
