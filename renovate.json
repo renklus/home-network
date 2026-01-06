@@ -8,6 +8,7 @@
   ],
   "prHourlyLimit": 100,
   "pinDigests": true,
+  "logLevel": "trace",
   "argocd": {
     "managerFilePatterns": [
       "/k8s/apps/.+\\.yaml$/"
