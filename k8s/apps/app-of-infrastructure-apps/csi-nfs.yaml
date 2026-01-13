@@ -25,7 +25,7 @@ spec:
             tag: 'v1.13.1'
           csiSnapshotter:
             repository: 'registry.k8s.io/sig-storage/csi-snapshotter'
-            tag: 'v8.2.0'
+            tag: 'v8.4.0'
           externalSnapshotter:
             repository: 'registry.k8s.io/sig-storage/snapshot-controller'
             tag: 'v8.2.0'
