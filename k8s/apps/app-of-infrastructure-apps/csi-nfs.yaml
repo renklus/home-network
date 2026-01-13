@@ -31,7 +31,7 @@ spec:
             tag: 'v8.2.0'
           livenessProbe:
             repository: 'registry.k8s.io/sig-storage/livenessprobe'
-            tag: 'v2.15.0'
+            tag: 'v2.17.0'
           nfs:
             repository: 'registry.k8s.io/sig-storage/nfsplugin'
             tag: 'v4.11.0'
