@@ -63,7 +63,7 @@
       "matchFileNames": [
         "k8s/apps/app-of-infrastructure-apps/*.yaml"
       ],
-      "groupName": "{{packageScope}}"
+      "groupName": "{{replace ':.*$' '' depName}}"
     },
     {
       "matchDatasources": [
