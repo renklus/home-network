@@ -54,8 +54,10 @@
   ],
   "packageRules": [
     {
-      "matchPackagePatterns": ["*"],
-      "groupName": "{{{packageFile}}}"
+      "matchFileNames": [
+        "k8s/apps/app-of-infrastructure-apps/csi-nfs.yaml"
+      ],
+      "groupName": "csi-nfs.yaml"
     },
     {
       "matchDatasources": [
