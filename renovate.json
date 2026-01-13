@@ -54,6 +54,18 @@
   ],
   "packageRules": [
     {
+      "matchFileNames": [
+        "k8s/apps/app-of-apps-apps/*.yaml"
+      ],
+      "groupName": "{{packageScope}}"
+    },
+    {
+      "matchFileNames": [
+        "k8s/apps/app-of-infrastructure-apps/*.yaml"
+      ],
+      "commitMessageTopic": "{{packageFile}}"
+    },
+    {
       "matchDatasources": [
         "docker"
       ],
