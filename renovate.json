@@ -57,13 +57,13 @@
       "matchFileNames": [
         "k8s/apps/app-of-apps-apps/*.yaml"
       ],
-      "groupName": "{{{replace 'k8s\\/apps\\/app-of-apps-apps\\/(?<FileName>.*)\\.yaml' 'app $<FileName>' packageFile}}}"
+      "groupName": "{{packageScope}}"
     },
     {
       "matchFileNames": [
         "k8s/apps/app-of-infrastructure-apps/*.yaml"
       ],
-      "groupName": "{{{replace 'k8s\\/apps\\/app-of-infrastructure-apps\\/(?<FileName>.*)\\.yaml' 'infrastructure $<FileName>' packageFile}}}"
+      "groupName": "{{packageScope}}"
     },
     {
       "matchDatasources": [
