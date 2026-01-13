@@ -56,12 +56,14 @@
     {
       "matchFileNames": [
         "k8s/apps/app-of-apps-apps/*.yaml"
-      ]
+      ],
+      "groupName": "Apps"
     },
     {
       "matchFileNames": [
         "k8s/apps/app-of-infrastructure-apps/*.yaml"
-      ]
+      ],
+      "groupName": "Infrastructure"
     },
     {
       "matchDatasources": [
