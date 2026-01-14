@@ -22,6 +22,11 @@
       "/\\.yaml$/"
     ]
   },
+  "kubernetes": {
+    "managerFilePatterns": [
+      "/k8s/.+\\.yaml$/"
+    ]
+  },
   "ignorePaths": [
     "k8s-old1/**",
     "images/**"
