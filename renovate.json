@@ -9,6 +9,7 @@
   "prHourlyLimit": 100,
   "pinDigests": true,
   "ignorePaths": [
-    "k8s-old1/**"
+    "k8s-old1/**",
+    "images/**"
   ]
 }
