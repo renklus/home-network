@@ -8,6 +8,11 @@
   ],
   "prHourlyLimit": 100,
   "pinDigests": true,
+  "argocd": {
+    "managerFilePatterns": [
+      "/k8s/apps/.+\\.yaml$/"
+    ]
+  },
   "ignorePaths": [
     "k8s-old1/**",
     "images/**"
