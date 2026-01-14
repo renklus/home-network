@@ -4,9 +4,13 @@
     "config:best-practices",
     "docker:enableMajor",
     "group:monorepos",
-    "group:recommended"
+    "group:recommended",
+    ":disableRateLimiting",
+    ":docker",
+    ":ignoreUnstable",
+    ":pinDependencies",
+    ":pinVersions"
   ],
-  "prHourlyLimit": 100,
   "pinDigests": true,
   "argocd": {
     "managerFilePatterns": [
