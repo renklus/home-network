@@ -9,7 +9,8 @@
     ":docker",
     ":ignoreUnstable",
     ":pinDependencies",
-    ":pinVersions"
+    ":pinVersions",
+    ":skipStatusChecks"
   ],
   "pinDigests": true,
   "argocd": {
