@@ -17,6 +17,11 @@
       "/k8s/apps/.+\\.yaml$/"
     ]
   },
+  "helm-values": {
+    "managerFilePatterns": [
+      "/\\.yaml$/"
+    ]
+  },
   "ignorePaths": [
     "k8s-old1/**",
     "images/**"
