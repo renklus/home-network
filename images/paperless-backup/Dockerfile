@@ -6,7 +6,8 @@ LABEL org.opencontainers.image.source=https://github.com/renklus/home-network
 
 RUN rm -rf /etc/s6-overlay/s6-rc.d/init-migrations \
     && rm -f /etc/s6-overlay/s6-rc.d/init-complete/dependencies.d/init-migrations \
-    && rm -f /etc/s6-overlay/s6-rc.d/init-search-index/dependencies.d/init-migrations
+    && rm -f /etc/s6-overlay/s6-rc.d/init-search-index/dependencies.d/init-migrations \
+    && rm -f /etc/s6-overlay/s6-rc.d/init-superuser/dependencies.d/init-migrations
 
 VOLUME ["/usr/src/paperless/data", \
         "/usr/src/paperless/media", \
