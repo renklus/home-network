@@ -13,4 +13,4 @@ VOLUME ["/usr/src/paperless/data", \
         "/usr/src/paperless/media", \
         "/usr/src/paperless/export"]
 
-ENTRYPOINT ["/init"]
+ENTRYPOINT ["document_exporter"]
