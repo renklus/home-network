@@ -23,7 +23,7 @@ spec:
                 - containerPort: 8000
               env:
                 - name: PAPERLESS_REDIS
-                  value: "redis://paperless-ngx-broker-backup.paperless-ngx-2.svc.k8s2.home.arpa:6379"
+                  value: "redis://localhost:6379"
               volumeMounts:
                 - name: 'paperless-ngx-webserver-backup'
                   mountPath: /usr/src/paperless/data
