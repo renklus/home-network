@@ -68,7 +68,7 @@ spec:
               mountPath: /usr/src/backup-target
           resources:
             limits:
-              cpu: 0.4
+              cpu: 400m
           startupProbe:
             httpGet:
               path: /
