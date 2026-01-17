@@ -23,7 +23,7 @@ spec:
             - name: paperless-ngx-broker-backup
               image: docker.io/library/redis:8.4.0@sha256:47200b04138293fae39737e50878a238b13ec0781083126b1b0c63cf5d992e8d
             - name: paperless-ngx-webserver-backup
-              image: ghcr.io/renklus/paperless-ngx-backup:v15
+              image: ghcr.io/renklus/paperless-ngx-backup:v16
               ports:
                 - containerPort: 8000
               env:
