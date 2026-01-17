@@ -1,5 +1,10 @@
 # Backup: on k8s host: sudo k3s kubectl exec --stdin --tty paperless-ngx-2-webserver-65f8bd67cc-7bkbm -n paperless-ngx-2 -- /bin/bash
 # then run: document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: paperless-ngx-backup
+---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
