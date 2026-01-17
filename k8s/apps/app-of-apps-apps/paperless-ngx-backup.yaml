@@ -4,7 +4,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: paperless-ngx-backup
-  namespace: paperless-ngx-2
+  namespace: paperless-ngx-backup
 spec:
   schedule: "45 1 * * *"
   jobTemplate:
@@ -18,25 +18,12 @@ spec:
             - name: paperless-ngx-broker-backup
               image: docker.io/library/redis:8.4.0@sha256:47200b04138293fae39737e50878a238b13ec0781083126b1b0c63cf5d992e8d
             - name: paperless-ngx-webserver-backup
-              image: ghcr.io/renklus/paperless-ngx-backup:v14
+              image: ghcr.io/renklus/paperless-ngx-backup:v15
               ports:
                 - containerPort: 8000
               env:
                 - name: PAPERLESS_REDIS
                   value: "redis://localhost:6379"
-              volumeMounts:
-                - name: 'paperless-ngx-webserver-backup'
-                  mountPath: /usr/src/paperless/data
-                  subPath: data
-                  readOnly: true
-                  recursiveReadOnly: Enabled
-                - name: 'paperless-ngx-webserver-backup'
-                  mountPath: /usr/src/paperless/media
-                  subPath: media
-                  readOnly: true
-                  recursiveReadOnly: Enabled
-                - name: 'paperless-ngx-webserver-backup-target-backup'
-                  mountPath: /usr/src/backup-target
               resources:
                 limits:
                   cpu: 0.4
@@ -47,24 +34,7 @@ spec:
                 failureThreshold: 60
                 periodSeconds: 10
               imagePullPolicy: IfNotPresent
-              args:
-                # - "document_exporter"
-                - "--use-filename-format"
-                - "--use-folder-prefix"
-                - "--no-thumbnail"
-                - "--delete"
-                - "/usr/src/backup-target"
           restartPolicy: OnFailure
-          volumes:
-            - name: 'paperless-ngx-webserver-backup'
-              persistentVolumeClaim:
-                claimName: 'webserver'
-            - name: 'paperless-ngx-webserver-backup-target-backup'
-              persistentVolumeClaim:
-                claimName: 'backup-target'
-            - name: 'paperless-ngx-broker-backup'
-              persistentVolumeClaim:
-                claimName: 'webserver'
       concurrencyPolicy: Replace
       startingDeadlineSeconds: 600
 
@@ -74,7 +44,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: paperless-ngx-broker-backup
-  namespace: paperless-ngx-2
+  namespace: paperless-ngx-backup
 spec:
   selector:
     app: paperless-ngx-backup
@@ -86,7 +56,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: paperless-ngx-webserver-backup
-  namespace: paperless-ngx-2
+  namespace: paperless-ngx-backup
 spec:
   selector:
     app: paperless-ngx-backup
