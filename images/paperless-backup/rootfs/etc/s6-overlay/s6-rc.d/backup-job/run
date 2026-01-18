@@ -5,7 +5,11 @@ while true; do
     current_minute=$(date +%M)
 
     if [[ "$current_hour" == "01" && "$current_minute" > "30" ]]; then
-        document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target
+        date >> ~/export.log
+        echo exporting >> ~/export.log
+        document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target &>> ~/export.log
+        echo export done >> ~/export.log
+        date >> ~/export.log
         sleep 30m
     else
         sleep 15m
