@@ -1,72 +1,72 @@
-# # Backup: on k8s host: sudo k3s kubectl exec --stdin --tty paperless-ngx-2-webserver-65f8bd67cc-7bkbm -n paperless-ngx-2 -- /bin/bash
-# # then run: document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target
-# apiVersion: v1
-# kind: Namespace
-# metadata:
-#   name: paperless-ngx-backup
-# ---
-# apiVersion: batch/v1
-# kind: CronJob
-# metadata:
-#   name: paperless-ngx-backup
-#   namespace: paperless-ngx-backup
-# spec:
-#   schedule: "45 1 * * *"
-#   jobTemplate:
-#     spec:
-#       template:
-#         metadata:
-#           labels:
-#             app: paperless-ngx-backup
-#         spec:
-#           containers:
-#             - name: paperless-ngx-broker-backup
-#               image: docker.io/library/redis:8.4.0@sha256:47200b04138293fae39737e50878a238b13ec0781083126b1b0c63cf5d992e8d
-#             - name: paperless-ngx-webserver-backup
-#               image: ghcr.io/renklus/paperless-ngx-backup:v16
-#               ports:
-#                 - containerPort: 8000
-#               env:
-#                 - name: PAPERLESS_REDIS
-#                   value: "redis://localhost:6379"
-#               resources:
-#                 limits:
-#                   cpu: 0.4
-#               startupProbe:
-#                 httpGet:
-#                   path: /
-#                   port: 8000
-#                 failureThreshold: 60
-#                 periodSeconds: 10
-#               imagePullPolicy: IfNotPresent
-#           restartPolicy: OnFailure
-#       concurrencyPolicy: Replace
-#       startingDeadlineSeconds: 600
+# Backup: on k8s host: sudo k3s kubectl exec --stdin --tty paperless-ngx-2-webserver-65f8bd67cc-7bkbm -n paperless-ngx-2 -- /bin/bash
+# then run: document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: paperless-ngx-backup
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: paperless-ngx-backup
+  namespace: paperless-ngx-backup
+spec:
+  schedule: "45 1 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: paperless-ngx-backup
+        spec:
+          containers:
+            - name: paperless-ngx-broker-backup
+              image: docker.io/library/redis:8.4.0@sha256:47200b04138293fae39737e50878a238b13ec0781083126b1b0c63cf5d992e8d
+            - name: paperless-ngx-webserver-backup
+              image: ghcr.io/renklus/paperless-ngx-backup:v26
+              ports:
+                - containerPort: 8000
+              env:
+                - name: PAPERLESS_REDIS
+                  value: "redis://localhost:6379"
+              resources:
+                limits:
+                  cpu: 0.4
+              startupProbe:
+                httpGet:
+                  path: /
+                  port: 8000
+                failureThreshold: 60
+                periodSeconds: 10
+              imagePullPolicy: IfNotPresent
+          restartPolicy: OnFailure
+      concurrencyPolicy: Replace
+      startingDeadlineSeconds: 600
 
 
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: paperless-ngx-broker-backup
-#   namespace: paperless-ngx-backup
-# spec:
-#   selector:
-#     app: paperless-ngx-backup
-#   ports:
-#     - name: paperless-ngx-broker-backup
-#       port: 6379
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: paperless-ngx-webserver-backup
-#   namespace: paperless-ngx-backup
-# spec:
-#   selector:
-#     app: paperless-ngx-backup
-#   type: LoadBalancer
-#   ports:
-#     - name: paperless-ngx-webserver-backup
-#       port: 80
-#       targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ngx-broker-backup
+  namespace: paperless-ngx-backup
+spec:
+  selector:
+    app: paperless-ngx-backup
+  ports:
+    - name: paperless-ngx-broker-backup
+      port: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ngx-webserver-backup
+  namespace: paperless-ngx-backup
+spec:
+  selector:
+    app: paperless-ngx-backup
+  type: LoadBalancer
+  ports:
+    - name: paperless-ngx-webserver-backup
+      port: 80
+      targetPort: 8000
