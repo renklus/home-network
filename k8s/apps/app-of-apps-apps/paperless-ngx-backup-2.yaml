@@ -24,6 +24,9 @@ spec:
               image: docker.io/library/redis:8.4.0@sha256:47200b04138293fae39737e50878a238b13ec0781083126b1b0c63cf5d992e8d
             - name: paperless-ngx-webserver-backup
               image: ghcr.io/renklus/paperless-ngx-backup:v26
+              volumeMounts:
+                - name: 'paperless-ngx-backup-target'
+                  mountPath: /usr/src/backup-target
               ports:
                 - containerPort: 8000
               env:
@@ -39,11 +42,26 @@ spec:
                 failureThreshold: 60
                 periodSeconds: 10
               imagePullPolicy: IfNotPresent
+          volumes:
+            - name: 'paperless-ngx-backup-target'
+              persistentVolumeClaim:
+                claimName: 'test-backup-target'
           restartPolicy: OnFailure
       concurrencyPolicy: Replace
       startingDeadlineSeconds: 600
-
-
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: 'test-backup-target'
+  namespace: 'paperless-ngx-backup'
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: 'truenas-nfs-hard'
+  resources:
+    requests:
+      storage: 100Gi
 ---
 apiVersion: v1
 kind: Service
