@@ -1,7 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:best-practices"
+    "config:best-practices",
+    "docker:enableMajor",
+    "group:monorepos",
+    "group:recommended",
+    ":disableRateLimiting"
   ],
   "kubernetes": {
     "managerFilePatterns": [
