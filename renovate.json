@@ -22,6 +22,32 @@
       "/k8s/apps/.+\\.yaml$/"
     ]
   },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileFormat": "yaml",
+      "managerFilePatterns": [
+        "/k8s/apps/.+\\.yaml$/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\n\\s+\\S+?:\\s?\\'(?<currentValue>[^\\s\\@]+)(\\@(?<currentDigest>\\S+))?\\'"
+      ]
+    },
+    {
+      "customType": "regex",
+      "fileFormat": "yaml",
+      "managerFilePatterns": [
+        "k8s/apps/app-of-infrastructure-apps/csi-nfs.yaml"
+      ],
+      "matchStrings": [
+        "(?ms)^(?<indentation>\\s*)repository:\\s*'(?<packageName>[^']+)'[\\s]*?tag:\\s*'(?<currentValue>[^'@]+)(?:@(?<currentDigest>[^']+))?'",
+        "problem when fileFormat missing: https://github.com/renovatebot/renovate/issues/24559"
+      ],
+      "autoReplaceStringTemplate": "{{indentation}}repository: '{{packageName}}'\n{{{indentation}}}tag: '{{newValue}}{{#if isPinDigest}}@{{newDigest}}{{/if}}'",
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker"
+    }
+  ],
   "ignorePaths": [
     "k8s-old1/**",
     "images/**"
