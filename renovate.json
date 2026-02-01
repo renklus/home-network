@@ -7,6 +7,11 @@
     "group:recommended",
     ":disableRateLimiting"
   ],
+  "argocd": {
+    "managerFilePatterns": [
+      "/k8s/apps/.+\\.yaml$/"
+    ]
+  },
   "kubernetes": {
     "managerFilePatterns": [
       "/k8s/.+\\.yaml$/"
