@@ -12,9 +12,14 @@
       "/k8s/apps/.+\\.yaml$/"
     ]
   },
+  "helm-values": {
+    "managerFilePatterns": [
+      "/k8s/apps/.+\\.yaml$/"
+    ]
+  },
   "kubernetes": {
     "managerFilePatterns": [
-      "/k8s/.+\\.yaml$/"
+      "/k8s/apps/.+\\.yaml$/"
     ]
   },
   "ignorePaths": [

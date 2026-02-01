@@ -1,3 +1,4 @@
+## Deprecated - Replace with Headlam, Lens or k9s
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
