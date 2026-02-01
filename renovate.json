@@ -80,7 +80,7 @@
         "k8s/apps/app-of-apps-apps/*.yaml"
       ],
       "matchManagers": [
-        "regex"
+        "custom.regex"
       ],
       "groupName": "{{{replace 'k8s\\/apps\\/app-of-apps-apps\\/(?<FileName>.*)\\.yaml' 'app $<FileName>-regex' packageFile}}}"
     },
@@ -89,7 +89,7 @@
         "k8s/apps/app-of-infrastructure-apps/*.yaml"
       ],
       "matchManagers": [
-        "regex"
+        "custom.regex"
       ],
       "groupName": "{{{replace 'k8s\\/apps\\/app-of-infrastructure-apps\\/(?<FileName>.*)\\.yaml' 'infrastructure $<FileName>-regex' packageFile}}}"
     },
