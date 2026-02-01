@@ -37,7 +37,7 @@
       "customType": "regex",
       "fileFormat": "yaml",
       "managerFilePatterns": [
-        "k8s/apps/app-of-infrastructure-apps/csi-nfs.yaml"
+        "/k8s/apps/.+\\.yaml$/"
       ],
       "matchStrings": [
         "(?ms)^(?<indentation>\\s*)repository:\\s*'(?<packageName>[^']+)'[\\s]*?tag:\\s*'(?<currentValue>[^'@]+)(?:@(?<currentDigest>[^']+))?'",
