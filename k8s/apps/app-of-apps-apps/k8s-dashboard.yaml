@@ -1,61 +1,61 @@
 ## Deprecated - Replace with Headlam, Lens or k9s
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: kubernetes-dashboard
-  namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  destination:
-    namespace: 'kubernetes-dashboard'
-    server: https://kubernetes.default.svc
-  source:
-    path: ''
-    repoURL: https://kubernetes.github.io/dashboard/
-    targetRevision: 7.14.0
-    chart: kubernetes-dashboard
-    helm:
-      parameters:
-        - name: 'kong.proxy.type'
-          value: 'LoadBalancer'
-        - name: 'web.service.type'
-          value: 'LoadBalancer'
-  project: default
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=false
----
-# get login secret with sudo k3s kubectl get secret admin-user -n kubernetes-dashboard -o jsonpath="{.data.token}" | base64 -d
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: admin-user
-  namespace: kubernetes-dashboard
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: admin-user
-#  namespace: kubernetes-dashboard
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-- kind: ServiceAccount
-  name: admin-user
-  namespace: kubernetes-dashboard
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: admin-user
-  namespace: kubernetes-dashboard
-  annotations:
-    kubernetes.io/service-account.name: "admin-user"
-type: kubernetes.io/service-account-token
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: kubernetes-dashboard
+#   namespace: argocd
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io
+# spec:
+#   destination:
+#     namespace: 'kubernetes-dashboard'
+#     server: https://kubernetes.default.svc
+#   source:
+#     path: ''
+#     repoURL: https://kubernetes.github.io/dashboard/
+#     targetRevision: 7.14.0
+#     chart: kubernetes-dashboard
+#     helm:
+#       parameters:
+#         - name: 'kong.proxy.type'
+#           value: 'LoadBalancer'
+#         - name: 'web.service.type'
+#           value: 'LoadBalancer'
+#   project: default
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+#       - ServerSideApply=false
+# ---
+# # get login secret with sudo k3s kubectl get secret admin-user -n kubernetes-dashboard -o jsonpath="{.data.token}" | base64 -d
+# apiVersion: v1
+# kind: ServiceAccount
+# metadata:
+#   name: admin-user
+#   namespace: kubernetes-dashboard
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRoleBinding
+# metadata:
+#   name: admin-user
+# #  namespace: kubernetes-dashboard
+# roleRef:
+#   apiGroup: rbac.authorization.k8s.io
+#   kind: ClusterRole
+#   name: cluster-admin
+# subjects:
+# - kind: ServiceAccount
+#   name: admin-user
+#   namespace: kubernetes-dashboard
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: admin-user
+#   namespace: kubernetes-dashboard
+#   annotations:
+#     kubernetes.io/service-account.name: "admin-user"
+# type: kubernetes.io/service-account-token
