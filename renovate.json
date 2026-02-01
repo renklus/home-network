@@ -37,7 +37,7 @@
       "matchFileNames": [
         "k8s/apps/app-of-infrastructure-apps/*.yaml"
       ],
-      "groupName": "probably need to fall back to manual grouping since this does not work"
+      "groupName": "{{{replace 'k8s\\/apps\\/app-of-infrastructure-apps\\/(?<FileName>.*)\\.yaml' 'infrastructure $<FileName>' packageFile}}}"
     },
     {
       "matchDatasources": [
