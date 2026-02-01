@@ -69,6 +69,8 @@ spec:
           resources:
             limits:
               cpu: 400m
+            requests:
+              cpu: 0m
           startupProbe:
             httpGet:
               path: /
