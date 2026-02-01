@@ -36,7 +36,7 @@ spec:
               tag: 'v1.80.1@sha256:bac9872da2b48e6eebbffb11517a5dcda59958eda51e1e4231eeb5dd516b4a5f'
           image:
             repository: 'public.ecr.aws/docker/library/redis'
-            tag: '8.4.0-alpine@sha256:6cbef353e480a8a6e7f10ec545f13d7d3fa85a212cdcc5ffaf5a1c818b9d3798'
+            tag: '8.4.0-alpine@sha256:4eec4565e45aa0b3966554c866bc73211e281b0b3d89fe9a33c982e6faca809d'
         redis-ha:
           # disabled because renovate cannot dela with it and it is currently unused
           # exporter:
@@ -45,7 +45,7 @@ spec:
           #   tag: 'v1.73.0@sha256:1a8f5e48b2af0fb02d182be3ddd623e7e39881b6464bdb5bf843b1f6d45ed050'
           image:
             repository: 'public.ecr.aws/docker/library/redis'
-            tag: '8.4.0-alpine@sha256:6cbef353e480a8a6e7f10ec545f13d7d3fa85a212cdcc5ffaf5a1c818b9d3798'
+            tag: '8.4.0-alpine@sha256:4eec4565e45aa0b3966554c866bc73211e281b0b3d89fe9a33c982e6faca809d'
         configs:
           cm:
             "users.session.duration": '22h'
