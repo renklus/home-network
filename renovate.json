@@ -57,13 +57,41 @@
       "matchFileNames": [
         "k8s/apps/app-of-apps-apps/*.yaml"
       ],
+      "matchManagers": [
+        "argocd",
+        "kubernetes",
+        "helm-values"
+      ],
       "groupName": "{{{replace 'k8s\\/apps\\/app-of-apps-apps\\/(?<FileName>.*)\\.yaml' 'app $<FileName>' packageFile}}}"
     },
     {
       "matchFileNames": [
         "k8s/apps/app-of-infrastructure-apps/*.yaml"
       ],
+      "matchManagers": [
+        "argocd",
+        "kubernetes",
+        "helm-values"
+      ],
       "groupName": "{{{replace 'k8s\\/apps\\/app-of-infrastructure-apps\\/(?<FileName>.*)\\.yaml' 'infrastructure $<FileName>' packageFile}}}"
+    },
+    {
+      "matchFileNames": [
+        "k8s/apps/app-of-apps-apps/*.yaml"
+      ],
+      "matchManagers": [
+        "regex"
+      ],
+      "groupName": "{{{replace 'k8s\\/apps\\/app-of-apps-apps\\/(?<FileName>.*)\\.yaml' 'app $<FileName>-regex' packageFile}}}"
+    },
+    {
+      "matchFileNames": [
+        "k8s/apps/app-of-infrastructure-apps/*.yaml"
+      ],
+      "matchManagers": [
+        "regex"
+      ],
+      "groupName": "{{{replace 'k8s\\/apps\\/app-of-infrastructure-apps\\/(?<FileName>.*)\\.yaml' 'infrastructure $<FileName>-regex' packageFile}}}"
     },
     {
       "matchDatasources": [
