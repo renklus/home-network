@@ -5,13 +5,16 @@ while true; do
     current_minute=$(date +%M)
 
     if [[ "$current_hour" == "01" && "$current_minute" > "30" ]]; then
-        date >> ~/export.log
-        echo exporting >> ~/export.log
-        document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target &>> ~/export.log
-        echo export done >> ~/export.log
-        date >> ~/export.log
+        date >> /tmp/paperless-backup-job.log
+        echo exporting >> /tmp/paperless-backup-job.log
+        document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target &>> /tmp/paperless-backup-job.log
+        echo export done >> /tmp/paperless-backup-job.log
+        date >> /tmp/paperless-backup-job.log
         sleep 30m
     else
+        date >> /tmp/paperless-backup-job.log
+        echo sleeping >> /tmp/paperless-backup-job.log
         sleep 15m
+        echo done sleeping >> /tmp/paperless-backup-job.log
     fi
 done
