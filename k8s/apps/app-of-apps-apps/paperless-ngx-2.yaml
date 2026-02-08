@@ -83,7 +83,7 @@ spec:
       volumes:
         - name: 'paperless-ngx-2-webserver'
           persistentVolumeClaim:
-            claimName: 'webserver-atime'
+            claimName: 'webserver-atime2'
         - name: 'paperless-ngx-2-webserver-consume'
           persistentVolumeClaim:
             claimName: 'consume'
@@ -174,7 +174,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: 'webserver-atime'
+  name: 'webserver-atime2'
   namespace: 'paperless-ngx-2'
 spec:
   accessModes:
