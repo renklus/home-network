@@ -80,7 +80,7 @@ spec:
       volumes:
         - name: 'paperless-ngx-2-webserver'
           persistentVolumeClaim:
-            claimName: 'webserver'
+            claimName: 'webserver-atime'
         - name: 'paperless-ngx-2-webserver-consume'
           persistentVolumeClaim:
             claimName: 'consume'
@@ -164,6 +164,19 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: 'truenas-nfs-hard'
+  resources:
+    requests:
+      storage: 100Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: 'webserver-atime'
+  namespace: 'paperless-ngx-2'
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: 'truenas-nfs-hard-atime'
   resources:
     requests:
       storage: 100Gi
