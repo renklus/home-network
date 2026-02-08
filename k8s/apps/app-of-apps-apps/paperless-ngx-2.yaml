@@ -66,6 +66,9 @@ spec:
               mountPath: /usr/src/paperless/consume
             - name: 'paperless-ngx-2-webserver-backup-target'
               mountPath: /usr/src/backup-target
+            - name: 'paperless-ngx-2-webserver'
+              mountPath: /tmp/paperless
+              subPath: tmp
           resources:
             limits:
               cpu: 400m
@@ -80,7 +83,7 @@ spec:
       volumes:
         - name: 'paperless-ngx-2-webserver'
           persistentVolumeClaim:
-            claimName: 'webserver-atime'
+            claimName: 'webserver'
         - name: 'paperless-ngx-2-webserver-consume'
           persistentVolumeClaim:
             claimName: 'consume'
