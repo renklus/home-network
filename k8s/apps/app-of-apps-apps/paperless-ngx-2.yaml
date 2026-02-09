@@ -178,19 +178,6 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: 'webserver-atime2'
-  namespace: 'paperless-ngx-2'
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: 'truenas-nfs-hard-atime'
-  resources:
-    requests:
-      storage: 100Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: 'consume'
   namespace: 'paperless-ngx-2'
 spec:
