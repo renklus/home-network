@@ -34,7 +34,7 @@ spec:
             tag: 'v2.17.0'
           nfs:
             repository: 'registry.k8s.io/sig-storage/nfsplugin'
-            tag: 'v4.12.1'
+            tag: 'v4.13.1'
           nodeDriverRegistrar:
             repository: 'registry.k8s.io/sig-storage/csi-node-driver-registrar'
             tag: 'v2.15.0'
