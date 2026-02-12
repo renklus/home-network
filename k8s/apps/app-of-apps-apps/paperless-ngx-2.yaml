@@ -1,4 +1,4 @@
-# Backup: on k8s host: sudo k3s kubectl exec --stdin --tty paperless-ngx-2-webserver-65f8bd67cc-7bkbm -n paperless-ngx-2 -- /bin/bash
+# Backup: on k8s host: sudo k3s kubectl exec --stdin --tty paperless-ngx-2-webserver-595d5df5d7-dfw45 -n paperless-ngx-2 -- /bin/bash
 # then run: document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target
 apiVersion: v1
 kind: Namespace
@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: webserver
-          image: ghcr.io/renklus/paperless-ngx-backup:v28@sha256:babe2a16e44d2cae54eb8665c1f73d2078074472e24ee9469f4c4560971efa6a
+          image: ghcr.io/renklus/paperless-ngx-backup:v30@sha256:329ba9494e9194784f096ad3f3c9ee6d82ea39e7138cfd8de895f6c15e6f2d02
           ports:
             - containerPort: 8000
           env:
@@ -30,6 +30,10 @@ spec:
               value: "https://paperless-ngx-2-webserver.paperless-ngx-2.k8s.renklus.ch"
             - name: PAPERLESS_REDIS
               value: "redis://paperless-ngx-2-broker.paperless-ngx-2.svc.k8s2.home.arpa:6379"
+            - name: USERMAP_UID
+              value: "3003"
+            - name: USERMAP_GID
+              value: "3003"
             - name: PAPERLESS_EMPTY_TRASH_DELAY
               value: "1800" #5 years
             #   # must exist before configuring this setting (could be helpful: https://docs.paperless-ngx.com/advanced_usage/#custom-container-initialization)
@@ -66,6 +70,9 @@ spec:
               mountPath: /usr/src/paperless/consume
             - name: 'paperless-ngx-2-webserver-backup-target'
               mountPath: /usr/src/backup-target
+            - name: 'paperless-ngx-2-webserver'
+              mountPath: /tmp/paperless
+              subPath: tmp
           resources:
             limits:
               cpu: 400m
@@ -105,7 +112,7 @@ spec:
     spec:
       containers:
         - name: broker
-          image: docker.io/library/redis:8.4.0@sha256:47200b04138293fae39737e50878a238b13ec0781083126b1b0c63cf5d992e8d
+          image: docker.io/library/redis:8.4.0@sha256:73dad4271642c5966db88db7a7585fae7cf10b685d1e48006f31e0294c29fdd7
           volumeMounts:
             - name: 'paperless-ngx-2-broker'
               mountPath: '/data'
