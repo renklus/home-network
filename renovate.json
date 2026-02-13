@@ -23,6 +23,9 @@
     ]
   },
   "dockerfile": {
+    "managerFilePatterns": [
+      "/images/.+Dockerfile$/"
+    ]
   },
   "customManagers": [
     {
