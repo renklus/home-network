@@ -45,7 +45,8 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-#---
+# ---
+# #https://pete8s.medium.com/installing-prometheus-on-kubernetes-with-argocd-a4e99580543d
 # apiVersion: argoproj.io/v1alpha1
 # kind: Application
 # metadata:
