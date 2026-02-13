@@ -34,7 +34,7 @@ jobs:
 
       - name: Create image metadata (tags)
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5
         with:
           images: ghcr.io/renklus/paperless-ngx-backup-test
           tags: |
