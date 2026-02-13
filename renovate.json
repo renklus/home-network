@@ -22,7 +22,7 @@
       "/k8s/apps/.+\\.yaml$/"
     ]
   },
-  "docker": {
+  "dockerfile": {
   },
   "customManagers": [
     {
