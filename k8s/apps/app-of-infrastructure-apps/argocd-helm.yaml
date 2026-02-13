@@ -49,6 +49,7 @@ spec:
         configs:
           cm:
             "users.session.duration": '22h'
+            "controller.diff.server.side": 'true'
   destination:
     namespace: argocd
     name: in-cluster
