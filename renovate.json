@@ -95,16 +95,6 @@
       "groupName": "{{{replace 'k8s\\/apps\\/app-of-infrastructure-apps\\/(?<FileName>.*)\\.yaml' 'infrastructure $<FileName> (regex-match)' packageFile}}}"
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
-      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?:-(?<compatibility>.+)(?<build>\\d+)-r(?<revision>\\d+))?$",
-      "matchPackageNames": [
-        "bitnami/{/,}**",
-        "docker.io/bitnami/{/,}**"
-      ]
-    },
-    {
       "matchPackageNames": [
         "plexinc/pms-docker"
       ],
