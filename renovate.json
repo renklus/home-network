@@ -23,9 +23,6 @@
       "/k8s/apps/.+\\.yaml$/"
     ]
   },
-  "dockerfile": {
-    "enabled": true
-  },
   "customManagers": [
     {
       "customType": "regex",
@@ -53,8 +50,7 @@
     }
   ],
   "ignorePaths": [
-    "k8s-old1/**",
-    "images/**"
+    "k8s-old1/**"
   ],
   "packageRules": [
     {
@@ -102,10 +98,6 @@
         "plexinc/pms-docker"
       ],
       "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+\\-[a-z0-9]+)$"
-    },
-    {
-      "matchDatasources": ["docker"],
-      "groupName": "docker-base-updates"
     },
     {
       "matchPackageNames": [
