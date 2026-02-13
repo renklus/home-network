@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: webserver
-          image: ghcr.io/renklus/paperless-ngx-backup:v31@sha256:4efe77b3215eee48ac71a03ddaaf9e5fbe20f2da3fd90a28edd8fa5171fb852f
+          image: ghcr.io/renklus/paperless-ngx-backup:v32@sha256:031791b3a725cb160ed4f908063490565efb5af98190c4c2958ea40d2535a019
           ports:
             - containerPort: 8000
           env:
