@@ -25,7 +25,7 @@ spec:
             tag: 'v2.0.0@sha256:4a95d94e57ad82f6977cd8d4fdcfcfc0b83f02d990e4e7715b688c20970a906d'
           csiSnapshotter:
             repository: 'registry.k8s.io/sig-storage/csi-snapshotter'
-            tag: 'v8.4.0@sha256:c7e0a3718832b6197ce8b29fefb3fed3d84f4fbcdf08f4606140dbec2566501d'
+            tag: 'v8.5.0@sha256:da081c27e8a6d91f36042c1942362d0515ced8d06e18c11b8f893e58c4d6d797'
           externalSnapshotter:
             repository: 'registry.k8s.io/sig-storage/snapshot-controller'
             tag: 'v8.4.0@sha256:b845f4bbc34d70bd84e92f8021f47704df1de3dbabbd8289969651360b39d605'
