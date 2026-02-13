@@ -21,7 +21,9 @@ spec:
         - name: 'server.service.type'
           value: 'LoadBalancer'
         - name: 'server.persistentVolume.storageClass'
-          value: 'truenas-nfs-hard'        
+          value: 'truenas-nfs-hard'
+        - name: 'alertmanager.persistentVolume.storageClass'
+          value: 'truenas-nfs-hard'
       valuesObject:
         configmapReload:
           prometheus:
