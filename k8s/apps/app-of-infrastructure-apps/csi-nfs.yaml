@@ -28,7 +28,7 @@ spec:
             tag: 'v8.4.0@sha256:c7e0a3718832b6197ce8b29fefb3fed3d84f4fbcdf08f4606140dbec2566501d'
           externalSnapshotter:
             repository: 'registry.k8s.io/sig-storage/snapshot-controller'
-            tag: 'v8.4.0@sha256:b845f4bbc34d70bd84e92f8021f47704df1de3dbabbd8289969651360b39d605'
+            tag: 'v8.5.0@sha256:74ca61ab13e978f03cf0f336a607281d15f04cda0a38a881306365473b28a3d8'
           livenessProbe:
             repository: 'registry.k8s.io/sig-storage/livenessprobe'
             tag: 'v2.17.0@sha256:9b75b9ade162136291d5e8f13a1dfc3dec71ee61419b1bfc112e0796ff8a6aa9'
