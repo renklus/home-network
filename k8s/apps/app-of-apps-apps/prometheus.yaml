@@ -45,15 +45,15 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-# https://github.com/prometheus-community/helm-charts/issues/4914
-  ignoreDifferences:
-  - group: apps
-    kind: StatefulSet
-    jqPathExpressions:
-      - .spec.volumeClaimTemplates[0].apiVersion
-      - .spec.volumeClaimTemplates[0].kind
-    # - .spec.volumeClaimTemplates[]?.apiVersion
-    # - .spec.volumeClaimTemplates[]?.kind
+# # https://github.com/prometheus-community/helm-charts/issues/4914
+#   ignoreDifferences:
+#   - group: apps
+#     kind: StatefulSet
+#     jqPathExpressions:
+#       - .spec.volumeClaimTemplates[0].apiVersion
+#       - .spec.volumeClaimTemplates[0].kind
+#     # - .spec.volumeClaimTemplates[]?.apiVersion
+#     # - .spec.volumeClaimTemplates[]?.kind
 # ---
 # #https://pete8s.medium.com/installing-prometheus-on-kubernetes-with-argocd-a4e99580543d
 # apiVersion: argoproj.io/v1alpha1
