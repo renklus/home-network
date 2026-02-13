@@ -59,9 +59,9 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=true
 # workaround for argcod problem (leave until https://github.com/argoproj/argo-cd/issues/11143#issuecomment-1664144190 is done)
-  ignoreDifferences:
-  - group: 'apps'
-    kind: 'StatefulSet'
-    name: 'mongodb'
-    jqPathExpressions:
-      - '.spec.volumeClaimTemplates[]?'
+  # ignoreDifferences:
+  # - group: 'apps'
+  #   kind: 'StatefulSet'
+  #   name: 'mongodb'
+  #   jqPathExpressions:
+  #     - '.spec.volumeClaimTemplates[]?'
