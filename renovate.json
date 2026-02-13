@@ -44,7 +44,7 @@
         "(?ms)^(?<indentation>\\s*)repository:\\s*'(?<packageName>[^']+)'[\\s]*?tag:\\s*'(?<currentValue>[^'@]+)(?:@(?<currentDigest>[^']+))?'",
         "problem when fileFormat missing: https://github.com/renovatebot/renovate/issues/24559"
       ],
-      "autoReplaceStringTemplate": "{{indentation}}repository: '{{packageName}}'\n{{{indentation}}}tag: '{{newValue}}{{#if isPinDigest}}@{{newDigest}}{{/if}}'",
+      "autoReplaceStringTemplate": "{{indentation}}repository: '{{packageName}}'\n{{{indentation}}}tag: '{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}'",
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker"
     }
