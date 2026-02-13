@@ -50,7 +50,7 @@ spec:
           cm:
             "users.session.duration": '22h'
           cmp:
-            "create": 'true'
+            "create": 'false'
             "controller.diff.server.side": 'true'
   destination:
     namespace: argocd
