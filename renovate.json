@@ -76,6 +76,24 @@
       "groupName": "{{{replace 'k8s\\/apps\\/app-of-infrastructure-apps\\/(?<FileName>.*)\\.yaml' 'infrastructure $<FileName>' packageFile}}}"
     },
     {
+      "matchFileNames": [
+        "k8s/apps/app-of-apps-apps/*.yaml"
+      ],
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "groupName": "{{{replace 'k8s\\/apps\\/app-of-apps-apps\\/(?<FileName>.*)\\.yaml' 'app $<FileName> (regex-match)' packageFile}}}"
+    },
+    {
+      "matchFileNames": [
+        "k8s/apps/app-of-infrastructure-apps/*.yaml"
+      ],
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "groupName": "{{{replace 'k8s\\/apps\\/app-of-infrastructure-apps\\/(?<FileName>.*)\\.yaml' 'infrastructure $<FileName> (regex-match)' packageFile}}}"
+    },
+    {
       "matchPackageNames": [
         "plexinc/pms-docker"
       ],
