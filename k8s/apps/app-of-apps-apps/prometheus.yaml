@@ -22,7 +22,7 @@ spec:
           value: 'LoadBalancer'
         - name: 'server.persistentVolume.storageClass'
           value: 'truenas-nfs-hard'
-        - name: 'alertmanager.persistentVolume.storageClass'
+        - name: 'alertmanager.persistance.storageClass'
           value: 'truenas-nfs-hard'
       valuesObject:
         configmapReload:
