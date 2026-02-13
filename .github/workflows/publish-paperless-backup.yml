@@ -42,7 +42,7 @@ jobs:
             type=sha
             type=ref,event=tag
             # unique per-run version so every workflow execution produces a new image
-            type=raw,value=${{ github.run_number }}
+            type=raw,value=build-${{ github.run_number + 30 }}
 
       - name: Build and push image
         uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
