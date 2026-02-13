@@ -5,7 +5,8 @@
     "docker:enableMajor",
     "group:monorepos",
     "group:recommended",
-    ":disableRateLimiting"
+    ":disableRateLimiting",
+    ":docker"
   ],
   "argocd": {
     "managerFilePatterns": [
@@ -20,11 +21,6 @@
   "kubernetes": {
     "managerFilePatterns": [
       "/k8s/apps/.+\\.yaml$/"
-    ]
-  },
-  "dockerfile": {
-    "managerFilePatterns": [
-      "/images/.+Dockerfile$/"
     ]
   },
   "customManagers": [
