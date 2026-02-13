@@ -101,6 +101,10 @@
       "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+\\-[a-z0-9]+)$"
     },
     {
+      "matchDatasources": ["docker"],
+      "groupName": "docker-base-updates"
+    },
+    {
       "matchPackageNames": [
         "ghcr.io/oliver006/redis_exporter"
       ],
