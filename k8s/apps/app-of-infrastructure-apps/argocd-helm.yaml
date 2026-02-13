@@ -49,7 +49,7 @@ spec:
         configs:
           cm:
             "users.session.duration": '22h'
-          cmd-params-cm:
+          cmp:
             "controller.diff.server.side": 'true'
   destination:
     namespace: argocd
