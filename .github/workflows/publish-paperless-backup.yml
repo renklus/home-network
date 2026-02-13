@@ -41,7 +41,7 @@ jobs:
       - name: Compute build tag
         id: calc
         run: |
-          echo "image_version=$((GITHUB_RUN_NUMBER + 21))" >> $GITHUB_OUTPUT
+          echo "image_version=$((GITHUB_RUN_NUMBER + 20))" >> $GITHUB_OUTPUT
         env:
           GITHUB_RUN_NUMBER: ${{ github.run_number }}
 
