@@ -2,49 +2,50 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: prometheus
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: prometheus
-  namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: 'default'
-  source:
-    repoURL: https://prometheus-community.github.io/helm-charts
-    chart: 'prometheus'
-    targetRevision: '28.9.0'
-    helm:
-      parameters:
-        - name: 'server.service.type'
-          value: 'LoadBalancer'
-        - name: 'server.persistentVolume.storageClass'
-          value: 'truenas-nfs-hard'
-        - name: 'alertmanager.persistentVolume.storageClass'
-          value: 'truenas-nfs-hard'
-      valuesObject:
-        configmapReload:
-          prometheus:
-            image:
-              repository: 'quay.io/prometheus-operator/prometheus-config-reloader'
-              tag: 'v0.89.0'
-        server:
-          image:
-            repository: 'quay.io/prometheus/prometheus'
-            # if not set appVersion field from Chart.yaml is used
-            tag: ''
-  destination:
-    namespace: my-prometheus
-    name: in-cluster
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: prometheus
+#   namespace: argocd
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io
+# spec:
+#   project: 'default'
+#   source:
+#     repoURL: https://prometheus-community.github.io/helm-charts
+#     chart: 'prometheus'
+#     targetRevision: '28.9.0'
+#     helm:
+#       parameters:
+#         - name: 'server.service.type'
+#           value: 'LoadBalancer'
+#         - name: 'server.persistentVolume.storageClass'
+#           value: 'truenas-nfs-hard'
+#         - name: 'alertmanager.persistentVolume.storageClass'
+#           value: 'truenas-nfs-hard'
+#       valuesObject:
+#         configmapReload:
+#           prometheus:
+#             image:
+#               repository: 'quay.io/prometheus-operator/prometheus-config-reloader'
+#               tag: 'v0.89.0'
+#         server:
+#           image:
+#             repository: 'quay.io/prometheus/prometheus'
+#             # if not set appVersion field from Chart.yaml is used
+#             tag: ''
+#   destination:
+#     namespace: my-prometheus
+#     name: in-cluster
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+#       - ServerSideApply=true
+#---
 # apiVersion: argoproj.io/v1alpha1
 # kind: Application
 # metadata:
