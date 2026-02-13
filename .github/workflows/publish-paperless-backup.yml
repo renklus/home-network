@@ -21,6 +21,8 @@ jobs:
       attestations: write
       id-token: write
 
+
+# alternative steps without QEMU: https://docs.github.com/en/actions/tutorials/publish-packages/publish-docker-images#publishing-images-to-github-packages
     steps:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
