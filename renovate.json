@@ -23,6 +23,9 @@
       "/k8s/apps/.+\\.yaml$/"
     ]
   },
+  "dockerfile": {
+    "enabled": true
+  },
   "customManagers": [
     {
       "customType": "regex",
