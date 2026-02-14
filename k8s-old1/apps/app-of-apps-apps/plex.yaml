@@ -42,12 +42,13 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-# workaround for argcod problem (leave until https://github.com/argoproj/argo-cd/issues/11143#issuecomment-1664144190 is done)
-  ignoreDifferences:
-  - group: apps
-    kind: StatefulSet
-    jqPathExpressions:
-      - '.spec.volumeClaimTemplates[]?'
+# Should not be necessary anymore because argocd is globally configured with Server-Side Diff
+# # workaround for argcod problem (leave until https://github.com/argoproj/argo-cd/issues/11143#issuecomment-1664144190 is done)
+#   ignoreDifferences:
+#   - group: apps
+#     kind: StatefulSet
+#     jqPathExpressions:
+#       - '.spec.volumeClaimTemplates[]?'
 ---
 apiVersion: secrets.infisical.com/v1alpha1
 kind: InfisicalSecret

@@ -48,11 +48,12 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-  ignoreDifferences:
-    - group: apps
-      kind: StatefulSet
-      jqPathExpressions:
-        - '.spec.volumeClaimTemplates[]?'
+  # Should not be necessary anymore because argocd is globally configured with Server-Side Diff
+  # ignoreDifferences:
+  #   - group: apps
+  #     kind: StatefulSet
+  #     jqPathExpressions:
+  #       - '.spec.volumeClaimTemplates[]?'
 ---
 apiVersion: secrets.infisical.com/v1alpha1
 kind: InfisicalSecret
