@@ -14,7 +14,13 @@ spec:
     helm:
       parameters:
         - name: 'server.service.type'
-          value: 'LoadBalancer'        
+          value: 'LoadBalancer'
+        - name: 'configs.params.create'
+          value: 'true'
+        - name: 'configs.params.controller.diff.server.side'
+          value: 'true'
+        - name: 'configs.cm.users.session.duration'
+          value: '22h'
       valuesObject:
         global:
           image:
@@ -46,13 +52,6 @@ spec:
           image:
             repository: 'public.ecr.aws/docker/library/redis'
             tag: '8.6.0-alpine@sha256:fd83658b0e40e2164617d262f13c02ca9ee9e1e6b276fd2fa06617e09bd5c780'
-        configs:
-          cm:
-            "users.session.duration": '22h'
-            # "controller.diff.server.side": 'true'
-          params:
-            "create": 'true'
-            "controller.diff.server.side": 'true'
   destination:
     namespace: argocd
     name: in-cluster
@@ -63,10 +62,3 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-# ---
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: argocd-cmd-params-cm
-# data:
-#   controller.diff.server.side: "true"
