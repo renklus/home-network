@@ -1,0 +1,23 @@
+# https://github.com/morey-tech/argo-cd-app-of-apps-demo/blob/main/app-of-apps.yaml
+# https://www.youtube.com/watch?v=2pvGL0zqf9o
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-infrastructure-app
+  namespace: argocd
+spec:
+  destination:
+    name: in-cluster
+    namespace: argocd
+  source:
+    path: k8s-rancher/app-of-infrastructure-apps
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  project: default
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
