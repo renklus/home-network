@@ -1,0 +1,66 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: 'default'
+  source:
+    repoURL: https://argoproj.github.io/argo-helm
+    chart: 'argo-cd'
+    targetRevision: '9.4.2'
+    helm:
+      parameters:
+        - name: 'server.service.type'
+          value: 'LoadBalancer'
+      valuesObject:
+        global:
+          image:
+            repository: 'quay.io/argoproj/argocd'
+            tag: 'v3.3.0@sha256:ed0740273790e58154816104c1e1b41fb308a9c516ade3d0f195fa56f1840cca'
+        server:
+          extensions:
+            image:
+              repository: 'quay.io/argoprojlabs/argocd-extension-installer'
+              tag: 'v0.0.9@sha256:d2b43c18ac1401f579f6d27878f45e253d1e3f30287471ae74e6a4315ceb0611'
+        dex:
+          image:
+            repository: 'ghcr.io/dexidp/dex'
+            tag: 'v2.44.0@sha256:5d0656fce7d453c0e3b2706abf40c0d0ce5b371fb0b73b3cf714d05f35fa5f86'
+        redis:
+          exporter:
+            image:
+              repository: 'ghcr.io/oliver006/redis_exporter'
+              tag: 'v1.81.0@sha256:0a0b4058d3698421bf341fc399258fea46df377ac78ed469ba315821b3173b00'
+          image:
+            repository: 'public.ecr.aws/docker/library/redis'
+            tag: '8.6.0-alpine@sha256:fd83658b0e40e2164617d262f13c02ca9ee9e1e6b276fd2fa06617e09bd5c780'
+        redis-ha:
+          # disabled because renovate cannot dela with it and it is currently unused
+          # exporter:
+          #   image: 'ghcr.io/oliver006/redis_exporter'
+          #   # renovate: datasource=docker depName=ghcr.io/oliver006/redis_exporter
+          #   tag: 'v1.73.0@sha256:1a8f5e48b2af0fb02d182be3ddd623e7e39881b6464bdb5bf843b1f6d45ed050'
+          image:
+            repository: 'public.ecr.aws/docker/library/redis'
+            tag: '8.6.0-alpine@sha256:fd83658b0e40e2164617d262f13c02ca9ee9e1e6b276fd2fa06617e09bd5c780'
+        configs:
+          cm:
+            "users.session.duration": '22h'
+          params:
+            "create": 'true'
+            # required for https://github.com/argoproj/argo-cd/issues/11143#issuecomment-1664144190
+            # see also Server-Side Diff: https://argo-cd.readthedocs.io/en/stable/user-guide/diff-strategies/
+            "controller.diff.server.side": 'true'
+  destination:
+    namespace: argocd
+    name: in-cluster
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
