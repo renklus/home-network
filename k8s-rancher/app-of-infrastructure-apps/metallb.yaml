@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: 'default'
+  sources:
+  - repoURL: 'https://metallb.github.io/metallb'
+    chart: 'metallb'
+    targetRevision: '0.15.3'
+    helm:
+      valuesObject:
+        speaker:
+          image:
+            repository: 'quay.io/metallb/speaker'
+            tag: 'v0.15.3@sha256:c6a5b25b2e1fba610a57b2db4bb8141d7c133569d561a8cc29e38ca5113efbc4'
+          frr:
+            image:
+              repository: 'quay.io/frrouting/frr'
+              tag: '10.5.1@sha256:848482643a8d6f56452b659ea68f6138472bb57414a4f295a7c4107a0416269c'
+        controller:
+          image:
+            repository: 'quay.io/metallb/controller'
+            tag: 'v0.15.3@sha256:6698ccc54c380913816ed1fd0758637ec87dd79da419c4ab170a2c26c158ab89'
+  - path: k8s-rancher/app-of-infrastructure-apps/metallb
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  destination:
+    namespace: metallb-system
+    name: in-cluster
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
