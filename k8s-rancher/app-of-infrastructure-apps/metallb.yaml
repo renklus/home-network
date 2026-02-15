@@ -33,6 +33,7 @@ spec:
     name: in-cluster
   syncPolicy:
     automated:
+      enabled: true
       prune: true
       selfHeal: true
     syncOptions:
