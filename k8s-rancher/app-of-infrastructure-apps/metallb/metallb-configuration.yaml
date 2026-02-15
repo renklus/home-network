@@ -17,7 +17,7 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-  - 10.1.1.1-10.1.1.254
+  - 10.1.0.230-10.1.0.245
 ---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
