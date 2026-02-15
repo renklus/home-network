@@ -5,6 +5,8 @@ kind: Application
 metadata:
   name: app-of-infrastructure-app
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   destination:
     name: in-cluster
