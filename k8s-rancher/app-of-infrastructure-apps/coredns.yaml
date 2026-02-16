@@ -18,7 +18,7 @@ metadata:
   name: dns-external
   namespace: kube-system
   annotations:
-    metallb.universe.tf/loadBalancerIPs: 10.1.0.230
+    metallb.universe.tf/loadBalancerIPs: 10.1.0.235
 spec:
   type: LoadBalancer
   selector:
