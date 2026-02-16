@@ -1,34 +1,34 @@
-# adapted from https://www.reddit.com/r/homelab/comments/ipsc4r/howto_k8s_metallb_and_external_dns_access_for/
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: coredns-custom
-  namespace: kube-system
-data:
-  k8s_external.server: |
-    rancher.k8s.renklus.ch:53 {
-        kubernetes
-        k8s_external rancher.k8s.renklus.ch
-    }
----
-# adapted from https://www.reddit.com/r/homelab/comments/ipsc4r/howto_k8s_metallb_and_external_dns_access_for/
-apiVersion: v1
-kind: Service
-metadata:
-  name: dns-external
-  namespace: kube-system
-  annotations:
-    metallb.universe.tf/loadBalancerIPs: 10.1.0.230
-spec:
-  type: LoadBalancer
-  selector:
-    k8s-app: kube-dns
-  ports:
-  - name: "tcp-dns"
-    protocol: TCP
-    port: 53
-    targetPort: dns-tcp
-  - name: "udp-dns"
-    protocol: UDP
-    port: 53
-    targetPort: dns
+# # adapted from https://www.reddit.com/r/homelab/comments/ipsc4r/howto_k8s_metallb_and_external_dns_access_for/
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: coredns-custom
+#   namespace: kube-system
+# data:
+#   k8s_external.server: |
+#     rancher.k8s.renklus.ch:53 {
+#         kubernetes
+#         k8s_external rancher.k8s.renklus.ch
+#     }
+# ---
+# # adapted from https://www.reddit.com/r/homelab/comments/ipsc4r/howto_k8s_metallb_and_external_dns_access_for/
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: dns-external
+#   namespace: kube-system
+#   annotations:
+#     metallb.universe.tf/loadBalancerIPs: 10.1.0.230
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     k8s-app: kube-dns
+#   ports:
+#   - name: "tcp-dns"
+#     protocol: TCP
+#     port: 53
+#     targetPort: dns-tcp
+#   - name: "udp-dns"
+#     protocol: UDP
+#     port: 53
+#     targetPort: dns
