@@ -10,6 +10,7 @@ data:
         kubernetes
         k8s_external rancher.k8s.renklus.ch
     }
+
 ---
 # adapted from https://www.reddit.com/r/homelab/comments/ipsc4r/howto_k8s_metallb_and_external_dns_access_for/
 apiVersion: v1
