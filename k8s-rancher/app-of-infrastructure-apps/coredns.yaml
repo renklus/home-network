@@ -10,7 +10,6 @@ data:
         kubernetes
         k8s_external rancher.k8s.renklus.ch
     }
-
 ---
 # adapted from https://www.reddit.com/r/homelab/comments/ipsc4r/howto_k8s_metallb_and_external_dns_access_for/
 apiVersion: v1
@@ -19,7 +18,8 @@ metadata:
   name: dns-external
   namespace: kube-system
   annotations:
-    metallb.universe.tf/loadBalancerIPs: 10.1.0.235
+    # statically assign IPs at the upper end of the pool because when another service snags it before this one, then this service will not get an IP.
+    metallb.universe.tf/loadBalancerIPs: 10.1.0.245
 spec:
   type: LoadBalancer
   selector:
