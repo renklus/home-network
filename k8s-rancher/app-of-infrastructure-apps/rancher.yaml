@@ -19,7 +19,7 @@ spec:
           value: 'LoadBalancer'
         # no need to specify image tags because the default is same as chart version. Dependabot can just update the chart
   destination:
-    namespace: rancher-my
+    namespace: rancher-my2
     name: in-cluster
   syncPolicy:
     automated:
