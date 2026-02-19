@@ -13,6 +13,10 @@ spec:
     repoURL: https://charts.jetstack.io
     chart: cert-manager
     targetRevision: '1.19.3'
+    helm:
+      parameters:
+        - name: 'crds.enabled'
+          value: 'true'
         # no need to specify image tags because the default is same as chart version. Dependabot can just update the chart
   destination:
     namespace: certmanager-my
