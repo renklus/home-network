@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: coredns-custom
-  namespace: kube-system # must be exactly this namespace
+  namespace: kube-system # must be exactly this namespace to apply to the default coredns installation
 data:
   k8s_external.server: |
     rancher.k8s.renklus.ch:53 {

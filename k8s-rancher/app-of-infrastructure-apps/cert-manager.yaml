@@ -1,30 +1,30 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: cert-manager
-  namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "4"
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: 'default'
-  source:
-    repoURL: https://charts.jetstack.io
-    chart: cert-manager
-    targetRevision: '1.19.3'
-    helm:
-      parameters:
-        - name: 'crds.enabled'
-          value: 'true'
-        # no need to specify image tags because the default is same as chart version. Dependabot can just update the chart
-  destination:
-    namespace: certmanager-my
-    name: in-cluster
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: cert-manager
+#   namespace: argocd
+#   annotations:
+#     argocd.argoproj.io/sync-wave: "4"
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io
+# spec:
+#   project: 'default'
+#   source:
+#     repoURL: https://charts.jetstack.io
+#     chart: cert-manager
+#     targetRevision: '1.19.3'
+#     helm:
+#       parameters:
+#         - name: 'crds.enabled'
+#           value: 'true'
+#         # no need to specify image tags because the default is same as chart version. Dependabot can just update the chart
+#   destination:
+#     namespace: certmanager-my
+#     name: in-cluster
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+#       - ServerSideApply=true
