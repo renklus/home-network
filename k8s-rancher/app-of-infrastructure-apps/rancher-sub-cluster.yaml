@@ -3,8 +3,7 @@ kind: Cluster
 metadata:
   name: sub-cluster
   annotations:
-    {}
-    #  key: string
+    argocd.argoproj.io/sync-wave: "5"
   labels:
     #  key: string
   namespace: fleet-default

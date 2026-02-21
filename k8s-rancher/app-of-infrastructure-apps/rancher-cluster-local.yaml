@@ -3,5 +3,7 @@ kind: Cluster
 metadata:
   name: local
   namespace: fleet-local
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   kubernetesVersion: 'v1.34.3+k3s4'
