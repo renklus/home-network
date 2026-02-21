@@ -16,7 +16,7 @@ spec:
     helm:
       parameters:
         - name: 'service.type'
-          value: 'LoadBalancer'
+          value: 'Ingress'
         - name: 'ingress.enabled'
           value: 'true'
         - name: 'hostname'
