@@ -1,32 +1,32 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: rancher
-  namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "4"
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: 'default'
-  source:
-    repoURL: https://releases.rancher.com/server-charts/stable
-    chart: rancher
-    targetRevision: '2.13.2'
-    helm:
-      parameters:
-        - name: 'service.type'
-          value: 'LoadBalancer'
-        - name: 'hostname'
-          value: 'rancher.rancher-my2.rancher.k8s.renklus.ch'
-        # no need to specify image tags because the default is same as chart version. Dependabot can just update the chart
-  destination:
-    namespace: rancher-my2
-    name: in-cluster
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: rancher
+#   namespace: argocd
+#   annotations:
+#     argocd.argoproj.io/sync-wave: "4"
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io
+# spec:
+#   project: 'default'
+#   source:
+#     repoURL: https://releases.rancher.com/server-charts/stable
+#     chart: rancher
+#     targetRevision: '2.13.2'
+#     helm:
+#       parameters:
+#         - name: 'service.type'
+#           value: 'LoadBalancer'
+#         - name: 'hostname'
+#           value: 'rancher.rancher-my2.rancher.k8s.renklus.ch'
+#         # no need to specify image tags because the default is same as chart version. Dependabot can just update the chart
+#   destination:
+#     namespace: rancher-my2
+#     name: in-cluster
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+#       - ServerSideApply=true
