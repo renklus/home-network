@@ -5,6 +5,8 @@ metadata:
   labels:
     #  key: string
   namespace: fleet-default
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   clusterAgentDeploymentCustomization:
     appendTolerations:
