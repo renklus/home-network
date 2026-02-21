@@ -21,7 +21,7 @@ spec:
           value: 'rancher.rancher-my2.rancher.k8s.renklus.ch'
         # no need to specify image tags because the default is same as chart version. Dependabot can just update the chart
   destination:
-    namespace: cattle-system # does it have to be exactly this namespace?
+    namespace: cattle-system # needs to be exactly this namespace for rancher issuer to work
     name: in-cluster
   syncPolicy:
     automated:
