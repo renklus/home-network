@@ -489,4 +489,3 @@ spec:
 #    clusterName: string
 #  defaultClusterRoleForProjectMembers: string
 #  redeploySystemAgentGeneration: int
-__clone: true
