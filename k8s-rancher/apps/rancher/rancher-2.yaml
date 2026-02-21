@@ -1,0 +1,19 @@
+apiVersion: provisioning.cattle.io/v1
+kind: Cluster
+metadata:
+  name: sub-cluster2
+  labels:
+    #  key: string
+  namespace: fleet-default
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  kubernetesVersion: v1.34.4+k3s1
+  rkeConfig:
+    machineGlobalConfig:
+      disable:
+        - servicelb
+        - traefik
+        - local-storage
+      etcd-expose-metrics: true
+      disable-etcd: false
