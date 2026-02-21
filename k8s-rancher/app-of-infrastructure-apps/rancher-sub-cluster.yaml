@@ -375,11 +375,6 @@ spec:
 #        unhealthyNodeTimeout: string
 #        unhealthyRange: string
 #        workerRole: boolean
-    machineSelectorConfig:
-      - config:
-          protect-kernel-defaults: false
-          selinux: false
-          docker: false
 #      - config:  
 #        machineLabelSelector:
 #          matchExpressions:
