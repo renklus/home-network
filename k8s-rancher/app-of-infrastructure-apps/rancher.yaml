@@ -17,6 +17,8 @@ spec:
       parameters:
         - name: 'service.type'
           value: 'LoadBalancer'
+        - name: 'ingress.enabled'
+          value: 'false'
         - name: 'hostname'
           value: 'rancher.rancher-my2.rancher.k8s.renklus.ch'
         - name: 'replicas'
