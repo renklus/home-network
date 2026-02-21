@@ -479,8 +479,6 @@ spec:
 #        - string
 #    rotateEncryptionKeys:
 #      generation: int
-  machineSelectorConfig:
-    - config: {}
 #  agentEnvVars:
 #    - name: string
 #      value: string
