@@ -292,7 +292,7 @@ spec:
 #      priorityClass:
 #        preemptionPolicy: string
 #        value: int
-  kubernetesVersion: v1.34.3+k3s3
+  kubernetesVersion: v1.34.4+k3s1
   localClusterAuthEndpoint:
     enabled: false
 #    caCerts: string
