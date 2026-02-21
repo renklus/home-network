@@ -6,7 +6,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "4"
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io # might benefit from background delete: https://github.com/argoproj/argo-cd/issues/5724#issuecomment-1041586611
 spec:
   project: 'default'
   source:
