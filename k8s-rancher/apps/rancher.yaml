@@ -9,8 +9,8 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: 'default'
-  source:
-    repoURL: https://releases.rancher.com/server-charts/stable
+  sources:
+  - repoURL: https://releases.rancher.com/server-charts/stable
     chart: rancher
     targetRevision: '2.13.2'
     helm:
@@ -20,10 +20,13 @@ spec:
         - name: 'ingress.enabled'
           value: 'true'
         - name: 'hostname'
-          value: 'rancher.rancher-my2.rancher.k8s.renklus.ch'
+          value: 'rancher.ingress.rancher.k8s.renklus.ch'
         - name: 'replicas'
           value: '1'
         # no need to specify image tags because the default is same as chart version. Dependabot can just update the chart
+  - path: k8s-rancher/apps/rancher
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
   destination:
     namespace: cattle-system # needs to be exactly this namespace for rancher issuer to work
     name: in-cluster

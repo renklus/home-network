@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik
+  namespace: kube-system
+  annotations:
+    # statically assign IPs at the upper end of the pool because when another service snags it before this one, then this service will not get an IP.
+    metallb.universe.tf/loadBalancerIPs: 10.1.0.244
