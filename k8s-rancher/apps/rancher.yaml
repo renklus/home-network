@@ -15,12 +15,12 @@ spec:
     targetRevision: '2.13.2'
     helm:
       parameters:
-        - name: 'service.type'
-          value: 'Ingress'
+        - name: 'service.type' # is this still supported? Setting it to LoadBalancer doesn't seem to make a difference
+          value: ''
         - name: 'ingress.enabled'
           value: 'true'
         - name: 'hostname'
-          value: 'rancher.ingress.rancher.k8s.renklus.ch'
+          value: 'rancher.ingress.rancher.k8s.renklus.ch' # must point to ingress, otherwise Node joining doesn't work
         - name: 'replicas'
           value: '1'
         # no need to specify image tags because the default is same as chart version. Dependabot can just update the chart
