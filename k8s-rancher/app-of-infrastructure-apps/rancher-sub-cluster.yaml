@@ -6,7 +6,6 @@ metadata:
     {}
     #  key: string
   labels:
-    luchr: value
     #  key: string
   namespace: fleet-default
 spec:
