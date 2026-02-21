@@ -4,4 +4,4 @@ metadata:
   name: local
   namespace: fleet-local
 spec:
-  kubernetesVersion: 'v1.34.3+k3s3'
+  kubernetesVersion: 'v1.34.3+k3s4'
