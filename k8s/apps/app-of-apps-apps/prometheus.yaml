@@ -30,11 +30,11 @@ spec:
             image:
               repository: 'quay.io/prometheus-operator/prometheus-config-reloader'
               tag: 'v0.89.0'
-        server:
-          image:
-            repository: 'quay.io/prometheus/prometheus'
-            # if not set appVersion field from Chart.yaml is used
-            tag: ''
+        # Do not set to use same version as chart
+        # server:
+        #   image:
+        #     repository: 'quay.io/prometheus/prometheus'
+        #     tag: ''
   destination:
     namespace: prometheus
     name: in-cluster
