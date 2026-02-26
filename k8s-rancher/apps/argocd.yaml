@@ -22,7 +22,7 @@ spec:
           image:
             repository: 'quay.io/argoproj/argocd'
             tag: 'v3.3.0' # Keep this one as it auto-shows good changenotes in renovate.
-        # do not set these explicitly. The helm chart will update it when it is time.
+        # do not set these explicitly. The helm chart will update it when it is time. (probably not best practice but ok for now)
         # server:
         #   extensions:
         #     image:

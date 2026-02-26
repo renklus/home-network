@@ -19,33 +19,34 @@ spec:
         global:
           image:
             repository: 'quay.io/argoproj/argocd'
-            tag: 'v3.3.1@sha256:3bfe58c706d762acf5da17e8ba4a0e2c6c27374db3275ef628b11184f7b9fab2'
-        server:
-          extensions:
-            image:
-              repository: 'quay.io/argoprojlabs/argocd-extension-installer'
-              tag: 'v0.0.9@sha256:d2b43c18ac1401f579f6d27878f45e253d1e3f30287471ae74e6a4315ceb0611'
-        dex:
-          image:
-            repository: 'ghcr.io/dexidp/dex'
-            tag: 'v2.44.0@sha256:5d0656fce7d453c0e3b2706abf40c0d0ce5b371fb0b73b3cf714d05f35fa5f86'
-        redis:
-          exporter:
-            image:
-              repository: 'ghcr.io/oliver006/redis_exporter'
-              tag: 'v1.81.0@sha256:0a0b4058d3698421bf341fc399258fea46df377ac78ed469ba315821b3173b00'
-          image:
-            repository: 'public.ecr.aws/docker/library/redis'
-            tag: '8.6.0-alpine@sha256:fd83658b0e40e2164617d262f13c02ca9ee9e1e6b276fd2fa06617e09bd5c780'
-        redis-ha:
-          # disabled because renovate cannot dela with it and it is currently unused
-          # exporter:
-          #   image: 'ghcr.io/oliver006/redis_exporter'
-          #   # renovate: datasource=docker depName=ghcr.io/oliver006/redis_exporter
-          #   tag: 'v1.73.0@sha256:1a8f5e48b2af0fb02d182be3ddd623e7e39881b6464bdb5bf843b1f6d45ed050'
-          image:
-            repository: 'public.ecr.aws/docker/library/redis'
-            tag: '8.6.0-alpine@sha256:fd83658b0e40e2164617d262f13c02ca9ee9e1e6b276fd2fa06617e09bd5c780'
+            tag: 'v3.3.1@sha256:3bfe58c706d762acf5da17e8ba4a0e2c6c27374db3275ef628b11184f7b9fab2' # Keep this one as it auto-shows good changenotes in renovate.
+        # do not set these explicitly. The helm chart will update it when it is time. (probably not best practice but ok for now)
+        # server:
+        #   extensions:
+        #     image:
+        #       repository: 'quay.io/argoprojlabs/argocd-extension-installer'
+        #       tag: 'v0.0.9@sha256:d2b43c18ac1401f579f6d27878f45e253d1e3f30287471ae74e6a4315ceb0611'
+        # dex:
+        #   image:
+        #     repository: 'ghcr.io/dexidp/dex'
+        #     tag: 'v2.44.0@sha256:5d0656fce7d453c0e3b2706abf40c0d0ce5b371fb0b73b3cf714d05f35fa5f86'
+        # redis:
+        #   exporter:
+        #     image:
+        #       repository: 'ghcr.io/oliver006/redis_exporter'
+        #       tag: 'v1.81.0@sha256:0a0b4058d3698421bf341fc399258fea46df377ac78ed469ba315821b3173b00'
+        #   image:
+        #     repository: 'public.ecr.aws/docker/library/redis'
+        #     tag: '8.6.0-alpine@sha256:fd83658b0e40e2164617d262f13c02ca9ee9e1e6b276fd2fa06617e09bd5c780'
+        # redis-ha:
+        #   # disabled because renovate cannot dela with it and it is currently unused
+        #   # exporter:
+        #   #   image: 'ghcr.io/oliver006/redis_exporter'
+        #   #   # renovate: datasource=docker depName=ghcr.io/oliver006/redis_exporter
+        #   #   tag: 'v1.73.0@sha256:1a8f5e48b2af0fb02d182be3ddd623e7e39881b6464bdb5bf843b1f6d45ed050'
+        #   image:
+        #     repository: 'public.ecr.aws/docker/library/redis'
+        #     tag: '8.6.0-alpine@sha256:fd83658b0e40e2164617d262f13c02ca9ee9e1e6b276fd2fa06617e09bd5c780'
         configs:
           cm:
             "users.session.duration": '22h'
