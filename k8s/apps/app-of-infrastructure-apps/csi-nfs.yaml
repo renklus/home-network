@@ -15,29 +15,29 @@ spec:
     targetRevision: 4.13.1
     chart: csi-driver-nfs
     helm:
-      valuesObject:
-        image:
-          csiProvisioner:
-            repository: 'registry.k8s.io/sig-storage/csi-provisioner'
-            tag: 'v6.1.1@sha256:d992c36d4ddd6dfa37c81b487e5a673920e1360e2977eb779051df8da1c5787d'
-          csiResizer:
-            repository: 'registry.k8s.io/sig-storage/csi-resizer'
-            tag: 'v2.1.0@sha256:589e525cddef6d768e68da1f0bc9ffd0a24bf3add3dd010648eb7189976fde79'
-          csiSnapshotter:
-            repository: 'registry.k8s.io/sig-storage/csi-snapshotter'
-            tag: 'v8.5.0@sha256:da081c27e8a6d91f36042c1942362d0515ced8d06e18c11b8f893e58c4d6d797'
-          externalSnapshotter:
-            repository: 'registry.k8s.io/sig-storage/snapshot-controller'
-            tag: 'v8.5.0@sha256:74ca61ab13e978f03cf0f336a607281d15f04cda0a38a881306365473b28a3d8'
-          livenessProbe:
-            repository: 'registry.k8s.io/sig-storage/livenessprobe'
-            tag: 'v2.17.0@sha256:9b75b9ade162136291d5e8f13a1dfc3dec71ee61419b1bfc112e0796ff8a6aa9'
-          nfs:
-            repository: 'registry.k8s.io/sig-storage/nfsplugin'
-            tag: 'v4.13.1@sha256:c1ab25922c8ec4d7f1744c272f28a89898bd020152e3942592c022410b544948'
-          nodeDriverRegistrar:
-            repository: 'registry.k8s.io/sig-storage/csi-node-driver-registrar'
-            tag: 'v2.15.0@sha256:11f199f6bec47403b03cb49c79a41f445884b213b382582a60710b8c6fdc316a'
+      # valuesObject:
+      #   image:
+      #     csiProvisioner:
+      #       repository: 'registry.k8s.io/sig-storage/csi-provisioner'
+      #       tag: 'v6.1.1@sha256:d992c36d4ddd6dfa37c81b487e5a673920e1360e2977eb779051df8da1c5787d'
+      #     csiResizer:
+      #       repository: 'registry.k8s.io/sig-storage/csi-resizer'
+      #       tag: 'v2.1.0@sha256:589e525cddef6d768e68da1f0bc9ffd0a24bf3add3dd010648eb7189976fde79'
+      #     csiSnapshotter:
+      #       repository: 'registry.k8s.io/sig-storage/csi-snapshotter'
+      #       tag: 'v8.5.0@sha256:da081c27e8a6d91f36042c1942362d0515ced8d06e18c11b8f893e58c4d6d797'
+      #     externalSnapshotter:
+      #       repository: 'registry.k8s.io/sig-storage/snapshot-controller'
+      #       tag: 'v8.5.0@sha256:74ca61ab13e978f03cf0f336a607281d15f04cda0a38a881306365473b28a3d8'
+      #     livenessProbe:
+      #       repository: 'registry.k8s.io/sig-storage/livenessprobe'
+      #       tag: 'v2.17.0@sha256:9b75b9ade162136291d5e8f13a1dfc3dec71ee61419b1bfc112e0796ff8a6aa9'
+      #     nfs:
+      #       repository: 'registry.k8s.io/sig-storage/nfsplugin'
+      #       tag: 'v4.13.1@sha256:c1ab25922c8ec4d7f1744c272f28a89898bd020152e3942592c022410b544948'
+      #     nodeDriverRegistrar:
+      #       repository: 'registry.k8s.io/sig-storage/csi-node-driver-registrar'
+      #       tag: 'v2.15.0@sha256:11f199f6bec47403b03cb49c79a41f445884b213b382582a60710b8c6fdc316a'
       parameters:
         - name: 'controller.name'
           value: 'csi-nfs-controller'
