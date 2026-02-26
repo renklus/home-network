@@ -29,7 +29,7 @@ spec:
           prometheus:
             image:
               repository: 'quay.io/prometheus-operator/prometheus-config-reloader'
-              tag: 'v0.89.0'
+              tag: 'v0.89.0@sha256:cb4ac6a56555bef0e202bec11e367dfe07ffb241cf4d30566b12b864692607a8'
         # Do not set to use same version as chart
         # server:
         #   image:
