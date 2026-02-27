@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: https://argoproj.github.io/argo-helm
     chart: 'argo-cd'
-    targetRevision: '9.4.2'
+    targetRevision: '9.4.5'
     helm:
       parameters:
         - name: 'server.service.type'
@@ -21,7 +21,7 @@ spec:
         global:
           image:
             repository: 'quay.io/argoproj/argocd'
-            tag: 'v3.3.0' # Keep this one as it auto-shows good changenotes in renovate.
+            tag: 'v3.3.2@sha256:5882f28f7aaeaac397949c4511fdc1ad66c1260af44166ccf7e57aca3d7b9797' # Keep this one as it auto-shows good changenotes in renovate.
         # do not set these explicitly. The helm chart will update it when it is time. (probably not best practice but ok for now)
         # server:
         #   extensions:
