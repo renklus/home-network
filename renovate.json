@@ -57,7 +57,10 @@
         "/k8s/apps/.+\\.yaml$/",
         "/k8s-rancher/apps/.+\\.yaml$/"
       ],
-      "matchStrings": ["kubernetesVersion: \\'?(?<currentValue>[^'\\s]+)\\'?\\s*$"],
+      "matchStrings": [
+        "kubernetesVersion: '(?<currentValue>[^'\\s]+)'\\s*$",
+        "kubernetesVersion: (?<currentValue>[^'\\s]+)\\s*$"
+      ],
       "depNameTemplate": "k3s",
       "versioningTemplate": "regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?<compatibility>\\+k3s)(?<build>\\d+)$",
       "datasourceTemplate": "custom.k3s"
