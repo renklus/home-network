@@ -50,8 +50,27 @@
       "autoReplaceStringTemplate": "{{indentation}}repository: '{{packageName}}'\n{{{indentation}}}tag: '{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}'",
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/k8s/apps/.+\\.yaml$/",
+        "/k8s-rancher/apps/.+\\.yaml$/"
+      ],
+      "matchStrings": ["kubernetesVersion: '?(?<currentValue>[^'\\s])+'?"],
+      "depNameTemplate": "k3s",
+      "versioningTemplate": "semver-coerced",
+      "datasourceTemplate": "custom.k3s"
     }
   ],
+  "customDatasources": {
+    "k3s": {
+      "defaultRegistryUrlTemplate": "https://update.k3s.io/v1-release/channels",
+      "transformTemplates": [
+        "{\"releases\":[{\"version\": $$.(data[id = 'stable'].latest),\"sourceUrl\":\"https://github.com/k3s-io/k3s\",\"changelogUrl\":$join([\"https://github.com/k3s-io/k3s/releases/tag/\",data[id = 'stable'].latest])}],\"sourceUrl\": \"https://github.com/k3s-io/k3s\",\"homepage\": \"https://k3s.io/\"}"
+      ]
+    }
+  },
   "ignorePaths": [
     "k8s-old1/**"
   ],
