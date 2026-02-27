@@ -10,17 +10,20 @@
   ],
   "argocd": {
     "managerFilePatterns": [
-      "/k8s/apps/.+\\.yaml$/"
+      "/k8s/apps/.+\\.yaml$/",
+      "/k8s-rancher/apps/.+\\.yaml$/"
     ]
   },
   "helm-values": {
     "managerFilePatterns": [
-      "/k8s/apps/.+\\.yaml$/"
+      "/k8s/apps/.+\\.yaml$/",
+      "/k8s-rancher/apps/.+\\.yaml$/"
     ]
   },
   "kubernetes": {
     "managerFilePatterns": [
-      "/k8s/apps/.+\\.yaml$/"
+      "/k8s/apps/.+\\.yaml$/",
+      "/k8s-rancher/apps/.+\\.yaml$/"
     ]
   },
   "customManagers": [
@@ -55,43 +58,27 @@
   "packageRules": [
     {
       "matchFileNames": [
-        "k8s/apps/app-of-apps-apps/*.yaml"
+        "k8s/apps/app-of-apps-apps/*.yaml",
+        "k8s/apps/app-of-infrastructure-apps/*.yaml",
+        "k8s-rancher/apps/*.yaml"
       ],
       "matchManagers": [
         "argocd",
         "kubernetes",
         "helm-values"
       ],
-      "groupName": "{{{replace 'k8s\\/apps\\/app-of-apps-apps\\/(?<FileName>.*)\\.yaml' 'app $<FileName>' packageFile}}}"
+      "groupName": "{{{replace 'k8s.*\\/(?<FileName>[^/]*)\\.yaml' 'app $<FileName>' packageFile}}}"
     },
     {
       "matchFileNames": [
-        "k8s/apps/app-of-infrastructure-apps/*.yaml"
-      ],
-      "matchManagers": [
-        "argocd",
-        "kubernetes",
-        "helm-values"
-      ],
-      "groupName": "{{{replace 'k8s\\/apps\\/app-of-infrastructure-apps\\/(?<FileName>.*)\\.yaml' 'infrastructure $<FileName>' packageFile}}}"
-    },
-    {
-      "matchFileNames": [
-        "k8s/apps/app-of-apps-apps/*.yaml"
+        "k8s/apps/app-of-apps-apps/*.yaml",
+        "k8s/apps/app-of-infrastructure-apps/*.yaml",
+        "k8s-rancher/apps/*.yaml"
       ],
       "matchManagers": [
         "custom.regex"
       ],
-      "groupName": "{{{replace 'k8s\\/apps\\/app-of-apps-apps\\/(?<FileName>.*)\\.yaml' 'app $<FileName> (regex-match)' packageFile}}}"
-    },
-    {
-      "matchFileNames": [
-        "k8s/apps/app-of-infrastructure-apps/*.yaml"
-      ],
-      "matchManagers": [
-        "custom.regex"
-      ],
-      "groupName": "{{{replace 'k8s\\/apps\\/app-of-infrastructure-apps\\/(?<FileName>.*)\\.yaml' 'infrastructure $<FileName> (regex-match)' packageFile}}}"
+      "groupName": "{{{replace 'k8s.*\\/(?<FileName>[^/]*)\\.yaml' 'app $<FileName> (regex-match)' packageFile}}}"
     },
     {
       "matchPackageNames": [
