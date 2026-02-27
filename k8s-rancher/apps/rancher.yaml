@@ -12,7 +12,7 @@ spec:
   sources:
   - repoURL: https://releases.rancher.com/server-charts/stable
     chart: rancher
-    targetRevision: '2.13.2'
+    targetRevision: '2.13.3'
     helm:
       parameters:
         - name: 'service.type' # is this still supported? Setting it to LoadBalancer doesn't seem to make a difference
