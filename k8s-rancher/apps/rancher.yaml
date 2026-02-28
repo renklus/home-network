@@ -1,10 +1,20 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fleet-default
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fleet-local
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: rancher
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "4"
+    argocd.argoproj.io/sync-wave: "2"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -16,6 +26,7 @@ spec:
     helm:
       parameters:
         # I managed to join new nodes only when this is at default (Ingress)
+        # Do not keep empty value as this is a diff in argo-cd
         # - name: 'service.type'
         #   value: ''
         - name: 'ingress.enabled'
@@ -37,5 +48,5 @@ spec:
       prune: true
       selfHeal: false
     syncOptions:
-      - CreateNamespace=true
+      - CreateNamespace=false # if argo-cd manages the namespace fleet-* with ServerSideApply=true then it will be in a endless sync-war with rancher
       - ServerSideApply=true
