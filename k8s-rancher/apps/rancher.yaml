@@ -15,8 +15,9 @@ spec:
     targetRevision: '2.13.3'
     helm:
       parameters:
-        - name: 'service.type' # is this still supported? Setting it to LoadBalancer doesn't seem to make a difference
-          value: ''
+        # I managed to join new nodes only when this is at default (Ingress)
+        # - name: 'service.type'
+        #   value: ''
         - name: 'ingress.enabled'
           value: 'true'
         - name: 'hostname'
