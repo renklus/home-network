@@ -18,3 +18,6 @@ spec:
         - local-storage
       etcd-expose-metrics: true
       disable-etcd: false
+      tls-san:
+        - k8s02d.dev.renklus.ch
+        - prod.k8s.renklus.ch
