@@ -1,10 +1,10 @@
-apiVersion: provisioning.cattle.io/v1
-kind: Cluster
-metadata:
-  name: local
-  namespace: fleet-local
-  annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+# apiVersion: provisioning.cattle.io/v1
+# kind: Cluster
+# metadata:
+#   name: local
+#   namespace: fleet-local
+#   annotations:
+#     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 
-spec:
-  kubernetesVersion: 'v1.34.4+k3s1'
+# spec:
+#   kubernetesVersion: 'v1.34.4+k3s1'

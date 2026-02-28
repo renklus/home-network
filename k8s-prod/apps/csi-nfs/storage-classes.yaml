@@ -1,0 +1,41 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: truenas-nfs-soft
+  namespace: 'csi-nfs'
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 'app03l.dev.renklus.ch'
+  share: '/mnt/hdd/general/k8s'
+  subdir: 'prod--${pvc.metadata.namespace}--${pvc.metadata.name}'
+  # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
+  # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
+  # csi.storage.k8s.io/provisioner-secret-namespace: "default"
+reclaimPolicy: 'Delete'
+volumeBindingMode: 'Immediate'
+allowVolumeExpansion: true
+mountOptions:
+  - soft # soft means the consuming application will receive an error if the NFS server is not reachable
+  - noatime
+  - nfsvers=4.2
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: truenas-nfs-hard
+  namespace: 'csi-nfs'
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 'app03l.dev.renklus.ch'
+  share: '/mnt/hdd/general/k8s'
+  subdir: 'prod--${pvc.metadata.namespace}--${pvc.metadata.name}'
+  # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
+  # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
+  # csi.storage.k8s.io/provisioner-secret-namespace: "default"
+reclaimPolicy: 'Delete'
+volumeBindingMode: 'Immediate'
+allowVolumeExpansion: true
+mountOptions:
+  - hard # hard means the consuming application will be interrupted until the NFS server is back online
+  - noatime
+  - nfsvers=4.2
