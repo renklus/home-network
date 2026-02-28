@@ -6,7 +6,8 @@ metadata:
     #  key: string
   namespace: fleet-default
   annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "3"
+    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true # maybe this is not needed if it is in a syncwave after rancher main chart
 spec:
   kubernetesVersion: 'v1.34.4+k3s1'
   rkeConfig:
