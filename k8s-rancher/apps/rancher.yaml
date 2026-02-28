@@ -34,9 +34,9 @@ spec:
     name: in-cluster
   syncPolicy:
     automated:
-      enabled: false
+      enabled: true
       prune: true
-      selfHeal: false
+      selfHeal: true
     syncOptions:
       - CreateNamespace=false # if argo-cd manages the namespace fleet-* with ServerSideApply=true then it will be in a endless sync-war with rancher (https://github.com/argoproj/argo-cd/issues/14666#issuecomment-1715538502)
       - ServerSideApply=true
