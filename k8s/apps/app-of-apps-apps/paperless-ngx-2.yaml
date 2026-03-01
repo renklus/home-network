@@ -1,202 +1,202 @@
-# # Backup: on k8s host: sudo k3s kubectl exec --stdin --tty paperless-ngx-2-webserver-595d5df5d7-dfw45 -n paperless-ngx-2 -- /bin/bash
-# # then run: document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target
-# apiVersion: v1
-# kind: Namespace
-# metadata:
-#   name: paperless-ngx-2
-# ---
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: paperless-ngx-2-webserver
-#   namespace: paperless-ngx-2
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: paperless-ngx-2-webserver
-#   template:
-#     metadata:
-#       labels:
-#         app: paperless-ngx-2-webserver
-#     spec:
-#       containers:
-#         - name: webserver
-#           image: ghcr.io/renklus/paperless-ngx-backup:v33@sha256:01c6570fe1c5f32b40c9fa40b74dfcb2a8b946fb85c7665b4797f6eb56bb67da
-#           ports:
-#             - containerPort: 8000
-#           env:
-#             - name: PAPERLESS_URL
-#               value: "https://paperless-ngx-2-webserver.paperless-ngx-2.k8s.renklus.ch"
-#             - name: PAPERLESS_REDIS
-#               value: "redis://paperless-ngx-2-broker.paperless-ngx-2.svc.k8s2.home.arpa:6379"
-#             - name: USERMAP_UID
-#               value: "3003"
-#             - name: USERMAP_GID
-#               value: "3003"
-#             - name: PAPERLESS_EMPTY_TRASH_DELAY
-#               value: "1800" #5 years
-#             #   # must exist before configuring this setting (could be helpful: https://docs.paperless-ngx.com/advanced_usage/#custom-container-initialization)
-#             # - name: PAPERLESS_EMPTY_TRASH_DIR
-#             #   value: "/usr/src/paperless/trash-empty-dir" # storage of PDFs after trash was emptied
-#             - name: PAPERLESS_FILENAME_FORMAT
-#               value: "{{ created_year }}/{{ correspondent }}/{{ created }} - {{ title }} - {{ doc_pk }}"
-#             #   # https://docs.paperless-ngx.com/configuration/#PAPERLESS_ENABLE_FLOWER
-#             - name: PAPERLESS_WORKER_TIMEOUT
-#               value: "7200" # default: 1800 seconds
-#             - name: PAPERLESS_ENABLE_FLOWER
-#               value: "SET"
-#             - name: PAPERLESS_CONSUMER_POLLING
-#               value: "30" # seconds
-#             - name: PAPERLESS_CONSUMER_POLLING_RETRY_COUNT
-#               value: "10"
-#             - name: PAPERLESS_OCR_LANGUAGE
-#               value: "deu+eng"
-#             - name: PAPERLESS_TIME_ZONE
-#               value: "Europe/Zurich"
-#             - name: PAPERLESS_DATE_PARSER_LANGUAGES
-#               value: "de-CH+en-CH"
-#             #   # set to birth date. Do through hashicorp for privacy
-#             # - name: PAPERLESS_IGNORE_DATES
-#             #   value: ""
-#           volumeMounts:
-#             - name: 'paperless-ngx-2-webserver'
-#               mountPath: /usr/src/paperless/data
-#               subPath: data
-#             - name: 'paperless-ngx-2-webserver'
-#               mountPath: /usr/src/paperless/media
-#               subPath: media
-#             - name: 'paperless-ngx-2-webserver-consume'
-#               mountPath: /usr/src/paperless/consume
-#             - name: 'paperless-ngx-2-webserver-backup-target'
-#               mountPath: /usr/src/backup-target
-#             - name: 'paperless-ngx-2-webserver'
-#               mountPath: /tmp/paperless
-#               subPath: tmp
-#           resources:
-#             limits:
-#               cpu: 400m
-#             requests:
-#               cpu: 0m
-#           startupProbe:
-#             httpGet:
-#               path: /
-#               port: 8000
-#             failureThreshold: 60
-#             periodSeconds: 10
-#       volumes:
-#         - name: 'paperless-ngx-2-webserver'
-#           persistentVolumeClaim:
-#             claimName: 'webserver'
-#         - name: 'paperless-ngx-2-webserver-consume'
-#           persistentVolumeClaim:
-#             claimName: 'consume'
-#         - name: 'paperless-ngx-2-webserver-backup-target'
-#           persistentVolumeClaim:
-#             claimName: 'backup-target'
-# ---
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: paperless-ngx-2-broker
-#   namespace: paperless-ngx-2
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: paperless-ngx-2-broker
-#   template:
-#     metadata:
-#       labels:
-#         app: paperless-ngx-2-broker
-#     spec:
-#       containers:
-#         - name: broker
-#           image: docker.io/library/redis:8.6.1@sha256:5cb00b0f236e286254ce9f3eea989b00bb69d04fb9b6c9a9d0b07e588e49f44e
-#           volumeMounts:
-#             - name: 'paperless-ngx-2-broker'
-#               mountPath: '/data'
-#               subPath: 'redisdata'
-#       volumes:
-#         - name: 'paperless-ngx-2-broker'
-#           persistentVolumeClaim:
-#             claimName: 'webserver'
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: paperless-ngx-2-broker
-#   namespace: paperless-ngx-2
-# spec:
-#   selector:
-#     app: paperless-ngx-2-broker
-#   ports:
-#     - name: paperless-ngx-2-broker
-#       port: 6379
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: paperless-ngx-2-webserver
-#   namespace: paperless-ngx-2
-# spec:
-#   selector:
-#     app: paperless-ngx-2-webserver
-#   type: LoadBalancer
-#   ports:
-#     - name: paperless-ngx-2-webserver
-#       port: 80
-#       targetPort: 8000
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: paperless-ngx-2-flower
-#   namespace: paperless-ngx-2
-# spec:
-#   selector:
-#     app: paperless-ngx-2-webserver
-#   type: LoadBalancer
-#   ports:
-#     - name: paperless-ngx-2-flower
-#       port: 80
-#       targetPort: 5555
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: 'webserver'
-#   namespace: 'paperless-ngx-2'
-# spec:
-#   accessModes:
-#     - ReadWriteMany
-#   storageClassName: 'truenas-nfs-hard-2'
-#   resources:
-#     requests:
-#       storage: 100Gi
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: 'consume'
-#   namespace: 'paperless-ngx-2'
-# spec:
-#   accessModes:
-#     - ReadWriteMany
-#   storageClassName: 'truenas-nfs-hard-2'
-#   resources:
-#     requests:
-#       storage: 5Gi
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: 'backup-target'
-#   namespace: 'paperless-ngx-2'
-# spec:
-#   accessModes:
-#     - ReadWriteMany
-#   storageClassName: 'truenas-nfs-hard-2'
-#   resources:
-#     requests:
-#       storage: 100Gi
+# Backup: on k8s host: sudo k3s kubectl exec --stdin --tty paperless-ngx-2-webserver-595d5df5d7-dfw45 -n paperless-ngx-2 -- /bin/bash
+# then run: document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: paperless-ngx-2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paperless-ngx-2-webserver
+  namespace: paperless-ngx-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paperless-ngx-2-webserver
+  template:
+    metadata:
+      labels:
+        app: paperless-ngx-2-webserver
+    spec:
+      containers:
+        - name: webserver
+          image: ghcr.io/renklus/paperless-ngx-backup:v33@sha256:01c6570fe1c5f32b40c9fa40b74dfcb2a8b946fb85c7665b4797f6eb56bb67da
+          ports:
+            - containerPort: 8000
+          env:
+            - name: PAPERLESS_URL
+              value: "https://paperless-ngx-2-webserver.paperless-ngx-2.k8s.renklus.ch"
+            - name: PAPERLESS_REDIS
+              value: "redis://paperless-ngx-2-broker.paperless-ngx-2.svc.k8s2.home.arpa:6379"
+            - name: USERMAP_UID
+              value: "3003"
+            - name: USERMAP_GID
+              value: "3003"
+            - name: PAPERLESS_EMPTY_TRASH_DELAY
+              value: "1800" #5 years
+            #   # must exist before configuring this setting (could be helpful: https://docs.paperless-ngx.com/advanced_usage/#custom-container-initialization)
+            # - name: PAPERLESS_EMPTY_TRASH_DIR
+            #   value: "/usr/src/paperless/trash-empty-dir" # storage of PDFs after trash was emptied
+            - name: PAPERLESS_FILENAME_FORMAT
+              value: "{{ created_year }}/{{ correspondent }}/{{ created }} - {{ title }} - {{ doc_pk }}"
+            #   # https://docs.paperless-ngx.com/configuration/#PAPERLESS_ENABLE_FLOWER
+            - name: PAPERLESS_WORKER_TIMEOUT
+              value: "7200" # default: 1800 seconds
+            - name: PAPERLESS_ENABLE_FLOWER
+              value: "SET"
+            - name: PAPERLESS_CONSUMER_POLLING
+              value: "30" # seconds
+            - name: PAPERLESS_CONSUMER_POLLING_RETRY_COUNT
+              value: "10"
+            - name: PAPERLESS_OCR_LANGUAGE
+              value: "deu+eng"
+            - name: PAPERLESS_TIME_ZONE
+              value: "Europe/Zurich"
+            - name: PAPERLESS_DATE_PARSER_LANGUAGES
+              value: "de-CH+en-CH"
+            #   # set to birth date. Do through hashicorp for privacy
+            # - name: PAPERLESS_IGNORE_DATES
+            #   value: ""
+          volumeMounts:
+            - name: 'paperless-ngx-2-webserver'
+              mountPath: /usr/src/paperless/data
+              subPath: data
+            - name: 'paperless-ngx-2-webserver'
+              mountPath: /usr/src/paperless/media
+              subPath: media
+            - name: 'paperless-ngx-2-webserver-consume'
+              mountPath: /usr/src/paperless/consume
+            - name: 'paperless-ngx-2-webserver-backup-target'
+              mountPath: /usr/src/backup-target
+            - name: 'paperless-ngx-2-webserver'
+              mountPath: /tmp/paperless
+              subPath: tmp
+          resources:
+            limits:
+              cpu: 400m
+            requests:
+              cpu: 0m
+          startupProbe:
+            httpGet:
+              path: /
+              port: 8000
+            failureThreshold: 60
+            periodSeconds: 10
+      volumes:
+        - name: 'paperless-ngx-2-webserver'
+          persistentVolumeClaim:
+            claimName: 'webserver'
+        - name: 'paperless-ngx-2-webserver-consume'
+          persistentVolumeClaim:
+            claimName: 'consume'
+        - name: 'paperless-ngx-2-webserver-backup-target'
+          persistentVolumeClaim:
+            claimName: 'backup-target'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paperless-ngx-2-broker
+  namespace: paperless-ngx-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paperless-ngx-2-broker
+  template:
+    metadata:
+      labels:
+        app: paperless-ngx-2-broker
+    spec:
+      containers:
+        - name: broker
+          image: docker.io/library/redis:8.6.1@sha256:5cb00b0f236e286254ce9f3eea989b00bb69d04fb9b6c9a9d0b07e588e49f44e
+          volumeMounts:
+            - name: 'paperless-ngx-2-broker'
+              mountPath: '/data'
+              subPath: 'redisdata'
+      volumes:
+        - name: 'paperless-ngx-2-broker'
+          persistentVolumeClaim:
+            claimName: 'webserver'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ngx-2-broker
+  namespace: paperless-ngx-2
+spec:
+  selector:
+    app: paperless-ngx-2-broker
+  ports:
+    - name: paperless-ngx-2-broker
+      port: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ngx-2-webserver
+  namespace: paperless-ngx-2
+spec:
+  selector:
+    app: paperless-ngx-2-webserver
+  type: LoadBalancer
+  ports:
+    - name: paperless-ngx-2-webserver
+      port: 80
+      targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ngx-2-flower
+  namespace: paperless-ngx-2
+spec:
+  selector:
+    app: paperless-ngx-2-webserver
+  type: LoadBalancer
+  ports:
+    - name: paperless-ngx-2-flower
+      port: 80
+      targetPort: 5555
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: 'webserver'
+  namespace: 'paperless-ngx-2'
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: 'truenas-nfs-hard-2'
+  resources:
+    requests:
+      storage: 100Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: 'consume'
+  namespace: 'paperless-ngx-2'
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: 'truenas-nfs-hard-2'
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: 'backup-target'
+  namespace: 'paperless-ngx-2'
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: 'truenas-nfs-hard-2'
+  resources:
+    requests:
+      storage: 100Gi
