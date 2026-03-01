@@ -59,7 +59,7 @@ metadata:
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: truenas-nfs-soft
+  name: truenas-nfs-soft-2
   namespace: 'csi-nfs'
 provisioner: nfs.csi.k8s.io
 parameters:
@@ -80,7 +80,7 @@ mountOptions:
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: truenas-nfs-hard
+  name: truenas-nfs-hard-2
   namespace: 'csi-nfs'
 provisioner: nfs.csi.k8s.io
 parameters:
