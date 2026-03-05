@@ -32,5 +32,5 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=false # attempt to get cert-manager out of endless sync
+      - CreateNamespace=false # attempt to get cert-manager out of endless sync - looks good for now
       - ServerSideApply=true
