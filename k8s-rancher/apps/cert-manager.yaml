@@ -1,3 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cert-manager
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -27,5 +32,5 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+      - CreateNamespace=false # attempt to get cert-manager out of endless sync
       - ServerSideApply=true
