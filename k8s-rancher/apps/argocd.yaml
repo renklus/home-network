@@ -84,13 +84,23 @@ metadata:
 type: Opaque
 stringData:
   name: prod-cluster
-  server: https://k8s02d.dev.renklus.ch
+  server: https://rancher.ingress.rancher.k8s.renklus.ch/k8s/clusters/c-m-mllxsfhr
   config: |
     {
-      "username": "my-argocd-service",
-      "password": "123456789123",
+      "bearerToken": "<BEARER_TOKEN_FROM_SERVICE_ACCOUNT>",
       "tlsClientConfig": {
         "insecure": true,
-        "caData": ""
+        "caData": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJ2VENDQ\
+          VdPZ0F3SUJBZ0lCQURBS0JnZ3Foa2pPUFFRREFqQkdNUnd3R2dZRFZRUUtFeE5rZVc1aGJXbGoKY\
+          kdsemRHVnVaWEl0YjNKbk1TWXdKQVlEVlFRRERCMWtlVzVoYldsamJHbHpkR1Z1WlhJdFkyRkFNV\
+          GMzTWpJNQpNREkwTVRBZUZ3MHlOakF5TWpneE16VXdOREZhRncwek5qQXlNall4TXpVd05ERmFNR\
+          Vl4SERBYUJnTlZCQW9UCkUyUjVibUZ0YVdOc2FYTjBaVzVsY2kxdmNtY3hKakFrQmdOVkJBTU1IV\
+          1I1Ym1GdGFXTnNhWE4wWlc1bGNpMWoKWVVBeE56Y3lNamt3TWpReE1Ga3dFd1lIS29aSXpqMENBU\
+          VlJS29aSXpqMERBUWNEUWdBRXJESEdYYlBWT3dZcApmSzFMWUV5OW41bkM4S25kVEIvT2NBNzl0Z\
+          mJkdHc1cUFVcjluSzNkZXpJK0Y4cU5UeXpkL1FNSXlTcU9yUU5rCmdxa2ZQOGJDZjZOQ01FQXdEZ\
+          1lEVlIwUEFRSC9CQVFEQWdLa01BOEdBMVVkRXdFQi93UUZNQU1CQWY4d0hRWUQKVlIwT0JCWUVGQ\
+          XMrZndPSlE0WkQvMFFNQS8rOFFyWG03T1A2TUFvR0NDcUdTTTQ5QkFNQ0EwZ0FNRVVDSVFERQpKU\
+          VpBcEdOa3hmM0xNS09qVTAyaGkwUkU2dUlWVXdxRTJyRDFpNVVlVkFJZ1piWU5xWWFaVk8rWG03e\
+          TgwMjdCCmNEOS9LZE1HUEdGNFhSMEd0RGdKVThBPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0t"
       }
     }
