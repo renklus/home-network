@@ -74,3 +74,23 @@ spec:
       - ServerSideApply=true
 
 # Manage sub-clusters: https://gist.github.com/janeczku/b16154194f7f03f772645303af8e9f80
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-argocd-service
+  labels:
+    argocd.argoproj.io/secret-type: cluster
+type: Opaque
+stringData:
+  name: prod-cluster
+  server: https://k8s02d.dev.renklus.ch
+  config: |
+    {
+      "username": "my-argocd-service",
+      "password": "123456789123",
+      "tlsClientConfig": {
+        "insecure": true,
+        "caData": ""
+      }
+    }

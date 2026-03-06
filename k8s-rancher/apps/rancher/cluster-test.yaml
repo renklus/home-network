@@ -1,0 +1,23 @@
+apiVersion: provisioning.cattle.io/v1
+kind: Cluster
+metadata:
+  name: test-cluster
+  labels:
+    #  key: string
+  namespace: fleet-default
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true # maybe this is not needed if it is in a syncwave after rancher main chart
+spec:
+  kubernetesVersion: 'v1.34.5+k3s1'
+  rkeConfig:
+    machineGlobalConfig:
+      disable:
+        - servicelb
+        - traefik
+        - local-storage
+      etcd-expose-metrics: true
+      disable-etcd: false
+      tls-san:
+        - k8s03d.dev.renklus.ch
+        - test.k8s.renklus.ch
