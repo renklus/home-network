@@ -84,8 +84,8 @@ metadata:
 type: Opaque
 stringData:
   name: prod-cluster-my
-  server: https://rancher.cattle-system.svc.cluster.local/k8s/clusters/c-m-s5fnbx55
-# does not work:  server: https://rancher.ingress.rancher.k8s.renklus.ch/k8s/clusters/c-m-s5fnbx55
+# this format also works:  server: https://rancher.cattle-system.svc.cluster.local/k8s/clusters/c-m-s5fnbx55
+  server: https://rancher.ingress.rancher.k8s.renklus.ch/k8s/clusters/c-m-s5fnbx55
 # When making this config secure and automated then consult: https://gist.github.com/janeczku/b16154194f7f03f772645303af8e9f80 (a copy is in this repo as /docs/k8s-rancher-cluster-connection.md)
 # currently: take bearer token and server URL from kubeconfig (downloaded from Rancher UI)
 # maybe also useful: https://web.archive.org/web/20251214083235/https://mgior.com/posts/k3s-argocd/
