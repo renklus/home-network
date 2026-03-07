@@ -84,6 +84,24 @@ metadata:
 type: Opaque
 stringData:
   name: prod-cluster-my
+  server: https://rancher.cattle-system.svc.cluster.local/k8s/clusters/c-m-mllxsfhr
+  config: |
+    {
+      "bearerToken": "kubeconfig-user-vv5cp9l424:55hdb6mktlrm8rp4sx2nhgskd4h24zr6j2sl8fqmwqpxv5bk6qcqt6",
+      "tlsClientConfig": {
+        "insecure": true
+      }
+    }
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: prod-cluster
+  labels:
+    argocd.argoproj.io/secret-type: cluster
+type: Opaque
+stringData:
+  name: prod-cluster-my
   server: https://k8s02d.dev.renklus.ch
   config: |
     {
