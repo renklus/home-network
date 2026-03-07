@@ -7,6 +7,8 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
+  finalizers:
+    # main argocd controller app should never be deleted, even if this app is deleted by accident.
 spec:
   destination:
     name: in-cluster

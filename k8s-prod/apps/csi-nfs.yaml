@@ -4,12 +4,8 @@ metadata:
   name: csi-nfs
   namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.argocd.argoproj.io # means argocd will delete all resources deployed by this application when the application is deleted
 spec:
-  destination:
-    namespace: csi-nfs-system
-    # TODO
-    # server: https://kubernetes.default.svc
   source:
   # TODO: also deploy namespaces and storage classes
     path: ''
@@ -45,8 +41,12 @@ spec:
           value: 'csi-nfs-controller'
   sources: []
   project: default
+  destination:
+    name: prod
+    namespace: csi-nfs-system
   syncPolicy:
     automated:
+      enabled: true
       prune: true
       selfHeal: true
     syncOptions:

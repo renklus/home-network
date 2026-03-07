@@ -6,7 +6,7 @@ metadata:
   # annotations:
   #   argocd.argoproj.io/sync-wave: "1"
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    # argocd should never be deleted, even if this app is deleted by accident.
 spec:
   project: 'default'
   sources:

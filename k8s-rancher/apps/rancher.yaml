@@ -6,7 +6,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "2"
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.argocd.argoproj.io # means argocd will delete all resources deployed by this application when the application is deleted
 spec:
   project: 'default'
   sources:
