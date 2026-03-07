@@ -9,8 +9,8 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: 'default'
-  source:
-    repoURL: https://argoproj.github.io/argo-helm
+  sources:
+  - repoURL: https://argoproj.github.io/argo-helm
     chart: 'argo-cd'
     targetRevision: '9.4.7'
     helm:
@@ -61,6 +61,9 @@ spec:
             # required for https://github.com/argoproj/argo-cd/issues/11143#issuecomment-1664144190
             # see also Server-Side Diff: https://argo-cd.readthedocs.io/en/stable/user-guide/diff-strategies/
             "controller.diff.server.side": 'true'
+  - path: k8s-rancher/apps/argocd
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
   destination:
     namespace: argocd
     name: in-cluster
