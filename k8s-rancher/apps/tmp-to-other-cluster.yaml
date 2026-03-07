@@ -14,7 +14,7 @@ spec:
     targetRevision: 21.0.0
     chart: prometheus
   destination:
-    name: prod-cluster-my
+    name: prod
     namespace: del-tmp
   syncPolicy:
     syncOptions:

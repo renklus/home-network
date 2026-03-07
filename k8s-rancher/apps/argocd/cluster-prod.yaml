@@ -5,12 +5,14 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: prod-cluster
+  # name of this resource
+  name: argo-cluster-prod
   labels:
     argocd.argoproj.io/secret-type: cluster
 type: Opaque
 stringData:
-  name: prod-cluster-my
+  # name how applications reference this cluster
+  name: prod
   server: https://rancher.cattle-system.svc.cluster.local/k8s/clusters/c-m-s5fnbx55
   # the argo server cannot resolve this URL to an IP:  server: https://rancher.ingress.rancher.k8s.renklus.ch/k8s/clusters/c-m-s5fnbx55
   config: |
