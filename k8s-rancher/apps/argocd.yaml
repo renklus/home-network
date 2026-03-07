@@ -96,12 +96,12 @@ stringData:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: prod-cluster
+  name: test
   labels:
     argocd.argoproj.io/secret-type: cluster
 type: Opaque
 stringData:
-  name: prod-cluster-my
+  name: test-my
   server: https://k8s02d.dev.renklus.ch
   config: |
     {
