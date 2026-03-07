@@ -17,5 +17,10 @@ spec:
     name: prod
     namespace: del-tmp
   syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+      - CreateNamespace=false
+      - ServerSideApply=true
