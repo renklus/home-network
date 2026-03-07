@@ -102,7 +102,7 @@ metadata:
 type: Opaque
 stringData:
   name: test-my
-  server: https://k8s02d.dev.renklus.ch
+  server: https://k8s02d.dev.renklus.ch:6443
   config: |
     {
       "bearerToken": "kubeconfig-user-vv5cp9l424:55hdb6mktlrm8rp4sx2nhgskd4h24zr6j2sl8fqmwqpxv5bk6qcqt6",
