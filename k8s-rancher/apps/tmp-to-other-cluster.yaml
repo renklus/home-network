@@ -14,7 +14,7 @@ spec:
     targetRevision: 21.0.0
     chart: prometheus
   destination:
-    server: https://rancher.cattle-system.svc.cluster.local/k8s/clusters/c-m-mllxsfhr
+    name: prod-cluster
     namespace: del-tmp
   syncPolicy:
     syncOptions:
