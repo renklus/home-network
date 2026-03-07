@@ -85,24 +85,8 @@ type: Opaque
 stringData:
   name: prod-cluster-my
   server: https://rancher.cattle-system.svc.cluster.local/k8s/clusters/c-m-mllxsfhr
-  config: |
-    {
-      "bearerToken": "kubeconfig-user-vv5cp9l424:55hdb6mktlrm8rp4sx2nhgskd4h24zr6j2sl8fqmwqpxv5bk6qcqt6",
-      "tlsClientConfig": {
-        "insecure": true
-      }
-    }
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: test
-  labels:
-    argocd.argoproj.io/secret-type: cluster
-type: Opaque
-stringData:
-  name: test-my
-  server: https://k8s02d.dev.renklus.ch:6443
+# When making this config secure and automated then consult: https://gist.github.com/janeczku/b16154194f7f03f772645303af8e9f80 (a copy is in this repo as /docs/k8s-rancher-cluster-connection.md)
+# currently: take bearer token and server URL from kubeconfig (downloaded from Rancher UI)
   config: |
     {
       "bearerToken": "kubeconfig-user-vv5cp9l424:55hdb6mktlrm8rp4sx2nhgskd4h24zr6j2sl8fqmwqpxv5bk6qcqt6",
