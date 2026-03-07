@@ -8,7 +8,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "2"
   finalizers:
-    # prod argocd controller app should never be deleted, even if this app is deleted by accident.
+    # prod argocd controller app not delete all prod resources when it is deleted by accident
 spec:
   destination:
     name: in-cluster
