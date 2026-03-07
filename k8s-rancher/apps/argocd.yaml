@@ -83,7 +83,7 @@ metadata:
     argocd.argoproj.io/secret-type: cluster
 type: Opaque
 stringData:
-  name: rancher.ingress.rancher.k8s.renklus.ch
+  name: prod-cluster-my
   server: https://rancher.cattle-system.svc.cluster.local/k8s/clusters/c-m-mllxsfhr
   config: |
     {
