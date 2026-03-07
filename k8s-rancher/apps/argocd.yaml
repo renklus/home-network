@@ -87,7 +87,7 @@ stringData:
   server: https://rancher.ingress.rancher.k8s.renklus.ch/k8s/clusters/c-m-mllxsfhr
   config: |
     {
-      "bearerToken": "<BEARER_TOKEN_FROM_SERVICE_ACCOUNT>",
+      "bearerToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IlQzc21EYmNtVjBQTmZJUXJYZksySEZqcWphVDNvbzY0TGs5LVNxY0todmcifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJjYXR0bGUtc3lzdGVtIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImNhdHRsZS10b2tlbi13cmxmOCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJjYXR0bGUiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI4N2I3ZTcxNy01NDUwLTRiNGEtODJhZS01YjNmNzZjODI1Y2EiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6Y2F0dGxlLXN5c3RlbTpjYXR0bGUifQ.Jn3bQgfOa9NfdOmatyalsFUx96RbwxJasWg4cn1CbvRa48wGNxPPOPez5ruMECN-nhpkuL1BxnzM4Jv2kST6_2NcddMmU96YOLN9Dgv2TE5jgnE_yN6qX_FLnat8RrBr85VMPOxb85gcBv2VzDuA9giTxwoIEnId05q7mqF-A0DkE4VHBuX3cbPnWh-gRpb9Xfd_SsNOw5PbJzX1BEi_RY2FSpZa-aEUvKep_x1T81hLrWltTXQJ47Llb5m3DkB9oT9sSFz7Th2lbciQlNVtsy5dRIHiK-zO8qnTHqnl01m9F0lRlNZnaarj1iDYiz2A37WUXhMUv1TUklVc3Vqslglukas@lukas-5950x",
       "tlsClientConfig": {
         "insecure": true,
         "caData": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJ2VENDQ\
