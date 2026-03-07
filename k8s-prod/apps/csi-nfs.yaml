@@ -42,8 +42,8 @@ spec:
     targetRevision: HEAD
   project: default
   destination:
-    name: prod
     namespace: csi-nfs-system
+    name: prod
   syncPolicy:
     automated:
       enabled: true
