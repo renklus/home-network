@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 21.0.0
+    targetRevision: 28.13.0
     chart: prometheus
   destination:
     server: https://rancher.cattle-system.svc.cluster.local/k8s/clusters/c-m-mllxsfhr
