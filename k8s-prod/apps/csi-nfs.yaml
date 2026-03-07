@@ -6,10 +6,8 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io # means argocd will delete all resources deployed by this application when the application is deleted
 spec:
-  source:
-  # TODO: also deploy namespaces and storage classes
-    path: ''
-    repoURL: 'https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts'
+  sources:
+  - repoURL: 'https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts'
     targetRevision: 4.13.1
     chart: csi-driver-nfs
     helm:
@@ -39,7 +37,9 @@ spec:
       parameters:
         - name: 'controller.name'
           value: 'csi-nfs-controller'
-  sources: []
+  - path: k8s-prod/apps/csi-nfs
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
   project: default
   destination:
     name: prod
