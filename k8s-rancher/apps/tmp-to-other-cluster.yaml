@@ -1,11 +1,21 @@
-project: default
-source:
-  repoURL: https://prometheus-community.github.io/helm-charts
-  targetRevision: 21.0.0
-  chart: prometheus
-destination:
-  server: https://rancher.cattle-system.svc.cluster.local/k8s/clusters/c-m-mllxsfhr
-  namespace: del-tmp
-syncPolicy:
-  syncOptions:
-    - CreateNamespace=true
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: del-tmp
+  namespace: argocd
+  # annotations:
+  #   argocd.argoproj.io/sync-wave: "4"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io # might benefit from background delete: https://github.com/argoproj/argo-cd/issues/5724#issuecomment-1041586611
+spec:
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 21.0.0
+    chart: prometheus
+  destination:
+    server: https://rancher.cattle-system.svc.cluster.local/k8s/clusters/c-m-mllxsfhr
+    namespace: del-tmp
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
