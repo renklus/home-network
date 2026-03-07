@@ -7,8 +7,7 @@ metadata:
   namespace: fleet-default
   annotations:
     ui.rancher/badge-icon-text: PRD
-    argocd.argoproj.io/sync-wave: "3"
-    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true # maybe this is not needed if it is in a syncwave after rancher main chart
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true # Sync-wave does not work. Sync-wave is only supported on type 'Application'. Use this instead
 spec:
   kubernetesVersion: 'v1.34.5+k3s1'
   rkeConfig:
