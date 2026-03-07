@@ -78,12 +78,11 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: my-argocd-service
+  name: prod-cluster
   labels:
     argocd.argoproj.io/secret-type: cluster
 type: Opaque
 stringData:
-  name: prod-cluster
   server: https://rancher.ingress.rancher.k8s.renklus.ch/k8s/clusters/c-m-mllxsfhr
   config: |
     {
