@@ -1,12 +1,12 @@
 apiVersion: provisioning.cattle.io/v1
 kind: Cluster
 metadata:
-  name: test
+  name: production
   labels:
     #  key: string
   namespace: fleet-default
   annotations:
-    ui.rancher/badge-icon-text: TST
+    ui.rancher/badge-icon-text: PRD
     argocd.argoproj.io/sync-wave: "3"
     # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true # maybe this is not needed if it is in a syncwave after rancher main chart
 spec:
@@ -20,5 +20,5 @@ spec:
       etcd-expose-metrics: true
       disable-etcd: false
       tls-san:
-        # - k8s03d.dev.renklus.ch
-        - test.k8s.renklus.ch
+        - k8s02d.dev.renklus.ch
+        - prod.k8s.renklus.ch
