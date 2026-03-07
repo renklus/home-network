@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: system-config
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io # means argocd will delete all resources deployed by this application when the application is deleted
+spec:
+  sources:
+  - path: k8s-prod/apps/assembled-system-config
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  project: prod-cluster
+  destination:
+    # namespace: csi-nfs-system
+    name: prod
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true

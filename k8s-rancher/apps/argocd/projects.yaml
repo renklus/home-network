@@ -1,0 +1,44 @@
+# https://argo-cd.readthedocs.io/en/stable/user-guide/projects/
+# disable default project
+# apiVersion: argoproj.io/v1alpha1
+# kind: AppProject
+# metadata:
+#   name: default
+# spec:
+#   sourceRepos: []
+#   sourceNamespaces: []
+#   destinations: []
+#   namespaceResourceBlacklist:
+#   - group: '*'
+#     kind: '*'
+# ---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: rancher-cluster
+spec:
+  sourceRepos:
+  - '*'
+  destinations:
+  - namespace: '*'
+    server: 'in-cluster'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: prod-cluster
+spec:
+  sourceRepos:
+  - '*'
+  destinations:
+  - namespace: '*'
+    server: 'prod'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  clusterResourceBlacklist:
+  - group: '*'
+    kind: 'Application'
