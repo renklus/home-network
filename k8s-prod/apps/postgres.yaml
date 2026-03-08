@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+  - repoURL: 'https://cloudnative-pg.github.io/charts'
+    chart: 'cloudnative-pg'
+    targetRevision: '0.27.1'
+  # - path: k8s-prod/apps/immich
+  #   repoURL: 'https://github.com/renklus/home-network'
+  #   targetRevision: HEAD
+  project: prod-cluster
+  destination:
+    namespace: cnpg-system
+    name: prod
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true
