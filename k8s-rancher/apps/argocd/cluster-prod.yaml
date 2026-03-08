@@ -13,11 +13,11 @@ type: Opaque
 stringData:
   # name how applications reference this cluster
   name: prod
-  server: https://rancher.cattle-system.svc.cluster.local/k8s/clusters/c-m-s5fnbx55
-  # the argo server cannot resolve this URL to an IP:  server: https://rancher.ingress.rancher.k8s.renklus.ch/k8s/clusters/c-m-s5fnbx55
+  server: https://rancher.cattle-system.svc.cluster.local/k8s/clusters/c-m-gmt6g44p
+  # the argo server cannot resolve this URL to an IP:  server: https://rancher.ingress.rancher.k8s.renklus.ch/k8s/clusters/c-m-xxxxxxxx
   config: |
     {
-      "bearerToken": "kubeconfig-user-krgzlhm5lt:9k8gctdmzbglq56dcfwsdh48xj8g6qglkn5rb7xmngx2kbwbff96kt",
+      "bearerToken": "kubeconfig-user-4dcn6jkwsv:f4vhzw79qdwj7t8vknq9qwl9t4tbm4dwtwz978lnlzphrpltrkm6c7",
       "tlsClientConfig": {
         "insecure": true
       }
