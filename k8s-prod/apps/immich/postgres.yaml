@@ -7,6 +7,8 @@ metadata:
 spec:
   instances: 1
 
+  postgresUID: 3003 # NFS has full permissions on this UID
+
   storage:
     storageClass: truenas-nfs-hard
     size: 1Gi
