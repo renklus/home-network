@@ -17,7 +17,7 @@ spec:
     path: k8s-rancher/apps
     repoURL: 'https://github.com/renklus/home-network'
     targetRevision: HEAD
-  project: default
+  project: rancher-cluster
   syncPolicy:
     automated:
       enabled: true

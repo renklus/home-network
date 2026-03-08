@@ -13,7 +13,6 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io # might benefit from background delete: https://github.com/argoproj/argo-cd/issues/5724#issuecomment-1041586611
 spec:
-  project: 'default'
   source:
     repoURL: https://charts.jetstack.io
     chart: cert-manager
@@ -23,6 +22,7 @@ spec:
         - name: 'crds.enabled'
           value: 'true'
         # no need to specify image tags because the default is same as chart version. Dependabot can just update the chart
+  project: rancher-cluster
   destination:
     namespace: cert-manager # has to be exactly this namespace for rancher to find it
     name: in-cluster

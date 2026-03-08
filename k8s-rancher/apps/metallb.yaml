@@ -6,7 +6,6 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
-  project: 'default'
   sources:
   - repoURL: 'https://metallb.github.io/metallb'
     chart: 'metallb'
@@ -28,6 +27,7 @@ spec:
   - path: k8s-rancher/apps/metallb
     repoURL: 'https://github.com/renklus/home-network'
     targetRevision: HEAD
+  project: rancher-cluster
   destination:
     namespace: metallb-system
     name: in-cluster

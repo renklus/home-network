@@ -8,7 +8,6 @@ metadata:
   finalizers:
     # argocd should never be deleted, even if this app is deleted by accident.
 spec:
-  project: 'default'
   sources:
   - repoURL: https://argoproj.github.io/argo-helm
     chart: 'argo-cd'
@@ -64,6 +63,7 @@ spec:
   - path: k8s-rancher/apps/argocd
     repoURL: 'https://github.com/renklus/home-network'
     targetRevision: HEAD
+  project: rancher-cluster
   destination:
     namespace: argocd
     name: in-cluster

@@ -8,7 +8,6 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io # means argocd will delete all resources deployed by this application when the application is deleted
 spec:
-  project: 'default'
   sources:
   - repoURL: https://releases.rancher.com/server-charts/stable
     chart: rancher
@@ -29,6 +28,7 @@ spec:
   - path: k8s-rancher/apps/rancher
     repoURL: 'https://github.com/renklus/home-network'
     targetRevision: HEAD
+  project: rancher-cluster
   destination:
     namespace: cattle-system # needs to be exactly this namespace for rancher issuer to work
     name: in-cluster
