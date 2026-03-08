@@ -1,17 +1,17 @@
 # https://argo-cd.readthedocs.io/en/stable/user-guide/projects/
-# disable default project
-# apiVersion: argoproj.io/v1alpha1
-# kind: AppProject
-# metadata:
-#   name: default
-# spec:
-#   sourceRepos: []
-#   sourceNamespaces: []
-#   destinations: []
-#   namespaceResourceBlacklist:
-#   - group: '*'
-#     kind: '*'
-# ---
+# prevent everything in the default project (forces every application to choose a project explicitly)
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: default
+spec:
+  sourceRepos: []
+  sourceNamespaces: []
+  destinations: []
+  namespaceResourceBlacklist:
+  - group: '*'
+    kind: '*'
+---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
