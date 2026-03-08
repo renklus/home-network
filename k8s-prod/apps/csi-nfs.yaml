@@ -42,7 +42,7 @@ spec:
     targetRevision: HEAD
   project: prod-cluster
   destination:
-    # namespace: csi-nfs-system
+    namespace: csi-nfs-system # need to specify a namespace, would otherwise fall back to namespace 'argocd' which does not exist
     name: prod
   syncPolicy:
     automated:
