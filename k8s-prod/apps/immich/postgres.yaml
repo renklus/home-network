@@ -8,6 +8,7 @@ spec:
   instances: 1
 
   storage:
+    storageClass: truenas-nfs-hard
     size: 1Gi
 
   imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.4.3
