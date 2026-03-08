@@ -14,7 +14,6 @@ spec:
     machineGlobalConfig:
       disable:
         - servicelb
-        - traefik
         - local-storage
       etcd-expose-metrics: true
       disable-etcd: false
