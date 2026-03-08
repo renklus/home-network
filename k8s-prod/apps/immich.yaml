@@ -1,0 +1,83 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: immich
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+  - repoURL: 'ghcr.io/immich-app/immich-charts'
+    chart: 'immich'
+    targetRevision: '0.10.3'
+    helm:
+      parameters:
+        # - name: 'controllers.main.containers.main.env.REDIS_HOSTNAME'
+        #   value: ''
+        # - name: 'controllers.main.containers.main.env.IMMICH_MACHINE_LEARNING_URL'
+        #   value: ''
+        - name: 'immich.persistence.library.existingClaim'
+          value: 'immich-media'
+        - name: 'valkey.enabled'
+          value: 'true'
+        - name: 'valkey.persistence.data.type'
+          value: 'persistentVolumeClaim'
+        - name: 'valkey.persistence.data.storageClass'
+          value: 'truenas-nfs-hard'
+        - name: 'server.ingress.main.enabled'
+          value: 'true'
+        # - name: 'server.ingress.main.hosts'
+        #   value: ''
+        - name: 'machine-learning.persistence.cache.type'
+          value: 'persistentVolumeClaim'
+        - name: 'machine-learning.persistence.cache.storageClass'
+          value: 'truenas-nfs-hard'
+      valuesObject:
+        # controllers:
+        #   main:
+        #     containers:
+        #       main:
+        #         image:
+        #           repository: '_______________________________________quay.io/metallb/speaker'
+        #           tag: 'v2.0.0'
+        immich:
+          configuration: {} # immich-config.json converted to yaml (https://immich.app/docs/install/config-file/)
+        valkey:
+          controllers:
+            main:
+              containers:
+                main:
+                  image:
+                    repository: 'docker.io/valkey/valkey'
+                    tag: '9.0-alpine@sha256:1be494495248d53e3558b198a1c704e6b559d5e99fe4c926e14a8ad24d76c6fa'
+        server:
+          controllers:
+            main:
+              containers:
+                main:
+                  image:
+                    repository: 'ghcr.io/immich-app/immich-server'
+                    tag: 'v2.0.0'
+        machineLearning:
+          controllers:
+            main:
+              containers:
+                main:
+                  image:
+                    repository: 'ghcr.io/immich-app/immich-machine-learning'
+                    tag: 'v2.0.0'
+  - path: k8s-prod/apps/immich
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  project: prod-cluster
+  destination:
+    namespace: immich
+    name: prod
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true

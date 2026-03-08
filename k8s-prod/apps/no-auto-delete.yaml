@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: no-auto-delete
+  namespace: argocd
+  finalizers:
+    # Resources controlled by this app should not be deleted when the app is deleted by accident.
+spec:
+  sources:
+  - path: k8s-prod/apps/no-auto-delete
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  project: prod-cluster
+  destination:
+    name: prod
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true

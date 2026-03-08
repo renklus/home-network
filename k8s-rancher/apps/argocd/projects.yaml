@@ -34,6 +34,8 @@ spec:
   sourceRepos:
   - '*'
   destinations:
+  - namespace: '!argocd'
+    name: '*'
   - namespace: '*'
     name: 'prod'
   clusterResourceWhitelist:
