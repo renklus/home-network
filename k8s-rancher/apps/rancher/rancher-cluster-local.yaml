@@ -7,4 +7,4 @@
 #     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 
 # spec:
-#   kubernetesVersion: 'v1.34.5+k3s1'
+#   kubernetesVersion: 'v1.34.6+k3s1'
