@@ -9,7 +9,7 @@ metadata:
     ui.rancher/badge-icon-text: TST
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true # Sync-wave does not work. Sync-wave is only supported on type 'Application'. Use this instead
 spec:
-  kubernetesVersion: 'v1.34.5+k3s1'
+  kubernetesVersion: 'v1.34.6+k3s1'
   rkeConfig:
     machineGlobalConfig:
       disable:
