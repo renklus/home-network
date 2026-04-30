@@ -11,7 +11,7 @@ spec:
   sources:
   - repoURL: https://releases.rancher.com/server-charts/stable
     chart: rancher
-    targetRevision: '2.13.3'
+    targetRevision: '2.14.1'
     helm:
       parameters:
         # I managed to join new nodes only when this is at default (Ingress)
