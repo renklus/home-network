@@ -11,19 +11,22 @@
   "argocd": {
     "managerFilePatterns": [
       "/k8s/apps/.+\\.yaml$/",
-      "/k8s-rancher/apps/.+\\.yaml$/"
+      "/k8s-rancher/apps/.+\\.yaml$/",
+      "/k8s-prod/apps/.+\\.yaml$/"
     ]
   },
   "helm-values": {
     "managerFilePatterns": [
       "/k8s/apps/.+\\.yaml$/",
-      "/k8s-rancher/apps/.+\\.yaml$/"
+      "/k8s-rancher/apps/.+\\.yaml$/",
+      "/k8s-prod/apps/.+\\.yaml$/"
     ]
   },
   "kubernetes": {
     "managerFilePatterns": [
       "/k8s/apps/.+\\.yaml$/",
-      "/k8s-rancher/apps/.+\\.yaml$/"
+      "/k8s-rancher/apps/.+\\.yaml$/",
+      "/k8s-prod/apps/.+\\.yaml$/"
     ]
   },
   "customManagers": [
@@ -55,7 +58,8 @@
       "customType": "regex",
       "managerFilePatterns": [
         "/k8s/apps/.+\\.yaml$/",
-        "/k8s-rancher/apps/.+\\.yaml$/"
+        "/k8s-rancher/apps/.+\\.yaml$/",
+        "/k8s-prod/apps/.+\\.yaml$/"
       ],
       "matchStrings": [
         "kubernetesVersion: '?(?<currentValue>[^'\\s]+)'?[\\S\\s]*$"
@@ -81,7 +85,8 @@
       "matchFileNames": [
         "k8s/apps/app-of-apps-apps/*.yaml",
         "k8s/apps/app-of-infrastructure-apps/*.yaml",
-        "k8s-rancher/apps/*.yaml"
+        "k8s-rancher/apps/*.yaml",
+        "k8s-prod/apps/*.yaml"
       ],
       "matchManagers": [
         "argocd",
@@ -94,7 +99,8 @@
       "matchFileNames": [
         "k8s/apps/app-of-apps-apps/*.yaml",
         "k8s/apps/app-of-infrastructure-apps/*.yaml",
-        "k8s-rancher/apps/*.yaml"
+        "k8s-rancher/apps/*.yaml",
+        "k8s-prod/apps/*.yaml"
       ],
       "matchManagers": [
         "custom.regex"
