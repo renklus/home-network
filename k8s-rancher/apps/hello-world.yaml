@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-world
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: rancher-cluster
+  source:
+    path: k8s-rancher/apps/hello-world
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  destination:
+    name: in-cluster
+    namespace: hello-world
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true
