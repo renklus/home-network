@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-  - host: hello.rancher.k8s.renklus.ch
+  - host: hello-world.hello-world.rancher.k8s.renklus.ch
     http:
       paths:
       - path: /
@@ -20,5 +20,5 @@ spec:
               number: 80
   tls:
   - hosts:
-    - hello.rancher.k8s.renklus.ch
+    - hello-world.hello-world.rancher.k8s.renklus.ch
     secretName: hello-world-tls
