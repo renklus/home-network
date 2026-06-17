@@ -1,4 +1,4 @@
-FROM nginx:latest@sha256:5aca99593157f4ae539a5dec1092a0ad8762f8e2eb1789085a13a0f5622369f6
+FROM nginx:latest@sha256:608a100c71651bf5b773c89083b4a1ad7ef4b2bd05d7a7e552271e03123692ad
 RUN rm /etc/nginx/conf.d/default.conf
 COPY data/index.html /usr/share/nginx/html/index.html
 COPY data/acme-reverse-proxy.conf /etc/nginx/conf.d/
