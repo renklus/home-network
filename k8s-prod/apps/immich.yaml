@@ -57,7 +57,7 @@ spec:
                 main:
                   image:
                     repository: 'ghcr.io/immich-app/immich-server'
-                    tag: 'v2.0.0@sha256:d81f4af6a622d0955e5b8e3927da32b3ec882466a7ee8a26906d9cccad4364ca'
+                    tag: 'v3.0.0@sha256:685ba5c93337058ff8a189d3ed89f0ba470ef966b1c94d2eace1a3d991f9816e'
         machineLearning:
           controllers:
             main:
@@ -65,7 +65,7 @@ spec:
                 main:
                   image:
                     repository: 'ghcr.io/immich-app/immich-machine-learning'
-                    tag: 'v2.0.0@sha256:68bd95ff703a3b4c6a662b7f638bd2e01e3c7aeb2223dc0f142f02a555e24ca4'
+                    tag: 'v3.0.0@sha256:5b480e92a2b77618d9ccae8c8110b0eae144ec9daf86715d246ec6d39cb7a553'
   - path: k8s-prod/apps/immich
     repoURL: 'https://github.com/renklus/home-network'
     targetRevision: HEAD
