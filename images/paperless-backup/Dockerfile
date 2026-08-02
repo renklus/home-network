@@ -1,7 +1,7 @@
 # built with `docker build . -t ghcr.io/renklus/paperless-ngx-backup:v9`
 # published with `docker push ghcr.io/renklus/paperless-ngx-backup:v9`
 
-FROM ghcr.io/paperless-ngx/paperless-ngx:2.20.15@sha256:6c86cad803970ea782683a8e80e7403444c5bf3cf70de63b4d3c8e87500db92f
+FROM ghcr.io/paperless-ngx/paperless-ngx:3.0.5@sha256:65a4cabf0169ea7fbd90ab7bb28ba3f8b5909613635acda1a03ad606f34b456b
 LABEL org.opencontainers.image.source=https://github.com/renklus/home-network
 
 COPY ./rootfs /
