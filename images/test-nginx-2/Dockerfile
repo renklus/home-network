@@ -1,3 +1,3 @@
-FROM nginx@sha256:8541484afbc9c8a5a8a99b379568ebbc957f658583ec9448fc43104229c03cf8
+FROM nginx@sha256:8f029c543423e3eac6b08254718bc31eb75633b1e448026b6616927baa7d4bfe
 VOLUME /usr/share/nginx/html
 VOLUME /etc/nginx
