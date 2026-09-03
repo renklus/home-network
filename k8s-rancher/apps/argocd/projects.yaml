@@ -15,20 +15,6 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: rancher-cluster
-spec:
-  sourceRepos:
-  - '*'
-  destinations:
-  - namespace: '*'
-    name: 'in-cluster'
-  clusterResourceWhitelist:
-  - group: '*'
-    kind: '*'
----
-apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
   name: prod-cluster
 spec:
   sourceRepos:
