@@ -1,3 +1,18 @@
+# Project needs to be defined here so it is available from the beginning when bootstrapping the cluster.
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: rancher-cluster
+spec:
+  sourceRepos:
+  - '*'
+  destinations:
+  - namespace: '*'
+    name: 'in-cluster'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+---
 # https://github.com/morey-tech/argo-cd-app-of-apps-demo/blob/main/app-of-apps.yaml
 # https://www.youtube.com/watch?v=2pvGL0zqf9o
 apiVersion: argoproj.io/v1alpha1
