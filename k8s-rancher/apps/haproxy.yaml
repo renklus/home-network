@@ -1,0 +1,75 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: haproxy
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+  - repoURL: https://haproxytech.github.io/helm-charts
+    chart: haproxy
+    targetRevision: '1.30.2'
+    helm:
+      valuesObject:
+        image:
+          repository: 'docker.io/haproxytech/haproxy-alpine'
+          tag: '3.4.4'
+        config: |
+          global
+            log stdout format raw local0
+            maxconn 20
+
+          defaults
+            mode http
+            log global
+            # option httplog
+            # timeout connect 5s
+            # timeout client 30s
+            # timeout server 30s
+
+          resolvers dns
+            parse-resolv-conf
+            accepted_payload_size 8192
+
+          frontend incoming-http
+            bind [::]:80 v4v6
+            acl allowed-path path_beg /.well-known/acme-challenge/
+            http-request return status 404 content-type text/plain lf-string "not found" unless allowed-path
+            # acl host-vrt01p hdr(host),lower -i vrt01p.dev.renklus.ch
+            # use_backend vrt01p if host-vrt01p
+            use_backend vrt01p if { req.hdr(host) -i vrt01p.dev.renklus.ch}
+            use_backend app07d if { req.hdr(host) -i app07d.dev.renklus.ch}
+            http-request return status 404 content-type text/plain lf-string "not_found"
+
+          backend vrt01p
+            server vrt01p vrt01p.dev.renklus.ch:80 check resolvers dns init-addr last,libc,none
+
+          backend app07d
+            server app07d app07d.dev.renklus.ch:80 check resolvers dns init-addr last,libc,none
+            
+        service:
+          type: LoadBalancer
+          enablePorts:
+            http: true
+            https: false
+            quic: false
+            stat: false
+            admin: false
+        containerPorts:
+          http: 80
+  - path: k8s-rancher/apps/haproxy
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  project: rancher-cluster
+  destination:
+    namespace: haproxy
+    name: in-cluster
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true
