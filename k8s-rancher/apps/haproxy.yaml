@@ -14,7 +14,7 @@ spec:
       valuesObject:
         image:
           repository: 'docker.io/haproxytech/haproxy-alpine'
-          tag: '3.4.4'
+          tag: '3.4.4@sha256:1fe3f201ebb57f66134ea557927e83d26d7050fe2664be4181e2107381f795cb'
         config: |
           global
             log stdout format raw local0
