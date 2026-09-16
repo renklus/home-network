@@ -40,7 +40,10 @@ spec:
             # use_backend vrt01p if host-vrt01p
             use_backend vrt01p if { req.hdr(host) -i vrt01p.dev.renklus.ch }
             use_backend app07d if { req.hdr(host) -i app07d.dev.renklus.ch }
-            http-request return status 404 content-type text/plain lf-string "not_found" unless vrt01p app07d
+            use_default_backend rejected
+
+          backend rejected
+            http-request return status 404 content-type text/plain lf-string "not_found"
 
           backend vrt01p
             server vrt01p vrt01p.dev.renklus.ch:80 check resolvers dns init-addr last,libc,none
