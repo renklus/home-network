@@ -38,8 +38,8 @@ spec:
             http-request return status 404 content-type text/plain lf-string "not found" unless allowed-path
             # acl host-vrt01p hdr(host),lower -i vrt01p.dev.renklus.ch
             # use_backend vrt01p if host-vrt01p
-            use_backend vrt01p if { req.hdr(host) -i vrt01p.dev.renklus.ch}
-            use_backend app07d if { req.hdr(host) -i app07d.dev.renklus.ch}
+            use_backend vrt01p if { req.hdr(host) -i vrt01p.dev.renklus.ch }
+            use_backend app07d if { req.hdr(host) -i app07d.dev.renklus.ch }
             http-request return status 404 content-type text/plain lf-string "not_found"
 
           backend vrt01p
@@ -47,7 +47,7 @@ spec:
 
           backend app07d
             server app07d app07d.dev.renklus.ch:80 check resolvers dns init-addr last,libc,none
-            
+
         service:
           type: LoadBalancer
           enablePorts:
