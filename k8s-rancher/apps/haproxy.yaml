@@ -52,7 +52,7 @@ spec:
           backend app07d
             server app07d app07d.dev.renklus.ch:80 check resolvers dns init-addr last,libc,none
 
-          backend app07d
+          backend testing
             server testing app07d.dev.renklus.ch:8443 check resolvers dns init-addr last,libc,none
 
         service:
