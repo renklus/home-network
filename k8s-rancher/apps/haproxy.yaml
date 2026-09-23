@@ -40,6 +40,7 @@ spec:
             # use_backend vrt01p if host-vrt01p
             use_backend vrt01p if { req.hdr(host) -i vrt01p.dev.renklus.ch }
             use_backend app07d if { req.hdr(host) -i app07d.dev.renklus.ch }
+            use_backend testing if { req.hdr(host) -i haproxy.haproxy.rancher.k8s.renklus.ch }
             default_backend rejected
 
           backend rejected
@@ -50,6 +51,9 @@ spec:
 
           backend app07d
             server app07d app07d.dev.renklus.ch:80 check resolvers dns init-addr last,libc,none
+
+          backend app07d
+            server testing app07d.dev.renklus.ch:80 check resolvers dns init-addr last,libc,none
 
         service:
           type: LoadBalancer
