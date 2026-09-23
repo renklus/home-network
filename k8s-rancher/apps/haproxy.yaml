@@ -44,7 +44,7 @@ spec:
             default_backend rejected
 
           backend rejected
-            http-request return status 404 content-type text/plain lf-string "not_found"
+            http-request return status 404 content-type text/plain lf-string "not-found"
 
           backend vrt01p
             server vrt01p vrt01p.dev.renklus.ch:80 check resolvers dns init-addr last,libc,none
