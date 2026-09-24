@@ -53,7 +53,7 @@ spec:
             server app07d app07d.dev.renklus.ch:80 resolvers dns init-addr last,libc,none
 
           backend testing
-            server testing httpforever.com:80 resolvers dns init-addr last,libc,none
+            server testing vrt01p.dev.renklus.ch:80 resolvers dns init-addr last,libc,none
 
         service:
           type: LoadBalancer
