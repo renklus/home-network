@@ -69,10 +69,11 @@ spec:
             http: true
             https: false
             quic: false
-            stat: false
+            stat: true
             admin: false
         containerPorts:
-          http: 80
+          http: 8000
+          stat: 1024
   - path: k8s-rancher/apps/haproxy
     repoURL: 'https://github.com/renklus/home-network'
     targetRevision: HEAD
