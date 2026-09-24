@@ -24,9 +24,9 @@ spec:
             mode http
             log global
             # option httplog
-            timeout connect 5s
-            timeout client 30s
-            timeout server 30s
+            timeout connect 1s
+            timeout client 2s
+            timeout server 2s
 
           resolvers dns
             parse-resolv-conf
