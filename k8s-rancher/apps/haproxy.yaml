@@ -33,7 +33,7 @@ spec:
             accepted_payload_size 8192
 
           frontend incoming-http
-            bind [::]:80 v4v6
+            bind [::]:8000 v4v6
             acl allowed-path path_beg /.well-known/acme-challenge/
             http-request return status 404 content-type text/plain lf-string "not found" unless allowed-path
             # acl host-vrt01p hdr(host),lower -i vrt01p.dev.renklus.ch
