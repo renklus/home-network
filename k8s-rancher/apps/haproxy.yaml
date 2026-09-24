@@ -47,13 +47,13 @@ spec:
             http-request return status 404 content-type text/plain lf-string "not-found"
 
           backend vrt01p
-            server vrt01p vrt01p.dev.renklus.ch:80 resolvers dns init-addr last,libc,none
+            server vrt01p vrt01p.dev.renklus.ch:80 check resolvers dns init-addr last,libc,none
 
           backend app07d
-            server app07d app07d.dev.renklus.ch:80 resolvers dns init-addr last,libc,none
+            server app07d app07d.dev.renklus.ch:80 check resolvers dns init-addr last,libc,none
 
           backend testing
-            server testing app07d.dev.renklus.ch:80 resolvers dns init-addr last,libc,none
+            server testing app07d.dev.renklus.ch:80 check resolvers dns init-addr last,libc,none
 
         service:
           type: LoadBalancer
