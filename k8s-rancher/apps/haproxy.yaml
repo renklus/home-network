@@ -31,6 +31,14 @@ spec:
           resolvers dns
             parse-resolv-conf
             accepted_payload_size 8192
+         
+          frontend stats
+            mode http
+            bind :1024
+            stats enable
+            stats refresh 10s
+            stats uri /stats
+            stats show-modules
 
           frontend incoming-http
             bind [::]:8000 v4v6
