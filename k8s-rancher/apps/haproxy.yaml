@@ -37,7 +37,7 @@ spec:
             bind :1024
             stats enable
             stats refresh 10s
-            stats uri /stats
+            stats uri /
             stats show-modules
 
           frontend incoming-http
@@ -50,7 +50,7 @@ spec:
             use_backend app07d if { req.hdr(host) -i app07d.dev.renklus.ch }
             use_backend app01l if { req.hdr(host) -i app01l.dev.renklus.ch }
             use_backend app02l if { req.hdr(host) -i app02l.dev.renklus.ch }
-            use_backend testing if { req.hdr(host) -i haproxy.haproxy.rancher.k8s.renklus.ch }
+            use_backend testing if { req.hdr(host) -i haproxy.haproxy.rancher.k8s.renklus.ch:8000 }
             default_backend rejected
 
           backend rejected
