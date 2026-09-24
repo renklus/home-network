@@ -40,6 +40,7 @@ spec:
             # use_backend vrt01p if host-vrt01p
             use_backend vrt01p if { req.hdr(host) -i vrt01p.dev.renklus.ch }
             use_backend app07d if { req.hdr(host) -i app07d.dev.renklus.ch }
+            use_backend app01l if { req.hdr(host) -i app01l.dev.renklus.ch }
             use_backend app02l if { req.hdr(host) -i app02l.dev.renklus.ch }
             use_backend testing if { req.hdr(host) -i haproxy.haproxy.rancher.k8s.renklus.ch }
             default_backend rejected
@@ -55,6 +56,9 @@ spec:
 
           backend testing
             server testing vrt01p.dev.renklus.ch:80 resolvers dns init-addr last,libc,none
+
+          backend app01l
+            server app01l app01l.dev.renklus.ch:80 resolvers dns init-addr last,libc,none
 
           backend app02l
             server app02l app02l.dev.renklus.ch:80 resolvers dns init-addr last,libc,none
