@@ -112,7 +112,7 @@ spec:
     spec:
       containers:
         - name: broker
-          image: docker.io/library/redis:8.10.0@sha256:344e3945a0b431c8ff1eecd58c5573538126bd756f02fc7e218ddf1fc2546366
+          image: docker.io/library/redis:8.10.2@sha256:d5ac52db24d4e70566fe9944f22cf5bdc2bc739b05c0f426335161ea6c23f3b3
           volumeMounts:
             - name: 'paperless-ngx-2-broker'
               mountPath: '/data'
