@@ -14,7 +14,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io # might benefit from background delete: https://github.com/argoproj/argo-cd/issues/5724#issuecomment-1041586611
 spec:
   sources:
-  - repoURL: https://charts.jetstack.io
+  - repoURL: https://quay.io/jetstack/charts
     chart: cert-manager
     targetRevision: 'v1.21.1'
     helm:
