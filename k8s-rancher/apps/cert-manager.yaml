@@ -16,7 +16,7 @@ spec:
   sources:
   - repoURL: https://quay.io/jetstack/charts
     chart: cert-manager
-    targetRevision: 'v1.21.1'
+    targetRevision: 'v1.21.2'
     helm:
       parameters:
         - name: 'crds.enabled'
