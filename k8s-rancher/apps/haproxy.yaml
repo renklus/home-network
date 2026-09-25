@@ -1,3 +1,5 @@
+# Needs to be in rancher cluster so it is available during cluster bootstrap.
+# New ACME client: setup domain in cloudflare and here.
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -56,14 +58,14 @@ spec:
           backend rejected
             http-request return status 404 content-type text/plain lf-string "not-found"
 
+          backend testing
+            server testing app07d.dev.renklus.ch:80 resolvers dns init-addr last,libc,none
+
           backend vrt01p
             server vrt01p vrt01p.dev.renklus.ch:80 resolvers dns init-addr last,libc,none
 
           backend app07d
             server app07d app07d.dev.renklus.ch:80 resolvers dns init-addr last,libc,none
-
-          backend testing
-            server testing app07d.dev.renklus.ch:80 resolvers dns init-addr last,libc,none
 
           backend app01l
             server app01l app01l.dev.renklus.ch:80 resolvers dns init-addr last,libc,none

@@ -1,3 +1,4 @@
+# connect with `k8s01d exec --stdin --tty dnsutils -- /bin/bash`
 apiVersion: v1
 kind: Pod
 metadata:
