@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: docker.io/library/nginx:stable-alpine@sha256:97d490c12ba55b4946b01546d1c3ed324e8d41ab1c9fcb2a616aa470620e5b46
+        image: docker.io/library/nginx:stable-alpine@sha256:985220252f3863977e468f611ef118ebd01421289dd86ee1ae99cb068c3bce2b
         ports:
         - containerPort: 80
         resources:
