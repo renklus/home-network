@@ -15,7 +15,7 @@ spec:
   source:
     repoURL: https://prometheus-community.github.io/helm-charts
     chart: 'prometheus'
-    targetRevision: '29.27.0'
+    targetRevision: '29.34.0'
     helm:
       parameters:
         - name: 'server.service.type'
@@ -29,7 +29,7 @@ spec:
           prometheus:
             image:
               repository: 'quay.io/prometheus-operator/prometheus-config-reloader'
-              tag: 'v0.93.1@sha256:428f088fe6fe07ab138bda92113664b04848a1dc408e4d3680a60ecdb55d1a65'
+              tag: 'v0.94.1@sha256:06b52bd4dbe3ed6dd5905aadaf8b9987d9da4c31d37bb86deaadae68cee2d26b'
         # Do not set to use same version as chart
         # server:
         #   image:
