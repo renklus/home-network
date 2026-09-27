@@ -1,14 +1,57 @@
+# Issuer can only be active in it's namespace. ClusterIssuer is for all namespaces
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: letsencrypt-staging
+  name: letsencrypt-staging-shortlived
 spec:
   acme:
     #email: email@example.com
+    # Profiles
+    # https://letsencrypt.org/docs/profiles/
+    # https://cert-manager.io/docs/configuration/acme/#acme-certificate-profiles
+    profile: shortlived
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: letsencrypt-staging-key
+      name: letsencrypt-staging-shortlived-key
     solvers:
     - http01:
         ingress:
           ingressClassName: traefik
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: example-com
+  namespace: sandbox
+spec:
+  # Secret names are always required.
+  secretName: example-com-tls
+  privateKey:
+    rotationPolicy: Always
+
+  # Optional: https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificateSpec
+  # duration: 2160h # 90d
+  # renewBefore: 360h # 15d
+
+  isCA: false
+  # Default when not set
+  # usages:
+  #   - server auth
+  #   - client auth
+
+  subject:
+    organizations:
+      - 'renklus ch'
+
+  dnsNames:
+    - cert.dev.renklus.ch
+
+  # Issuer references are always required.
+  issuerRef:
+    name: letsencrypt-staging-shortlived
+    # We can reference ClusterIssuers by changing the kind here.
+    # The default value is Issuer (i.e. a locally namespaced Issuer)
+    kind: ClusterIssuer
+    # This is optional since cert-manager will default to this value however
+    # if you are using an external issuer, change this to that issuer group.
+    group: cert-manager.io
