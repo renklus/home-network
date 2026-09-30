@@ -17,7 +17,7 @@ spec:
         - name: 'server.service.type'
           value: 'LoadBalancer'
         - name: 'server.certificate.additionalHosts[0]'
-          value: 'argocd-server.argocd.rancher.k8s.renklus.ch'
+          value: 'argo-cd-argocd-server.argocd.rancher.k8s.renklus.ch'
         - name: 'server.certificate.additionalHosts[1]'
           value: 'argo.rancher.k8s.renklus.ch'
       valuesObject:
