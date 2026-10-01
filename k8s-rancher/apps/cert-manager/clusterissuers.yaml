@@ -1,23 +1,23 @@
-# Issuer can only be active in it's namespace. ClusterIssuer is for all namespaces
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: letsencrypt-staging-shortlived
-spec:
-  acme:
-    #email: email@example.com
-    # Profiles
-    # https://letsencrypt.org/docs/profiles/
-    # https://cert-manager.io/docs/configuration/acme/#acme-certificate-profiles
-    profile: shortlived
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
-    privateKeySecretRef:
-      name: letsencrypt-staging-shortlived-key
-    solvers:
-    - http01:
-        ingress:
-          ingressClassName: traefik
----
+# # Issuer can only be active in it's namespace. ClusterIssuer is for all namespaces
+# apiVersion: cert-manager.io/v1
+# kind: ClusterIssuer
+# metadata:
+#   name: letsencrypt-staging-shortlived
+# spec:
+#   acme:
+#     #email: email@example.com
+#     # Profiles
+#     # https://letsencrypt.org/docs/profiles/
+#     # https://cert-manager.io/docs/configuration/acme/#acme-certificate-profiles
+#     profile: shortlived
+#     server: https://acme-staging-v02.api.letsencrypt.org/directory
+#     privateKeySecretRef:
+#       name: letsencrypt-staging-shortlived-key
+#     solvers:
+#     - http01:
+#         ingress:
+#           ingressClassName: traefik
+# ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
