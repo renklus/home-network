@@ -1,22 +1,22 @@
-# apiVersion: provisioning.cattle.io/v1
-# kind: Cluster
-# metadata:
-#   name: production
-#   labels:
-#     #  key: string
-#   namespace: fleet-default
-#   annotations:
-#     ui.rancher/badge-icon-text: PRD
-#     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true # Sync-wave does not work. Sync-wave is only supported on type 'Application'. Use this instead
-# spec:
-#   kubernetesVersion: 'v1.36.4+k3s1'
-#   rkeConfig:
-#     machineGlobalConfig:
-#       disable:
-#         - servicelb
-#         - local-storage
-#       etcd-expose-metrics: true
-#       disable-etcd: false
-#       tls-san:
-#         - k8s02d.dev.renklus.ch
-#         - prod.k8s.renklus.ch
+apiVersion: provisioning.cattle.io/v1
+kind: Cluster
+metadata:
+  name: production
+  labels:
+    #  key: string
+  namespace: fleet-default
+  annotations:
+    ui.rancher/badge-icon-text: PRD
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true # Sync-wave does not work. Sync-wave is only supported on type 'Application'. Use this instead
+spec:
+  kubernetesVersion: 'v1.36.4+k3s1'
+  rkeConfig:
+    machineGlobalConfig:
+      disable:
+        - servicelb
+        - local-storage
+      etcd-expose-metrics: true
+      disable-etcd: false
+      tls-san:
+        - k8s02d.dev.renklus.ch
+        - prod.k8s.renklus.ch
