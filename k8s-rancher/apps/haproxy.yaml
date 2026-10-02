@@ -52,7 +52,7 @@ spec:
             use_backend app07d if { req.hdr(host) -i app07d.dev.renklus.ch }
             use_backend app01l if { req.hdr(host) -i app01l.dev.renklus.ch }
             use_backend app02l if { req.hdr(host) -i app02l.dev.renklus.ch }
-            use_backend ingress if { req.hdr(host) -i cert.dev.renklus.ch }
+            use_backend ingress if { req.hdr(host) -m end -i .rancher.k8s.renklus.ch }
             use_backend testing if { req.hdr(host) -i haproxy.haproxy.rancher.k8s.renklus.ch:8000 }
             default_backend rejected
 

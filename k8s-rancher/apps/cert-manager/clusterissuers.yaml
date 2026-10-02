@@ -18,14 +18,30 @@ spec:
         ingress:
           ingressClassName: traefik
 ---
+# Issuer can only be active in it's namespace. ClusterIssuer is for all namespaces
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-shortlived
+spec:
+  acme:
+    profile: shortlived
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-shortlived-key
+    solvers:
+    - http01:
+        ingress:
+          ingressClassName: traefik
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: example-com
+  name: demo-certificate
   namespace: cert-manager
 spec:
   # Secret names are always required.
-  secretName: example-com-tls
+  secretName: demo-certificate-tls
   privateKey:
     rotationPolicy: Always
 
@@ -44,7 +60,7 @@ spec:
       - 'renklus ch'
 
   dnsNames:
-    - cert.dev.renklus.ch
+    - demo-cert.rancher.k8s.renklus.ch
 
   # Issuer references are always required.
   issuerRef:
