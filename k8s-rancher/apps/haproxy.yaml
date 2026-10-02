@@ -45,7 +45,7 @@ spec:
           frontend incoming-http
             bind [::]:8000 v4v6
             acl allowed-path path_beg /.well-known/acme-challenge/
-            http-request return status 404 content-type text/plain lf-string "not found" unless allowed-path
+            http-request return status 401 content-type text/plain lf-string "not found" unless allowed-path
             # acl host-vrt01p hdr(host),lower -i vrt01p.dev.renklus.ch
             # use_backend vrt01p if host-vrt01p
             use_backend vrt01p if { req.hdr(host) -i vrt01p.dev.renklus.ch }
@@ -57,7 +57,7 @@ spec:
             default_backend rejected
 
           backend rejected
-            http-request return status 404 content-type text/plain lf-string "not-found"
+            http-request return status 415 content-type text/plain lf-string "not-found"
 
           backend testing
             server testing app07d.dev.renklus.ch:80 resolvers dns init-addr last,libc,none
