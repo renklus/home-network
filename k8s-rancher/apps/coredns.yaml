@@ -7,7 +7,7 @@ metadata:
 data:
   k8s_external.server: |
     rancher.k8s.renklus.ch:53 {
-        rewrite name exact argo.rancher.k8s.renklus.ch argocd-server.argocd.rancher.k8s.renklus.ch answer auto
+        rewrite name exact argo.rancher.k8s.renklus.ch argo-cd-argocd-server.argocd.rancher.k8s.renklus.ch answer auto
         kubernetes
         k8s_external rancher.k8s.renklus.ch
     }
