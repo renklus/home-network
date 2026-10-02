@@ -21,6 +21,11 @@ spec:
       parameters:
         - name: 'crds.enabled'
           value: 'true'
+        # HTTP-01 self check goes through HAProxy. Cluster internal traffic and HTTPS traffic are not affected
+        - name: 'http_proxy'
+          value: 'http://haproxy.haproxy.svc.cluster.local:8000'
+        - name: 'no_proxy'
+          value: '127.0.0.1\,localhost\,.svc\,.cluster.local'
         # no need to specify image tags because the default is same as chart version. Dependabot can just update the chart
   - path: k8s-rancher/apps/cert-manager
     repoURL: 'https://github.com/renklus/home-network'
