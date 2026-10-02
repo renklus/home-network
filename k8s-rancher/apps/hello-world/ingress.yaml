@@ -4,7 +4,7 @@ metadata:
   name: hello-world
   namespace: hello-world
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt-staging-shortlived
 spec:
   ingressClassName: traefik
   rules:

@@ -18,10 +18,16 @@ spec:
       parameters:
         - name: 'server.service.type'
           value: 'LoadBalancer'
-        - name: 'server.certificate.additionalHosts[0]'
-          value: 'argocd-server.argocd.rancher.k8s.renklus.ch'
-        - name: 'server.certificate.additionalHosts[1]'
+        - name: 'global.domain'
           value: 'argo.rancher.k8s.renklus.ch'
+        - name: 'server.certificate.enabled'
+          value: 'true'
+        - name: 'server.certificate.issuer.kind'
+          value: 'ClusterIssuer'
+        - name: 'server.certificate.issuer.name'
+          value: 'letsencrypt-staging-shortlived'
+        - name: 'server.certificate.additionalHosts[0]'
+          value: 'argo-cd-argocd-server.argocd.rancher.k8s.renklus.ch'
       valuesObject:
         global:
           image:
