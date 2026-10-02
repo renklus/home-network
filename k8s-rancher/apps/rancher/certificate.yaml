@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  # Probably needs to match exactly what rancher expects
+  name: tls-rancher-ingress
+  namespace: cattle-system
+spec:
+  secretName: tls-rancher-ingress
+  privateKey:
+    rotationPolicy: Always
+  dnsNames:
+    - rancher.ingress.rancher.k8s.renklus.ch # must match helm parameter 'hostname'
+  issuerRef:
+    name: letsencrypt-staging-shortlived
+    kind: ClusterIssuer
+    group: cert-manager.io

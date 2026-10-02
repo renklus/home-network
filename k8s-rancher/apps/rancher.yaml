@@ -24,6 +24,14 @@ spec:
           value: 'rancher.ingress.rancher.k8s.renklus.ch' # must point to ingress, otherwise Node joining doesn't work
         - name: 'replicas'
           value: '1'
+        # Public cert: https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/resources/update-rancher-certificate
+        # 'secret' stops the chart from creating its self-signed rancher Issuer. The secret 'tls-rancher-ingress' is filled by rancher/certificate.yaml
+        - name: 'ingress.tls.source'
+          value: 'secret'
+        # agents must trust the public CA from the OS trust store. 'strict' only trusts the CA in the 'cacerts' setting
+        # https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-references/tls-settings#agent-tls-enforcement
+        - name: 'agentTLSMode'
+          value: 'system-store'
         # no need to specify image tags because the default is same as chart version. Dependabot can just update the chart
   - path: k8s-rancher/apps/rancher
     repoURL: 'https://github.com/renklus/home-network'
