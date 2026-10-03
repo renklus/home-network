@@ -6,7 +6,7 @@ metadata:
   name: app-of-prod
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "4"
   finalizers:
     # prod argocd controller app not delete all prod resources when it is deleted by accident
 spec:
