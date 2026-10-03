@@ -7,7 +7,7 @@ metadata:
   - resources-finalizer.argocd.argoproj.io # means argocd will delete all resources deployed by this application when the application is deleted
 spec:
   sources:
-  - path: k8s-prod/apps/assembled-system-config
+  - path: k8s-prod/apps/system-config
     repoURL: 'https://github.com/renklus/home-network'
     targetRevision: HEAD
   project: prod-cluster
