@@ -10,21 +10,18 @@
   ],
   "argocd": {
     "managerFilePatterns": [
-      "/k8s/apps/.+\\.yaml$/",
       "/k8s-rancher/apps/.+\\.yaml$/",
       "/k8s-prod/apps/.+\\.yaml$/"
     ]
   },
   "helm-values": {
     "managerFilePatterns": [
-      "/k8s/apps/.+\\.yaml$/",
       "/k8s-rancher/apps/.+\\.yaml$/",
       "/k8s-prod/apps/.+\\.yaml$/"
     ]
   },
   "kubernetes": {
     "managerFilePatterns": [
-      "/k8s/apps/.+\\.yaml$/",
       "/k8s-rancher/apps/.+\\.yaml$/",
       "/k8s-prod/apps/.+\\.yaml$/"
     ]
@@ -34,7 +31,7 @@
       "customType": "regex",
       "fileFormat": "yaml",
       "managerFilePatterns": [
-        "/k8s/apps/.+\\.yaml$/"
+        "/DISABLE-THIS-RULE/k8s/apps/.+\\.yaml$/"
       ],
       "matchStrings": [
         "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\n\\s+\\S+?:\\s?\\'(?<currentValue>[^\\s\\@]+)(\\@(?<currentDigest>\\S+))?\\'"
@@ -44,7 +41,7 @@
       "customType": "regex",
       "fileFormat": "yaml",
       "managerFilePatterns": [
-        "/k8s/apps/app-of-infrastructure-apps/csi-nfs\\.yaml$/"
+        "/DISABLE-THIS-RULE/k8s/apps/app-of-infrastructure-apps/csi-nfs\\.yaml$/"
       ],
       "matchStrings": [
         "(?ms)^(?<indentation>\\s*)repository:\\s*'(?<packageName>[^']+)'[\\s]*?tag:\\s*'(?<currentValue>[^'@]+)(?:@(?<currentDigest>[^']+))?'",
@@ -57,7 +54,6 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/k8s/apps/.+\\.yaml$/",
         "/k8s-rancher/apps/.+\\.yaml$/",
         "/k8s-prod/apps/.+\\.yaml$/"
       ],
@@ -78,13 +74,13 @@
     }
   },
   "ignorePaths": [
-    "k8s-old1/**"
+    "k8s-old1/**",
+    "k8s-dmz/**",
+    "k8s/**"
   ],
   "packageRules": [
     {
       "matchFileNames": [
-        "k8s/apps/app-of-apps-apps/*.yaml",
-        "k8s/apps/app-of-infrastructure-apps/*.yaml",
         "k8s-rancher/apps/*.yaml",
         "k8s-prod/apps/*.yaml"
       ],
@@ -97,8 +93,6 @@
     },
     {
       "matchFileNames": [
-        "k8s/apps/app-of-apps-apps/*.yaml",
-        "k8s/apps/app-of-infrastructure-apps/*.yaml",
         "k8s-rancher/apps/*.yaml",
         "k8s-prod/apps/*.yaml"
       ],
