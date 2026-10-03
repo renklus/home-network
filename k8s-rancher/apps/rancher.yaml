@@ -46,5 +46,5 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=false # if argo-cd manages the namespace fleet-* with ServerSideApply=true then it will be in a endless sync-war with rancher (https://github.com/argoproj/argo-cd/issues/14666#issuecomment-1715538502)
+      - CreateNamespace=false # if argo-cd creates the namespace fleet-* with ServerSideApply=true then it will be in a endless sync-war with rancher (https://github.com/argoproj/argo-cd/issues/14666#issuecomment-1715538502)
       - ServerSideApply=true

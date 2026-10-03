@@ -26,7 +26,7 @@ GitOps configuration for a home-lab Kubernetes setup, deployed by Argo CD from `
 **Per-app file layout.** An app `foo` is `foo.yaml` (the Application) plus an optional `foo/` subdirectory with extra manifests. Helm-based apps use multiple `sources`: the chart first, then `path: <cluster>/apps/foo` from this repo. Resources that depend on a chart's CRDs (e.g. MetalLB `IPAddressPool`, cert-manager `ClusterIssuer`) must live in that app's subdirectory, not at the top level, so they sync with the chart.
 
 **Conventions every Application follows:**
-- `syncOptions: CreateNamespace=false` and `ServerSideApply=true`. Namespaces are declared explicitly in `foo/namespaces.yaml` (or inline). Some comments explain why — e.g. Argo managing Rancher's `fleet-*` namespaces causes sync wars.
+- `syncOptions: CreateNamespace=false` and `ServerSideApply=true`. Namespaces are declared explicitly in `foo/namespaces.yaml` (or inline). One comment explains why.
 - Explicit `project` is required: the `default` AppProject is locked down in `k8s-rancher/apps/argocd/projects.yaml`. `prod-cluster` blocks `Application` resources and the `argocd` namespace.
 - Finalizer choice is deliberate: `resources-finalizer.argocd.argoproj.io` cascades deletion; it is intentionally omitted on `argo-cd`, `app-of-apps`, `app-of-prod` and `no-auto-delete` (which holds PVCs like the immich media claim).
 - Helm config uses `helm.parameters` for scalar settings and `helm.valuesObject` for image pins.
