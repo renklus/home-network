@@ -16,7 +16,7 @@ spec:
   project: prod-cluster
   destination:
     namespace: cnpg-system
-    name: prod
+    name: production
   syncPolicy:
     automated:
       enabled: true

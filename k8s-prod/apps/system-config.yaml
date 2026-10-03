@@ -13,7 +13,7 @@ spec:
   project: prod-cluster
   destination:
     # namespace: csi-nfs-system
-    name: prod
+    name: production
   syncPolicy:
     automated:
       enabled: true

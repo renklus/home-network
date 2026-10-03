@@ -1,0 +1,77 @@
+# Used for automatically registering every Rancher-provisioned cluster in Argo CD.
+# Rancher keeps a kubeconfig for each cluster in 'fleet-default/<cluster>-kubeconfig' (also used by Fleet). It points at the
+# Rancher auth proxy (https://<rancher hostname>/k8s/clusters/<cluster id>) with a Rancher-managed token, which is what Argo CD
+# needs: docs/k8s-rancher-cluster-connection.md
+# Based on https://kyverno.io/policies/argo/argo-cluster-generation-from-rancher-capi/argo-cluster-generation-from-rancher-capi/
+# but triggered by the kubeconfig Secret instead of the Cluster, so a token change by Rancher is synced as well.
+apiVersion: policies.kyverno.io/v1
+kind: GeneratingPolicy
+metadata:
+  name: argocd-clusters-from-rancher
+  annotations:
+    # after the chart (wave 0) is healthy, so the CRD and the aggregated RBAC below exist
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  evaluation:
+    # also handle clusters that already exist when the policy is created
+    generateExisting:
+      enabled: true
+    # update/delete the Argo CD Secret when the kubeconfig Secret changes or is deleted, and restore it if edited by hand
+    synchronize:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+    - apiGroups: ['']
+      apiVersions: ['v1']
+      operations: ['CREATE', 'UPDATE']
+      resources: ['secrets']
+    namespaceSelector:
+      matchLabels:
+        kubernetes.io/metadata.name: fleet-default
+  matchConditions:
+  - name: rancher-cluster-kubeconfig
+    expression: "object.metadata.name.endsWith('-kubeconfig') && has(object.data) && has(object.data.value)"
+  variables:
+  # Rancher cluster name (metadata.name in rancher/cluster-*.yaml), used as the Argo CD cluster name in Application destinations
+  - name: clusterName
+    expression: "object.metadata.name.substring(0, object.metadata.name.lastIndexOf('-kubeconfig'))"
+  - name: kubeconfig
+    expression: "yaml.parse(string(base64.decode(object.data.value)))"
+  # Argo CD cluster config: https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#clusters
+  # The kubeconfig's CA is ignored on purpose: the Rancher endpoint has a public Let's Encrypt certificate, verified with the system trust store.
+  - name: config
+    expression: >-
+      '{"bearerToken":"' + string(variables.kubeconfig.users[0].user.token) + '","tlsClientConfig":{"insecure":false}}'
+  - name: clusterSecret
+    expression: >-
+      [
+        {
+          "apiVersion": dyn("v1"),
+          "kind": dyn("Secret"),
+          "metadata": dyn({
+            "name": dyn("cluster-" + variables.clusterName),
+            "labels": dyn({"argocd.argoproj.io/secret-type": "cluster"})
+          }),
+          "type": dyn("Opaque"),
+          "data": dyn({
+            "name": base64.encode(bytes(variables.clusterName)),
+            "server": base64.encode(bytes(string(variables.kubeconfig.clusters[0].cluster.server))),
+            "config": base64.encode(bytes(variables.config))
+          })
+        }
+      ]
+  generate:
+  - expression: "generator.apply('argocd', variables.clusterSecret)"
+---
+# The background controller creates the Secrets. By default it can't read or write Secrets.
+# https://kyverno.io/docs/installation/customization/#role-based-access-controls
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kyverno:argocd-clusters
+  labels:
+    rbac.kyverno.io/aggregate-to-background-controller: "true"
+rules:
+- apiGroups: ['']
+  resources: ['secrets']
+  verbs: ['get', 'list', 'watch', 'create', 'update', 'patch', 'delete']

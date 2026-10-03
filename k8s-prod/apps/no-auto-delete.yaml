@@ -12,7 +12,7 @@ spec:
     targetRevision: HEAD
   project: prod-cluster
   destination:
-    name: prod
+    name: production
   syncPolicy:
     automated:
       enabled: true

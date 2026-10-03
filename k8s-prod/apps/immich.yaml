@@ -79,7 +79,7 @@ spec:
   project: prod-cluster
   destination:
     namespace: immich
-    name: prod
+    name: production
   syncPolicy:
     automated:
       enabled: true

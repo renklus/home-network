@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kyverno
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io # means argocd will delete all resources deployed by this application when the application is deleted
+spec:
+  sources:
+  - repoURL: https://kyverno.github.io/kyverno
+    chart: kyverno
+    targetRevision: '3.9.1'
+    helm:
+      parameters:
+        # recommended for Argo CD: otherwise the app may stay OutOfSync and isn't cleaned up on deletion
+        # https://kyverno.io/docs/installation/platform-notes/
+        - name: 'config.preserve'
+          value: 'false'
+        # only generating policies are used (kyverno/argocd-clusters.yaml): no policy reports or cleanup policies needed
+        - name: 'features.admissionReports.enabled'
+          value: 'false'
+        - name: 'reportsController.enabled'
+          value: 'false'
+        - name: 'cleanupController.enabled'
+          value: 'false'
+        # no need to specify image tags because the default is same as chart version. Renovate can just update the chart
+  - path: k8s-rancher/apps/kyverno
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  project: rancher-cluster
+  destination:
+    namespace: kyverno
+    name: in-cluster
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true # also needed because the Kyverno CRDs are too large for client-side apply

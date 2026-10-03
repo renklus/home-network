@@ -1,25 +1,27 @@
-# When making this config secure and automated then consult: https://gist.github.com/janeczku/b16154194f7f03f772645303af8e9f80 (a copy is in this repo as /docs/k8s-rancher-cluster-connection.md)
-# currently: take bearer token and server URL from kubeconfig (downloaded from Rancher UI)
-# maybe also useful: https://web.archive.org/web/20251214083235/https://mgior.com/posts/k3s-argocd/
+# Now auto-generated with kyverno (pretty much equal to this)
 
-apiVersion: v1
-kind: Secret
-metadata:
-  # name of this resource
-  name: argo-cluster-prod
-  labels:
-    argocd.argoproj.io/secret-type: cluster
-type: Opaque
-stringData:
-  # name how applications reference this cluster
-  name: prod
-  # public hostname through traefik, so the Let's Encrypt certificate is verified. Resolvable in-cluster via the
-  # '.ingress.' rewrite in coredns.yaml.
-  server: https://rancher.ingress.rancher.k8s.renklus.ch/k8s/clusters/c-m-jglqxkzx
-  config: |
-    {
-      "bearerToken": "kubeconfig-user-4dcn6sxcxq:7mw9vwv6q62d4j5z5rn8qb587xjpzpkp2bzv67xb95svnx5x5hgnjk",
-      "tlsClientConfig": {
-        "insecure": false
-      }
-    }
+# # When making this config secure and automated then consult: https://gist.github.com/janeczku/b16154194f7f03f772645303af8e9f80 (a copy is in this repo as /docs/k8s-rancher-cluster-connection.md)
+# # currently: take bearer token and server URL from kubeconfig (downloaded from Rancher UI)
+# # maybe also useful: https://web.archive.org/web/20251214083235/https://mgior.com/posts/k3s-argocd/
+
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   # name of this resource
+#   name: argo-cluster-prod
+#   labels:
+#     argocd.argoproj.io/secret-type: cluster
+# type: Opaque
+# stringData:
+#   # name how applications reference this cluster
+#   name: prod
+#   # public hostname through traefik, so the Let's Encrypt certificate is verified. Resolvable in-cluster via the
+#   # '.ingress.' rewrite in coredns.yaml.
+#   server: https://rancher.ingress.rancher.k8s.renklus.ch/k8s/clusters/c-m-jglqxkzx
+#   config: |
+#     {
+#       "bearerToken": "kubeconfig-user-4dcn6sxcxq:7mw9vwv6q62d4j5z5rn8qb587xjpzpkp2bzv67xb95svnx5x5hgnjk",
+#       "tlsClientConfig": {
+#         "insecure": false
+#       }
+#     }

@@ -30,7 +30,7 @@ spec:
   project: prod-cluster
   destination:
     namespace: metallb-system
-    name: prod
+    name: production
   syncPolicy:
     automated:
       enabled: true
