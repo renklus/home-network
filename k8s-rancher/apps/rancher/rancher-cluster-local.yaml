@@ -1,7 +1,12 @@
-apiVersion: provisioning.cattle.io/v1
+# The local cluster is imported (Rancher runs on it), not provisioned by Rancher.
+# Use management.cattle.io/v3 instead of provisioning.cattle.io/v1 for imported k3s clusters;
+apiVersion: management.cattle.io/v3
 kind: Cluster
 metadata:
   name: local
-  namespace: fleet-local
   annotations:
+  # Prune/Delete=false: removing this file or the app does not delete the local cluster
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true,Prune=false,Delete=false
+spec:
+  k3sConfig:
+    kubernetesVersion: 'v1.36.4+k3s1'
