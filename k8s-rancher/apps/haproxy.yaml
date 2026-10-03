@@ -5,6 +5,9 @@ kind: Application
 metadata:
   name: haproxy
   namespace: argocd
+  annotations:
+    # must be healthy before cert-manager (wave 1) starts, as the HTTP-01 challenges go through haproxy.
+    argocd.argoproj.io/sync-wave: "0"
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:

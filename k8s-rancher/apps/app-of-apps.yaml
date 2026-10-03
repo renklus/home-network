@@ -21,7 +21,8 @@ metadata:
   name: app-of-apps
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    # last wave: this app manages itself, so it must not be in a wave whose health is waited on.
+    argocd.argoproj.io/sync-wave: "3"
   finalizers:
     # main argocd controller app not delete all resources when it is deleted by accident
 spec:
