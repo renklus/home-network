@@ -22,6 +22,9 @@ spec:
           value: 'http://haproxy.haproxy.svc.cluster.local:8000'
         - name: 'no_proxy'
           value: '127.0.0.1\,localhost\,.svc\,.cluster.local'
+        # retry failed issuances (e.g. during cluster bootstrap) after 10m instead of 1h. Still doubles per failure up to the 32h max
+        - name: 'config.certificateRequestMinimumBackoffDuration'
+          value: '10m'
         # no need to specify image tags because the default is same as chart version. Dependabot can just update the chart
   - path: k8s-rancher/apps/cert-manager
     repoURL: 'https://github.com/renklus/home-network'
