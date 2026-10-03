@@ -13,7 +13,8 @@ GitOps configuration for a home-lab Kubernetes setup, deployed by Argo CD from `
 - Use 'k8s01d' instead of 'kubectl'.
 - "Don't run cluster commands, tell me what to run"
 - Don't commit changes. Move the final version to the main working directory once I agree with it.
-- Avoid unnecessary CLI tool calls. Use on board tools where feasible. For example prefer Read over `cat`
+- Avoid unnecessary CLI tool calls. Use on board tools where feasible. For example prefer Read over `cat`-ing or `grep`-ing files.
+- Value following best practices, a focus on maintainability and simplicity.
 
 ## Architecture
 **App-of-apps chain.** Argo CD is installed manually during cluster bootstrap, then takes over its own management:
