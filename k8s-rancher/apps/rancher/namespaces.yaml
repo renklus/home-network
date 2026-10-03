@@ -3,12 +3,18 @@ kind: Namespace
 metadata:
   name: cattle-system
 ---
+# Prune/Delete=false on the fleet-* namespaces: they hold the Rancher Cluster objects. Deleting a namespace
+# would delete the clusters in it, regardless of the annotations on the Cluster resources themselves.
 apiVersion: v1
 kind: Namespace
 metadata:
   name: fleet-default
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
   name: fleet-local
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false

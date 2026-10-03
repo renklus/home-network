@@ -1,3 +1,10 @@
+# WARNING: deleting this Application deletes all photos and the database.
+# The finalizer below cascades to the 'immich' namespace (immich/namespaces.yaml). Deleting the namespace
+# deletes every PVC in it, including 'immich-media' from the no-auto-delete app and the CNPG database PVC.
+# Both use storage class 'truenas-nfs-hard' with reclaimPolicy 'Delete', so csi-driver-nfs then removes
+# the subdirectory on the NFS share. Removing namespaces.yaml from git has the same effect through prune.
+# TODO: use a storage class with reclaimPolicy 'Retain' and mark the namespace and PVCs with
+# 'argocd.argoproj.io/sync-options: Prune=false,Delete=false'.
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
