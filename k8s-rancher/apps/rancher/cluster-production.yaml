@@ -7,7 +7,7 @@ metadata:
   namespace: fleet-default
   annotations:
     ui.rancher/badge-icon-text: PRD
-    # SkipDryRunOnMissingResource: sync-waves only work on type 'Application', so this is used instead of waiting for the CRD.
+    # SkipDryRunOnMissingResource: the CRD is created by Rancher at runtime, and Argo CD dry-runs all waves before the first one starts, so a sync-wave wouldn't help.
     # Prune/Delete=false: removing this file or the rancher app does not make Rancher deprovision the cluster.
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true,Prune=false,Delete=false
 spec:

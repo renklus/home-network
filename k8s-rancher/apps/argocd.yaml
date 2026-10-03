@@ -16,6 +16,9 @@ spec:
     chart: 'argo-cd'
     targetRevision: '10.9.6'
     helm:
+      # also used for the manual install during cluster bootstrap (see the file), so it must not depend on other apps
+      valueFiles:
+        - '$values/k8s-rancher/bootstrap/argocd-values.yaml'
       parameters:
         - name: 'server.service.type'
           value: 'LoadBalancer'
@@ -61,33 +64,12 @@ spec:
         #   image:
         #     repository: 'public.ecr.aws/docker/library/redis'
         #     tag: '8.2.3-alpine'
-        configs:
-          cm:
-            "users.session.duration": '22h'
-            # Without this, child Applications count as healthy immediately and sync waves in app-of-apps don't wait for them.
-            # Also add this to the values of the manual argo-cd install when bootstrapping, otherwise the first sync doesn't wait either.
-            # https://argo-cd.readthedocs.io/en/stable/operator-manual/upgrading/1.7-1.8/#health-assessment-of-argoprojioapplication-crd-has-been-removed
-            "resource.customizations.health.argoproj.io_Application": |
-              hs = {}
-              hs.status = "Progressing"
-              hs.message = ""
-              if obj.status ~= nil then
-                if obj.status.health ~= nil then
-                  hs.status = obj.status.health.status
-                  if obj.status.health.message ~= nil then
-                    hs.message = obj.status.health.message
-                  end
-                end
-              end
-              return hs
-          params:
-            "create": 'true'
-            # required for https://github.com/argoproj/argo-cd/issues/11143#issuecomment-1664144190
-            # see also Server-Side Diff: https://argo-cd.readthedocs.io/en/stable/user-guide/diff-strategies/
-            "controller.diff.server.side": 'true'
   - path: k8s-rancher/apps/argocd
     repoURL: 'https://github.com/renklus/home-network'
     targetRevision: HEAD
+  - repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+    ref: values
   project: rancher-cluster
   destination:
     namespace: argocd

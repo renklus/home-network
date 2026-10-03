@@ -3,6 +3,9 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-staging-shortlived
+  annotations:
+    # after the chart (wave 0) is healthy, otherwise the cert-manager webhook rejects it on first sync
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   acme:
     #email: email@example.com
@@ -23,6 +26,8 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-shortlived
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   acme:
     profile: shortlived
@@ -34,14 +39,19 @@ spec:
         ingress:
           ingressClassName: traefik
 ---
+# Canary: the cert-manager app is only healthy once this staging certificate is issued, i.e. the whole public HTTP-01 path
+# (DNS, router, HAProxy, Traefik) works. Apps requesting production certificates use a later sync-wave, so a broken
+# path during bootstrap only burns staging attempts instead of production rate limits.
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: demo-certificate
+  name: canary-certificate
   namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   # Secret names are always required.
-  secretName: demo-certificate-tls
+  secretName: canary-certificate-tls
   privateKey:
     rotationPolicy: Always
 
@@ -60,7 +70,7 @@ spec:
       - 'renklus ch'
 
   dnsNames:
-    - demo-cert.rancher.k8s.renklus.ch
+    - canary-cert.rancher.k8s.renklus.ch
 
   # Issuer references are always required.
   issuerRef:

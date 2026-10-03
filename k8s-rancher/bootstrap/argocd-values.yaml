@@ -1,0 +1,29 @@
+# Argo CD Helm values shared by the manual install during cluster bootstrap and by k8s-rancher/apps/argocd.yaml,
+# so the bootstrap install already behaves like the one Argo CD later adopts. Bootstrap (use the chart version from argocd.yaml):
+#   helm repo add argo https://argoproj.github.io/argo-helm
+#   helm install argo-cd argo/argo-cd --namespace argocd --create-namespace --version <targetRevision> -f k8s-rancher/bootstrap/argocd-values.yaml
+#   k01d apply -f k8s-rancher/apps/app-of-apps.yaml
+configs:
+  cm:
+    "users.session.duration": '22h'
+    # Without this, child Applications count as healthy immediately and the sync waves in app-of-apps don't wait for them
+    # (e.g. cert-manager would request certificates before HAProxy can route the HTTP-01 challenges).
+    # https://argo-cd.readthedocs.io/en/stable/operator-manual/upgrading/1.7-1.8/#health-assessment-of-argoprojioapplication-crd-has-been-removed
+    "resource.customizations.health.argoproj.io_Application": |
+      hs = {}
+      hs.status = "Progressing"
+      hs.message = ""
+      if obj.status ~= nil then
+        if obj.status.health ~= nil then
+          hs.status = obj.status.health.status
+          if obj.status.health.message ~= nil then
+            hs.message = obj.status.health.message
+          end
+        end
+      end
+      return hs
+  params:
+    "create": 'true'
+    # required for https://github.com/argoproj/argo-cd/issues/11143#issuecomment-1664144190
+    # see also Server-Side Diff: https://argo-cd.readthedocs.io/en/stable/user-guide/diff-strategies/
+    "controller.diff.server.side": 'true'

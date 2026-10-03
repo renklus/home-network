@@ -3,6 +3,9 @@ kind: Application
 metadata:
   name: hello-world
   namespace: argocd
+  annotations:
+    # its Ingress requests a production certificate, so start it only after the canary certificate in cert-manager (wave 1) was issued
+    argocd.argoproj.io/sync-wave: "2"
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
