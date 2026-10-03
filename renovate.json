@@ -61,12 +61,14 @@
         "kubernetesVersion: '?(?<currentValue>[^'\\s]+)'?[\\S\\s]*$"
       ],
       "depNameTemplate": "k3s",
+      "packageNameTemplate": "k3s-io/k3s",
       "versioningTemplate": "regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?<compatibility>\\+k3s)(?<build>\\d+)$",
-      "datasourceTemplate": "custom.k3s"
+      "datasourceTemplate": "github-releases"
     }
   ],
   "customDatasources": {
     "k3s": {
+      "description": "UNUSED: Use with datasourceTemplate=custom.k3s",
       "defaultRegistryUrlTemplate": "https://update.k3s.io/v1-release/channels",
       "transformTemplates": [
         "{\"releases\":[{\"version\": $$.(data[id = 'stable'].latest),\"sourceUrl\":\"https://github.com/k3s-io/k3s\",\"changelogUrl\":$join([\"https://github.com/k3s-io/k3s/releases/tag/\",data[id = 'stable'].latest])}],\"sourceUrl\": \"https://github.com/k3s-io/k3s\",\"homepage\": \"https://k3s.io/\"}"
@@ -100,6 +102,13 @@
         "custom.regex"
       ],
       "groupName": "{{{replace 'k8s.*\\/(?<FileName>[^/]*)\\.yaml' 'app $<FileName> (regex-match)' packageFile}}}"
+    },
+    {
+      "description": "Rancher only supports new k3s releases some time after they are published",
+      "matchDepNames": [
+        "k3s"
+      ],
+      "minimumReleaseAge": "7 days"
     },
     {
       "matchPackageNames": [
