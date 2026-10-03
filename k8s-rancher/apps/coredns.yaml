@@ -8,6 +8,8 @@ data:
   k8s_external.server: |
     rancher.k8s.renklus.ch:53 {
         rewrite name exact argo.rancher.k8s.renklus.ch argo-cd-argocd-server.argocd.rancher.k8s.renklus.ch answer auto
+        # every Ingress host <name>.ingress.rancher.k8s.renklus.ch resolves to the traefik LoadBalancer (traefik.yaml)
+        rewrite name regex (.+)\.ingress\.rancher\.k8s\.renklus\.ch traefik.kube-system.rancher.k8s.renklus.ch answer auto
         kubernetes
         k8s_external rancher.k8s.renklus.ch
     }

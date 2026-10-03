@@ -13,12 +13,13 @@ type: Opaque
 stringData:
   # name how applications reference this cluster
   name: prod
-  server: https://rancher.cattle-system.svc.cluster.local/k8s/clusters/c-m-jglqxkzx
-  # the argo server cannot resolve this URL to an IP:  server: https://rancher.ingress.rancher.k8s.renklus.ch/k8s/clusters/c-m-xxxxxxxx
+  # public hostname through traefik, so the Let's Encrypt certificate is verified. Resolvable in-cluster via the
+  # '.ingress.' rewrite in coredns.yaml.
+  server: https://rancher.ingress.rancher.k8s.renklus.ch/k8s/clusters/c-m-jglqxkzx
   config: |
     {
       "bearerToken": "kubeconfig-user-4dcn6sxcxq:7mw9vwv6q62d4j5z5rn8qb587xjpzpkp2bzv67xb95svnx5x5hgnjk",
       "tlsClientConfig": {
-        "insecure": true
+        "insecure": false
       }
     }

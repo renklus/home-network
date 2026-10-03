@@ -35,7 +35,7 @@ GitOps configuration for a home-lab Kubernetes setup, deployed by Argo CD from `
 **Networking / TLS on the rancher cluster:**
 - MetalLB pool `10.1.0.235-10.1.0.245`; using fixed IPs should be avoided where possible but it is possible via `metallb.universe.tf/loadBalancerIPs` at the top of the pool (traefik `.244`, external DNS `.245`). Prod uses `10.1.1.x`.
 - CoreDNS `k8s_external` serves `<svc>.<ns>.rancher.k8s.renklus.ch` for LoadBalancer services; `coredns.yaml` also holds name rewrites (e.g. the `argo.` alias).
-- Ingress is k3s Traefik (`ingressClassName: traefik`). Ingress hosts follow `<name>.<namespace>.rancher.k8s.renklus.ch`.
+- Ingress is k3s Traefik (`ingressClassName: traefik`). Ingress hosts follow `<name>.ingress.rancher.k8s.renklus.ch`; a regex rewrite in `coredns.yaml` resolves all of them to Traefik, also from inside the cluster.
 - cert-manager ClusterIssuers `letsencrypt-staging-shortlived` and `letsencrypt-shortlived` (prod) use HTTP-01. External port 80 reaches HAProxy (`haproxy.yaml`), which only forwards `/.well-known/acme-challenge/` and routes by Host to Traefik or to external dev hosts; cert-manager's self-check uses HAProxy as its `http_proxy`. Adding a new ACME host means updating HAProxy config (and Cloudflare DNS, outside this repo).
 - Rancher uses `ingress.tls.source=secret` with the `tls-rancher-ingress` Certificate in `k8s-rancher/apps/rancher/certificate.yaml`; its `dnsNames` must match the chart's `hostname`.
 
