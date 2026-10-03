@@ -30,6 +30,6 @@ spec:
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
-  clusterResourceBlacklist:
-  - group: '*'
+  namespaceResourceBlacklist:
+  - group: 'argoproj.io'
     kind: 'Application'
