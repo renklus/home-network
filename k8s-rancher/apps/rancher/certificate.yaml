@@ -11,6 +11,6 @@ spec:
   dnsNames:
     - rancher.ingress.rancher.k8s.renklus.ch # must match helm parameter 'hostname'
   issuerRef:
-    name: letsencrypt-staging-shortlived
+    name: letsencrypt-shortlived
     kind: ClusterIssuer
     group: cert-manager.io

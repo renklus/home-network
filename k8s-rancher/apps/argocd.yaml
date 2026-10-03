@@ -26,7 +26,7 @@ spec:
         - name: 'server.certificate.issuer.kind'
           value: 'ClusterIssuer'
         - name: 'server.certificate.issuer.name'
-          value: 'letsencrypt-staging-shortlived'
+          value: 'letsencrypt-shortlived'
         - name: 'server.certificate.additionalHosts[0]'
           value: 'argo-cd-argocd-server.argocd.rancher.k8s.renklus.ch'
       valuesObject:
