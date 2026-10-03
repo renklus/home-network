@@ -11,6 +11,9 @@ spec:
   namespaceResourceBlacklist:
   - group: '*'
     kind: '*'
+  clusterResourceBlacklist:
+  - group: '*'
+    kind: '*'
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
