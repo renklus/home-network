@@ -34,6 +34,10 @@ spec:
           value: 'persistentVolumeClaim'
         - name: 'valkey.persistence.data.storageClass'
           value: 'truenas-nfs-hard'
+        - name: 'valkey.persistence.data.size'
+          value: '5Gi'
+        - name: 'valkey.persistence.data.accessMode'
+          value: 'ReadWriteOnce'
         - name: 'server.ingress.main.enabled'
           value: 'true'
         # - name: 'server.ingress.main.hosts'
@@ -42,6 +46,10 @@ spec:
           value: 'persistentVolumeClaim'
         - name: 'machine-learning.persistence.cache.storageClass'
           value: 'truenas-nfs-hard'
+        - name: 'machine-learning.persistence.cache.size'
+          value: '50Gi'
+        - name: 'machine-learning.persistence.cache.accessMode'
+          value: 'ReadWriteMany'
       valuesObject:
         immich:
           configuration: {} # immich-config.json converted to yaml (https://immich.app/docs/install/config-file/)
