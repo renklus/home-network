@@ -14,7 +14,7 @@ GitOps configuration for a home-lab Kubernetes setup, deployed by Argo CD from `
 ## Working in this repository
 - Use 'k8s01d' instead of 'kubectl'.
 - "Don't run cluster commands, tell me what to run"
-- Don't commit changes. Build me a git diff command that applies the changes to the main working directory. Do not make tool calls just to build this command.
+- Don't commit changes. Work in the worktree as usual, but once I am happy with the change don't push or merge to master but build me a git diff command that applies the changes to the main working directory. Do not make tool calls just to build this command.
 - Avoid unnecessary CLI tool calls. Use on board tools where feasible. For example prefer Read over `cat`-ing or `grep`-ing files.
 - Value following best practices, a focus on maintainability and simplicity.
 
