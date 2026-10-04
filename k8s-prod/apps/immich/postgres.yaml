@@ -1,4 +1,6 @@
-# from https://github.com/immich-app/immich-charts/blob/main/local/cloudnative-pg.yaml as recommended by https://github.com/immich-app/immich-charts/blob/main/README.md
+# Based on https://github.com/immich-app/immich-charts/blob/main/local/cloudnative-pg.yaml, but with the
+# tensorchord/cloudnative-vectorchord image recommended by the chart README instead of an image volume extension.
+# CNPG creates the database 'app' owned by user 'app' and stores the credentials in Secret 'immich-database-app'.
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
@@ -11,18 +13,50 @@ spec:
 
   storage:
     storageClass: truenas-nfs-hard
-    size: 1Gi
+    size: 5Gi
 
-  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.4.3
+  # Tag is '<postgres>-<vectorchord>'. When the vectorchord part changes, also update the vchord version in the
+  # Database below and afterwards run the REINDEX listed there.
+  imageName: 'ghcr.io/tensorchord/cloudnative-vectorchord:18.6-1.1.1@sha256:c7672bc011351a587cc292a94aac7eeebb593ed2e120077bd9c9944c9467db93'
 
   postgresql:
     shared_preload_libraries:
-      - "vchord.so"
+      - 'vchord.so'
 
-  bootstrap:
-    initdb:
-      # TODO: Use managed extensions (pg 18)
-      postInitApplicationSQL:
-        # Commands based on: https://immich.app/docs/administration/postgres-standalone/#without-superuser-permission
-        - CREATE EXTENSION vchord CASCADE;
-        - CREATE EXTENSION earthdistance CASCADE;
+# replaced with declarative setup below
+  # bootstrap:
+  #   initdb:
+  #     # TODO: Use managed extensions (pg 18)
+  #     postInitApplicationSQL:
+  #       # Commands based on: https://immich.app/docs/administration/postgres-standalone/#without-superuser-permission
+  #       - CREATE EXTENSION vchord CASCADE;
+  #       - CREATE EXTENSION earthdistance CASCADE;
+---
+# Declarative extensions: unlike initdb's postInitApplicationSQL, this is reconciled continuously,
+# so extensions added here later are applied to the existing database.
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: immich-database
+  namespace: immich
+spec:
+  name: app
+  owner: app
+  cluster:
+    name: immich-database
+  # Immich needs vchord and earthdistance. CNPG runs CREATE EXTENSION without CASCADE,
+  # so their dependencies vector and cube are listed explicitly, each before its dependent.
+  extensions:
+    - name: vector
+      ensure: present
+    - name: vchord
+      ensure: present
+      # Must match the vectorchord part of the Cluster's image tag. Changing it makes CNPG run
+      # 'ALTER EXTENSION vchord UPDATE TO ...'. Immich then needs a manual reindex (app user, database 'app'):
+      # REINDEX INDEX face_index; REINDEX INDEX clip_index;
+      # https://docs.immich.app/administration/postgres-standalone/
+      version: '1.1.1'
+    - name: cube
+      ensure: present
+    - name: earthdistance
+      ensure: present

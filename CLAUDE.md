@@ -30,7 +30,7 @@ GitOps configuration for a home-lab Kubernetes setup, deployed by Argo CD from `
 **Conventions every Application follows:**
 - `syncOptions: CreateNamespace=false` and `ServerSideApply=true`. Namespaces are declared explicitly in `foo/namespaces.yaml` (or inline). One comment explains why.
 - Explicit `project` is required: the `default` AppProject is locked down in `k8s-rancher/apps/argocd/projects.yaml`. `prod-cluster` blocks `Application` resources and the `argocd` namespace.
-- Finalizer choice is deliberate: `resources-finalizer.argocd.argoproj.io` cascades deletion; it is intentionally omitted on `argo-cd`, `app-of-apps`, `app-of-prod` and `no-auto-delete` (which holds PVCs like the immich media claim).
+- Finalizer choice is deliberate: `resources-finalizer.argocd.argoproj.io` cascades deletion; it is intentionally omitted on `argo-cd`, `app-of-apps`, `app-of-prod`, `no-auto-delete` (which holds PVCs like the immich media claim) and `postgres` (the CNPG operator; deleting its CRDs would delete every database).
 - Helm config uses `helm.parameters` for scalar settings and `helm.valuesObject` for image pins.
 
 **Image pinning and Renovate.** Images are pinned as `repository: '...'` + `tag: 'vX.Y.Z@sha256:...'` with single quotes, and chart versions in `targetRevision: 'x.y.z'`

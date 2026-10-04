@@ -3,8 +3,11 @@ kind: Application
 metadata:
   name: postgres
   namespace: argocd
+  annotations:
+    # CNPG CRDs and webhook must be ready before apps that contain a CNPG Cluster sync
+    argocd.argoproj.io/sync-wave: "1"
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    # No cascading delete: removing the CRDs would delete every CNPG Cluster and, through owner references, its PVCs and data.
 spec:
   sources:
   - repoURL: 'https://cloudnative-pg.github.io/charts'
