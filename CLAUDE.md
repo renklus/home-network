@@ -8,6 +8,7 @@ GitOps configuration for a home-lab Kubernetes setup, deployed by Argo CD from `
 - `k8s/`, `k8s-dmz/`, `k8s-old1/` — older cluster setups, unmaintained and listed in Renovate's `ignorePaths`. Don't use them as patterns for new work, and don't add Renovate rules for them.
 - `images/` — Dockerfiles for small custom images, published by `.github/workflows/` (note the workflows reference `./container/images/...` paths and the `master` branch, which don't match the current layout).
 - `docs/cluster-bootstrap.md` — manual steps outside Argo CD: workstation setup, k3s install, LAN DNS/NAT and Cloudflare, the Argo CD bootstrap install, node joins.
+- `docs/truenas-backup.md` — TrueNAS dataset/NFS share behind the prod storage classes and its rsync backup to a Synology, with open steps (start here when asked what to do next on backups). `docs/rsync.md` is the general TrueNAS → Synology rsync (module mode) and snapshot setup.
 - `docs/k8s-rancher-cluster-connection.md` — how Argo CD on the rancher cluster authenticates to Rancher-managed clusters via the Rancher auth proxy.
 
 ## Working in this repository
