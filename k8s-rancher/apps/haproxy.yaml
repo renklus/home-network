@@ -56,6 +56,7 @@ spec:
             use_backend app01l if { req.hdr(host) -i app01l.dev.renklus.ch }
             use_backend app02l if { req.hdr(host) -i app02l.dev.renklus.ch }
             use_backend ingress if { req.hdr(host) -m end -i .rancher.k8s.renklus.ch }
+            use_backend ingress-prod if { req.hdr(host) -m end -i .prod.k8s.renklus.ch }
             use_backend testing if { req.hdr(host) -i haproxy.haproxy.rancher.k8s.renklus.ch:8000 }
             default_backend rejected
 
@@ -67,6 +68,9 @@ spec:
 
           backend ingress
             server ingress traefik.kube-system.rancher.k8s.renklus.ch:80 resolvers dns init-addr last,libc,none
+
+          backend ingress-prod
+            server ingress-prod traefik.kube-system.prod.k8s.renklus.ch:80 resolvers dns init-addr last,libc,none
 
           backend vrt01p
             server vrt01p vrt01p.dev.renklus.ch:80 resolvers dns init-addr last,libc,none

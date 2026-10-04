@@ -7,6 +7,8 @@ metadata:
 data:
   k8s_external.server: |
     prod.k8s.renklus.ch:53 {
+        # every Ingress host <name>.ingress.prod.k8s.renklus.ch resolves to the traefik LoadBalancer (traefik.yaml)
+        rewrite name regex (.+)\.ingress\.prod\.k8s\.renklus\.ch traefik.kube-system.prod.k8s.renklus.ch answer auto
         kubernetes
         k8s_external prod.k8s.renklus.ch
     }

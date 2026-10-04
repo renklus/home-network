@@ -1,0 +1,56 @@
+# Same issuers as k8s-rancher/apps/cert-manager/clusterissuers.yaml
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging-shortlived
+  annotations:
+    # after the chart (wave 0) is healthy, otherwise the cert-manager webhook rejects it on first sync
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  acme:
+    profile: shortlived
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-staging-shortlived-key
+    solvers:
+    - http01:
+        ingress:
+          ingressClassName: traefik
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-shortlived
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  acme:
+    profile: shortlived
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-shortlived-key
+    solvers:
+    - http01:
+        ingress:
+          ingressClassName: traefik
+---
+# Canary: the cert-manager-prod app is only healthy once this staging certificate is issued, i.e. the whole public HTTP-01 path
+# (DNS, router, HAProxy in the rancher cluster, prod traefik) works. Apps requesting production certificates use a later sync-wave,
+# so a broken path only burns staging attempts instead of production rate limits.
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: canary-certificate
+  namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  secretName: canary-certificate-tls
+  privateKey:
+    rotationPolicy: Always
+  dnsNames:
+    - canary-cert.ingress.prod.k8s.renklus.ch
+  issuerRef:
+    name: letsencrypt-staging-shortlived
+    kind: ClusterIssuer
+    group: cert-manager.io
