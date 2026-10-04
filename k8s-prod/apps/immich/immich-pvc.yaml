@@ -3,6 +3,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: immich-media
   namespace: 'immich'
+  annotations:
+    # Keep the PVC when the immich app is removed.
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
 spec:
   accessModes:
     - ReadWriteOnce

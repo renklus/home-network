@@ -1,11 +1,7 @@
-# WARNING: deleting this Application deletes every PVC of Immich.
-# The finalizer below cascades to the 'immich' namespace (immich/namespaces.yaml). Deleting the namespace
-# deletes every PVC in it, including 'immich-media' from the no-auto-delete app and the CNPG database PVC.
-# Their storage classes use reclaimPolicy 'Retain': the data stays on the NFS share and the PVs become 'Released';
-# a recreated PVC with the same name provisions into the same subdirectory. Only the ML cache ('truenas-nfs-temp')
-# is deleted. Removing namespaces.yaml from git has the same effect through prune.
-# TODO: mark the namespace and PVCs with
-# 'argocd.argoproj.io/sync-options: Prune=false,Delete=false'.
+# The 'immich' namespace (immich/namespaces.yaml) has 'Prune=false,Delete=false', so deleting this Application
+# keeps the namespace and the PVCs in it, including 'immich-media' from the no-auto-delete app.
+# The finalizer below still deletes resources this app owns, e.g. the CNPG Cluster (immich/postgres.yaml),
+# whose PVC CNPG then deletes; its storage class uses reclaimPolicy 'Retain', so the data stays on the NFS share.
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
