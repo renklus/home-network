@@ -1,8 +1,10 @@
-Auto-generated - limitted human review
+Auto-generated - limited human review
 # rsync from TrueNAS to the Synology
 General setup for pushing a TrueNAS dataset to the Synology (`app01l.dev.renklus.ch`) in rsync **module mode**, as
 used for `hdd/general/k8s-prod` (see [truenas-backup.md](truenas-backup.md)). Module mode runs as a non-root TrueNAS user and does not keep file ownership: restored files belong to the task user and need a `chown` (see
-[Restore](#restore)). Every file to back up must be readable by that user, otherwise rsync skips it (exit code 23).
+[Restore](#restore)). `--fake-super` does not help: the Synology's rsync daemon treats it as `--super` unless the module
+sets `fake super = yes` in `rsyncd.conf`, which DSM does not offer. Every file to back up must be readable by that
+user, otherwise rsync skips it (exit code 23).
 
 Source: https://www.reddit.com/r/truenas/comments/xk5nxm/solved_rsync_task_to_synology_nas/
 
@@ -33,7 +35,9 @@ rsync -a --password-file=~/rsync.secret ./<local-folder>/ <user>@<FQDN>::<module
   - Rsync Mode: Module
   - Remote Host: `app03l@app01l.dev.renklus.ch` (Synology user before the `@`)
   - Remote Module Name: Synology shared folder name, optionally with a subfolder (`<share>/<folder>`)
-  - Auxiliary Parameters: `--password-file=/home/<user>/rsync.secret` (the task has no password field)
+  - Auxiliary Parameters: `--password-file=/home/<user>/rsync.secret --no-owner --no-group`. The task has no
+    password field. Archive (`-a`) includes `-o -g`, which the non-root daemon cannot apply (`chgrp ... Operation not
+    permitted`, exit code 23 on every run, hiding real skips); unchecking "Preserve Permissions" only drops `-p`.
 
 ## Snapshot before rsync
 rsync reads from a fixed-name snapshot `@rsync`, so it copies a consistent state instead of files that change during
