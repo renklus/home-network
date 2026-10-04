@@ -15,6 +15,14 @@ spec:
   # Tag is '<postgres>-<vectorchord>'.
   imageName: 'ghcr.io/tensorchord/cloudnative-vectorchord:18.6-1.1.1@sha256:c7672bc011351a587cc292a94aac7eeebb593ed2e120077bd9c9944c9467db93'
 
+  # Memory request equals the limit, as CNPG recommends, so the database is the last to be evicted under memory pressure.
+  resources:
+    requests:
+      cpu: '100m'
+      memory: '1Gi'
+    limits:
+      memory: '1Gi'
+
   postgresql:
     shared_preload_libraries:
       - 'vchord.so'
