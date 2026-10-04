@@ -15,7 +15,7 @@ reclaimPolicy: 'Retain'
 volumeBindingMode: 'Immediate'
 allowVolumeExpansion: true
 mountOptions:
-  - soft # soft means the consuming application will receive an error if the NFS server is not reachable
+  - soft # on server outage, I/O fails with EIO after timeo×retrans; pods don't hang, but writes can be lost or corrupted
   - noatime
   - nfsvers=4.2
 ---
@@ -36,7 +36,7 @@ reclaimPolicy: 'Retain'
 volumeBindingMode: 'Immediate'
 allowVolumeExpansion: true
 mountOptions:
-  - hard # hard means the consuming application will be interrupted until the NFS server is back online
+  - hard # on server outage, I/O blocks until the server returns, then resumes; no data loss, but pods can hang
   - noatime
   - nfsvers=4.2
 ---
@@ -57,7 +57,7 @@ reclaimPolicy: 'Retain'
 volumeBindingMode: 'Immediate'
 allowVolumeExpansion: true
 mountOptions:
-  - soft # soft means the consuming application will receive an error if the NFS server is not reachable
+  - soft # on server outage, I/O fails with EIO after timeo×retrans; pods don't hang, but writes can be lost or corrupted
   - noatime
   - nfsvers=4.2
 ---
@@ -78,7 +78,7 @@ reclaimPolicy: 'Retain'
 volumeBindingMode: 'Immediate'
 allowVolumeExpansion: true
 mountOptions:
-  - hard # hard means the consuming application will be interrupted until the NFS server is back online
+  - hard # on server outage, I/O blocks until the server returns, then resumes; no data loss, but pods can hang
   - noatime
   - nfsvers=4.2
 ---
@@ -99,7 +99,7 @@ reclaimPolicy: 'Delete'
 volumeBindingMode: 'Immediate'
 allowVolumeExpansion: true
 mountOptions:
-  - soft # soft means the consuming application will receive an error if the NFS server is not reachable
+  - soft # on server outage, I/O fails with EIO after timeo×retrans; pods don't hang, but writes can be lost or corrupted
   - noatime
   - nfsvers=4.2
 ---
@@ -120,6 +120,6 @@ reclaimPolicy: 'Delete'
 volumeBindingMode: 'Immediate'
 allowVolumeExpansion: true
 mountOptions:
-  - hard # hard means the consuming application will be interrupted until the NFS server is back online
+  - hard # on server outage, I/O blocks until the server returns, then resumes; no data loss, but pods can hang
   - noatime
   - nfsvers=4.2
