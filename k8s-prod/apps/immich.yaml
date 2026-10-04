@@ -16,7 +16,7 @@ spec:
   sources:
   - repoURL: 'ghcr.io/immich-app/immich-charts'
     chart: 'immich'
-    targetRevision: '0.13.1'
+    targetRevision: '0.13.2'
     helm:
       parameters:
         - name: 'immich.persistence.library.existingClaim'
@@ -50,7 +50,7 @@ spec:
                   image:
                     repository: 'docker.io/valkey/valkey'
                     # Use 3 part version number tag because the 2 part tag is not marked as pre release and would be used too early.
-                    tag: '9.1.0-alpine@sha256:c9b77919daeba2c02ad954d0c844cc4e7142069d177b89c5fd771f405daf9e02'
+                    tag: '9.1.2-alpine@sha256:48332870af354a799964c0012ae1194a0bf2bf894eb508f945810596dc2d8d11'
         server:
           controllers:
             main:
