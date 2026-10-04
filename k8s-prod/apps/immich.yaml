@@ -43,7 +43,7 @@ spec:
         - name: 'machine-learning.persistence.cache.type'
           value: 'persistentVolumeClaim'
         - name: 'machine-learning.persistence.cache.storageClass'
-          value: 'truenas-nfs-no-backup'
+          value: 'truenas-nfs-temp'
         - name: 'machine-learning.persistence.cache.size'
           value: '50Gi'
         - name: 'machine-learning.persistence.cache.accessMode'
