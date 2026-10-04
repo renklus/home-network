@@ -1,7 +1,7 @@
 # Used for automatically registering every Rancher-provisioned cluster in Argo CD.
 # Rancher keeps a kubeconfig for each cluster in 'fleet-default/<cluster>-kubeconfig' (also used by Fleet). It points at the
-# Rancher auth proxy (https://<rancher hostname>/k8s/clusters/<cluster id>) with a Rancher-managed token, which is what Argo CD
-# needs: docs/k8s-rancher-cluster-connection.md
+# Rancher auth proxy via Rancher's internal Service (https://<service IP>/k8s/clusters/<cluster id>) with a Rancher-managed token
+# and Rancher's CA, which is what Argo CD needs: docs/k8s-rancher-cluster-connection.md
 # Based on https://kyverno.io/policies/argo/argo-cluster-generation-from-rancher-capi/argo-cluster-generation-from-rancher-capi/
 # but triggered by the kubeconfig Secret instead of the Cluster, so a token change by Rancher is synced as well.
 apiVersion: policies.kyverno.io/v1
@@ -38,10 +38,14 @@ spec:
   - name: kubeconfig
     expression: "yaml.parse(string(base64.decode(object.data.value)))"
   # Argo CD cluster config: https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#clusters
-  # The kubeconfig's CA is ignored on purpose: the Rancher endpoint has a public Let's Encrypt certificate, verified with the system trust store.
+  # The kubeconfig points at Rancher's internal Service (not the ingress), which uses Rancher's self-signed CA, so that CA is passed on.
+  - name: cluster
+    expression: "variables.kubeconfig.clusters[0].cluster"
   - name: config
     expression: >-
-      '{"bearerToken":"' + string(variables.kubeconfig.users[0].user.token) + '","tlsClientConfig":{"insecure":false}}'
+      '{"bearerToken":"' + string(variables.kubeconfig.users[0].user.token) + '","tlsClientConfig":{"insecure":false'
+      + ('certificate-authority-data' in variables.cluster ? ',"caData":"' + string(variables.cluster['certificate-authority-data']) + '"' : '')
+      + '}}'
   - name: clusterSecret
     expression: >-
       [
@@ -55,7 +59,7 @@ spec:
           "type": dyn("Opaque"),
           "data": dyn({
             "name": base64.encode(bytes(variables.clusterName)),
-            "server": base64.encode(bytes(string(variables.kubeconfig.clusters[0].cluster.server))),
+            "server": base64.encode(bytes(string(variables.cluster.server))),
             "config": base64.encode(bytes(variables.config))
           })
         }
