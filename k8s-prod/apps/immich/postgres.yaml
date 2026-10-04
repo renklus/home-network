@@ -14,49 +14,21 @@ spec:
   storage:
     storageClass: truenas-nfs-hard
     size: 5Gi
-
-  # Tag is '<postgres>-<vectorchord>'. When the vectorchord part changes, also update the vchord version in the
-  # Database below and afterwards run the REINDEX listed there.
+  # Tag is '<postgres>-<vectorchord>'.
   imageName: 'ghcr.io/tensorchord/cloudnative-vectorchord:18.6-1.1.1@sha256:c7672bc011351a587cc292a94aac7eeebb593ed2e120077bd9c9944c9467db93'
 
   postgresql:
     shared_preload_libraries:
       - 'vchord.so'
 
-# replaced with declarative setup below
-  # bootstrap:
-  #   initdb:
-  #     # TODO: Use managed extensions (pg 18)
-  #     postInitApplicationSQL:
-  #       # Commands based on: https://immich.app/docs/administration/postgres-standalone/#without-superuser-permission
-  #       - CREATE EXTENSION vchord CASCADE;
-  #       - CREATE EXTENSION earthdistance CASCADE;
----
-# Declarative extensions: unlike initdb's postInitApplicationSQL, this is reconciled continuously,
-# so extensions added here later are applied to the existing database.
-apiVersion: postgresql.cnpg.io/v1
-kind: Database
-metadata:
-  name: immich-database
-  namespace: immich
-spec:
-  name: app
-  owner: app
-  cluster:
-    name: immich-database
-  # Immich needs vchord and earthdistance. CNPG runs CREATE EXTENSION without CASCADE,
-  # so their dependencies vector and cube are listed explicitly, each before its dependent.
-  extensions:
-    - name: vector
-      ensure: present
-    - name: vchord
-      ensure: present
-      # Must match the vectorchord part of the Cluster's image tag. Changing it makes CNPG run
-      # 'ALTER EXTENSION vchord UPDATE TO ...'. Immich then needs a manual reindex (app user, database 'app'):
-      # REINDEX INDEX face_index; REINDEX INDEX clip_index;
+  managed:
+    roles:
+      # Immich's default setup: as superuser, Immich creates and updates its extensions (vchord, earthdistance)
+      # and reindexes after VectorChord updates itself, and its built-in database backup (pg_dumpall) works.
       # https://docs.immich.app/administration/postgres-standalone/
-      version: '1.1.1'
-    - name: cube
-      ensure: present
-    - name: earthdistance
-      ensure: present
+      - name: app
+        ensure: present
+        login: true # defaults to false, which would lock Immich out
+        superuser: true
+        passwordSecret:
+          name: immich-database-app
