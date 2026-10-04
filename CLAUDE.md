@@ -7,6 +7,7 @@ GitOps configuration for a home-lab Kubernetes setup, deployed by Argo CD from `
 - `k8s-prod/apps/` — **active**. Workloads for the Rancher-provisioned `prod` cluster (immich, CNPG Postgres, csi-nfs, MetalLB, system config).
 - `k8s/`, `k8s-dmz/`, `k8s-old1/` — older cluster setups, unmaintained and listed in Renovate's `ignorePaths`. Don't use them as patterns for new work, and don't add Renovate rules for them.
 - `images/` — Dockerfiles for small custom images, published by `.github/workflows/` (note the workflows reference `./container/images/...` paths and the `master` branch, which don't match the current layout).
+- `docs/cluster-bootstrap.md` — manual steps outside Argo CD: workstation setup, k3s install, LAN DNS/NAT and Cloudflare, the Argo CD bootstrap install, node joins.
 - `docs/k8s-rancher-cluster-connection.md` — how Argo CD on the rancher cluster authenticates to Rancher-managed clusters via the Rancher auth proxy.
 
 ## Working in this repository
@@ -22,7 +23,7 @@ GitOps configuration for a home-lab Kubernetes setup, deployed by Argo CD from `
 2. Each top-level `*.yaml` there is either an Argo CD `Application` or plain resources applied directly by the root app (e.g. `coredns.yaml`, `traefik.yaml`).
 3. `app-of-prod.yaml` points at `k8s-prod/apps`, whose Applications use project `prod-cluster` and destination `name: production`.
 4. `argocd.yaml` must keep `metadata.name: argo-cd` so it adopts the bootstrap install.
-5. `k8s-rancher/apps/argocd/values.yaml` holds the Argo CD values shared by the bootstrap install (command in the file) and `argocd.yaml`. It includes the Application health check that makes sync waves between Applications wait (haproxy 0 → cert-manager 1 → apps with production certificates 2). The staging `demo-certificate` in cert-manager acts as a canary for the public HTTP-01 path.
+5. `k8s-rancher/apps/argocd/values.yaml` holds the Argo CD values shared by the bootstrap install (command in `docs/cluster-bootstrap.md`) and `argocd.yaml`. It includes the Application health check that makes sync waves between Applications wait (haproxy 0 → cert-manager 1 → apps with production certificates 2). The staging `demo-certificate` in cert-manager acts as a canary for the public HTTP-01 path.
 
 **Per-app file layout.** An app `foo` is `foo.yaml` (the Application) plus an optional `foo/` subdirectory with extra manifests. Helm-based apps use multiple `sources`: the chart first, then `path: <cluster>/apps/foo` from this repo. Resources that depend on a chart's CRDs (e.g. MetalLB `IPAddressPool`, cert-manager `ClusterIssuer`) must live in that app's subdirectory, not at the top level, so they sync with the chart.
 
