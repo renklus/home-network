@@ -39,10 +39,6 @@ spec:
           value: '5Gi'
         - name: 'valkey.persistence.data.accessMode'
           value: 'ReadWriteOnce'
-        - name: 'server.ingress.main.enabled'
-          value: 'true'
-        # - name: 'server.ingress.main.hosts'
-        #   value: ''
         - name: 'machine-learning.persistence.cache.type'
           value: 'persistentVolumeClaim'
         - name: 'machine-learning.persistence.cache.storageClass'
@@ -78,6 +74,22 @@ spec:
                         secretKeyRef:
                           name: 'immich-database-app'
                           key: 'uri'
+          ingress:
+            main:
+              enabled: true
+              className: 'traefik'
+              annotations:
+                cert-manager.io/cluster-issuer: 'letsencrypt-shortlived'
+              hosts:
+                - host: 'immich.ingress.prod.k8s.renklus.ch'
+                  paths:
+                    - path: '/'
+                      service:
+                        identifier: 'main'
+              tls:
+                - hosts:
+                    - 'immich.ingress.prod.k8s.renklus.ch'
+                  secretName: 'immich-tls'
         machine-learning:
           controllers:
             main:
