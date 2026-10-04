@@ -3,6 +3,8 @@
 ### Install kubectl
 https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 ```sh
+sudo apt-get update
+sudo apt-get install -y curl
 curl -LO https://dl.k8s.io/release/v1.37.0/bin/linux/amd64/kubectl
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 # verify with
