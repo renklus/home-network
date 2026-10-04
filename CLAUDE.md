@@ -22,7 +22,7 @@ GitOps configuration for a home-lab Kubernetes setup, deployed by Argo CD from `
 2. Each top-level `*.yaml` there is either an Argo CD `Application` or plain resources applied directly by the root app (e.g. `coredns.yaml`, `traefik.yaml`).
 3. `app-of-prod.yaml` points at `k8s-prod/apps`, whose Applications use project `prod-cluster` and destination `name: production`.
 4. `argocd.yaml` must keep `metadata.name: argo-cd` so it adopts the bootstrap install.
-5. `k8s-rancher/bootstrap/argocd-values.yaml` holds the Argo CD values shared by the bootstrap install (command in the file) and `argocd.yaml`. It includes the Application health check that makes sync waves between Applications wait (haproxy 0 → cert-manager 1 → apps with production certificates 2). The staging `demo-certificate` in cert-manager acts as a canary for the public HTTP-01 path.
+5. `k8s-rancher/apps/argocd/values.yaml` holds the Argo CD values shared by the bootstrap install (command in the file) and `argocd.yaml`. It includes the Application health check that makes sync waves between Applications wait (haproxy 0 → cert-manager 1 → apps with production certificates 2). The staging `demo-certificate` in cert-manager acts as a canary for the public HTTP-01 path.
 
 **Per-app file layout.** An app `foo` is `foo.yaml` (the Application) plus an optional `foo/` subdirectory with extra manifests. Helm-based apps use multiple `sources`: the chart first, then `path: <cluster>/apps/foo` from this repo. Resources that depend on a chart's CRDs (e.g. MetalLB `IPAddressPool`, cert-manager `ClusterIssuer`) must live in that app's subdirectory, not at the top level, so they sync with the chart.
 

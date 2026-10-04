@@ -1,8 +1,7 @@
-# Argo CD Helm values shared by the manual install during cluster bootstrap and by k8s-rancher/apps/argocd.yaml,
-# so the bootstrap install already behaves like the one Argo CD later adopts. Bootstrap (use the chart version from argocd.yaml):
-#   helm repo add argo https://argoproj.github.io/argo-helm
-#   helm install argo-cd argo/argo-cd --namespace argocd --create-namespace --version <targetRevision> -f k8s-rancher/bootstrap/argocd-values.yaml
-#   k01d apply -f k8s-rancher/apps/app-of-apps.yaml
+# Argo CD Helm values shared by the manual install during cluster bootstrap and by k8s-rancher/apps/argocd.yaml
+# Bootstrap needs the Lua health check script to only mark Application.argoproj.io/v1alpha1 as healthy when the child Applications are healthy.
+# Sync waves progress once a resource is healthy and this delays the certificate issuance wave
+# until all prerequisites are met to perform the challenge.
 configs:
   cm:
     "users.session.duration": '22h'

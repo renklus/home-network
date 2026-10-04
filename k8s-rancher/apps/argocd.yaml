@@ -18,7 +18,7 @@ spec:
     helm:
       # also used for the manual install during cluster bootstrap (see the file), so it must not depend on other apps
       valueFiles:
-        - '$values/k8s-rancher/bootstrap/argocd-values.yaml'
+        - '$values/k8s-rancher/apps/argocd/values.yaml'
       parameters:
         - name: 'server.service.type'
           value: 'LoadBalancer'
