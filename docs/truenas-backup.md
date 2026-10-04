@@ -4,13 +4,9 @@ Manual setup outside Argo CD: the TrueNAS SCALE dataset behind the `truenas-nfs-
 (`k8s-prod/apps/csi-nfs/storage-classes.yaml`) and its rsync backup to a Synology.
 
 ## Open steps
-1. **Test a restore** (not done yet). Until this works, the backup is unverified, in particular whether the Synology's
-   rsync accepts `--fake-super` (see [Restore test](#restore-test)).
-2. **Move the existing immich PVCs** to the new storage classes. `storageClassName` of a PVC is immutable and a PV keeps
+1. **Move the existing immich PVCs** to the new storage classes. `storageClassName` of a PVC is immutable and a PV keeps
    the share and subdirectory it was provisioned with, so the old PVCs stay on `/mnt/hdd/general/k8s` until they are
    recreated (or their data is copied and bound to static PVs).
-3. **Snapshot cron job** failed with exit status 1 when started via "Run Now". Likely cause: `snapshot-manager` has
-   no `zfs allow` on the new dataset yet (see [Snapshot before rsync](#snapshot-before-rsync)).
 
 ## Storage classes
 Each PVC gets the subdirectory `<ns>--<pvc>` on the class's share.
@@ -52,52 +48,22 @@ rsync reads from a ZFS snapshot of `hdd/general/k8s-prod` instead of the live da
 moment. The CNPG database is on `k8s-prod-no-backup` and not part of it; its backup is Immich's own database dump
 (daily by default) on the media PVC.
 
-Same setup as in [rsync.md](rsync.md#snapshot-before-rsync), with the `snapshot-manager` user:
-```sh
-# once, as root in System → Shell
-zfs allow snapshot-manager mount,snapshot,destroy hdd/general/k8s-prod
-```
-Cron job running as `snapshot-manager`, 1 minute before the rsync task:
-```sh
-zfs destroy hdd/general/k8s-prod@rsync 2>/dev/null; zfs snapshot hdd/general/k8s-prod@rsync
-```
-Untick "Hide Standard Error" to see failures. Debug in System → Shell:
-```sh
-zfs allow hdd/general/k8s-prod
-zfs list -t snapshot -r hdd/general/k8s-prod
-```
+Snapshot cron job (`snapshot-manager`, `zfs allow` on `hdd/general/k8s-prod`) as in
+[rsync.md](rsync.md#snapshot-before-rsync).
 
 ## rsync to the Synology
-General TrueNAS → Synology rsync setup (module mode, used for personal data): [rsync.md](rsync.md).
-This dataset uses SSH mode instead, because it must keep file ownership: module mode is unencrypted, needs a password file, and the Synology daemon may refuse
-`--fake-super`. The Synology's rsync cannot be configured, so `-M--fake-super` makes the remote rsync store
-ownership in xattrs (`user.rsync.%stat`) instead of needing root.
+Module mode with a non-root TrueNAS user, as in [rsync.md](rsync.md), with Path
+`/mnt/hdd/general/k8s-prod/.zfs/snapshot/rsync/.`. The backup does not keep file ownership. That is acceptable because
+the dataset only holds media (a few owners, easy to `chown` back) and the database is backed up by Immich's dump.
+A restore was tested: files come back, owned by the task user.
 
-Synology (DSM UI):
-- Control Panel → Terminal & SNMP: SSH on. File Services → rsync: on. User & Group → Advanced: user home service on.
-- User `truenas-backup` with read/write on the target share (DSM 7 limits SSH to the administrators group).
-- TrueNAS's public key in `~truenas-backup/.ssh/authorized_keys` (home not group/world-writable, `.ssh` `700`,
-  `authorized_keys` `600`).
+When adding a PVC on `truenas-nfs`, check that the backup user can read it. An app that writes `0700` directories or
+`0600` files (like Postgres) is skipped by rsync (exit code 23); put such data on `truenas-nfs-no-backup` with its own
+backup instead.
 
-TrueNAS:
-- Credentials → Backup Credentials → SSH Connections: manual, user `truenas-backup`, new keypair, discover host key.
-- Data Protection → Rsync Tasks:
-
-| Field | Value |
-|---|---|
-| Path | `/mnt/hdd/general/k8s-prod/.zfs/snapshot/rsync/` |
-| User | `root` |
-| Direction | Push |
-| Rsync Mode | SSH, connection from the keychain |
-| Remote Path | `/volume1/<share>/<subdir>` |
-| Archive, Preserve Permissions | on |
-| Auxiliary Parameters | `-M--fake-super --numeric-ids` |
-
-On the Synology all files belong to `truenas-backup`; real ownership only comes back through an rsync pull with
-`--fake-super`, not via File Station or SMB.
-
-## Restore test
-Second rsync task: Direction **Pull**, same SSH connection, user `root`, same auxiliary parameters, Path a scratch
-dataset such as `/mnt/hdd/general/restore-test`. Then compare `ls -ln` with the source. Matching UIDs/GIDs (e.g.
-for the `immich--immich-media` directory) mean fake-super works; everything owned by root means the xattrs were not written
-(check the task log for xattr errors).
+## Restore
+As in [rsync.md](rsync.md#restore), then restore the owner of each PVC directory before the pod starts again, e.g.
+for Immich (check the UID/GID on the source with `ls -ln` first):
+```sh
+chown -R <uid>:<gid> /mnt/hdd/general/k8s-prod/immich--immich-media
+```

@@ -1,9 +1,8 @@
 Auto-generated - limitted human review
 # rsync from TrueNAS to the Synology
 General setup for pushing a TrueNAS dataset to the Synology (`app01l.dev.renklus.ch`) in rsync **module mode**, as
-used for `hdd/general/k8s-prod`. Module mode runs as a non-root TrueNAS user and does not keep file ownership,
-which is fine for single-owner data. The k8s share needs ownership and therefore uses SSH mode; see
-[truenas-backup.md](truenas-backup.md).
+used for `hdd/general/k8s-prod` (see [truenas-backup.md](truenas-backup.md)). Module mode runs as a non-root TrueNAS user and does not keep file ownership: restored files belong to the task user and need a `chown` (see
+[Restore](#restore)). Every file to back up must be readable by that user, otherwise rsync skips it (exit code 23).
 
 Source: https://www.reddit.com/r/truenas/comments/xk5nxm/solved_rsync_task_to_synology_nas/
 
@@ -56,3 +55,8 @@ the transfer.
 
 TrueNAS roles (Credentials → Roles, e.g. snapshot-create/read/delete) do **not** work for this: they grant access to the
 TrueNAS UI/API, not to the `zfs` command in a cron job.
+
+## Restore
+Second rsync task like the backup task, but Direction **Pull** and Path a scratch dataset such as
+`/mnt/hdd/general/restore-test` (the task user needs write access). The restored files belong to the task user, so
+note the original owner (`ls -ln`) and fix it afterwards as root, e.g. `chown -R <uid>:<gid> <dir>`.
