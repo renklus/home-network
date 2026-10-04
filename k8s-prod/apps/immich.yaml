@@ -1,9 +1,7 @@
 # WARNING: deleting this Application deletes all photos and the database.
 # The finalizer below cascades to the 'immich' namespace (immich/namespaces.yaml). Deleting the namespace
 # deletes every PVC in it, including 'immich-media' from the no-auto-delete app and the CNPG database PVC.
-# Both use storage class 'truenas-nfs-hard' with reclaimPolicy 'Delete', so csi-driver-nfs then removes
-# the subdirectory on the NFS share. Removing namespaces.yaml from git has the same effect through prune.
-# TODO: use a storage class with reclaimPolicy 'Retain' and mark the namespace and PVCs with
+# TODO: mark the namespace and PVCs with
 # 'argocd.argoproj.io/sync-options: Prune=false,Delete=false'.
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -33,7 +31,7 @@ spec:
         - name: 'valkey.persistence.data.type'
           value: 'persistentVolumeClaim'
         - name: 'valkey.persistence.data.storageClass'
-          value: 'truenas-nfs-hard'
+          value: 'truenas-nfs'
         - name: 'valkey.persistence.data.size'
           value: '5Gi'
         - name: 'valkey.persistence.data.accessMode'
@@ -45,7 +43,7 @@ spec:
         - name: 'machine-learning.persistence.cache.type'
           value: 'persistentVolumeClaim'
         - name: 'machine-learning.persistence.cache.storageClass'
-          value: 'truenas-nfs-hard'
+          value: 'truenas-nfs-no-backup'
         - name: 'machine-learning.persistence.cache.size'
           value: '50Gi'
         - name: 'machine-learning.persistence.cache.accessMode'
