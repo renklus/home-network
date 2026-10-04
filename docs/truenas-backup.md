@@ -6,23 +6,41 @@ Manual setup outside Argo CD: the TrueNAS SCALE dataset behind the `truenas-nfs-
 ## Open steps
 1. **Test a restore** (not done yet). Until this works, the backup is unverified, in particular whether the Synology's
    rsync accepts `--fake-super` (see [Restore test](#restore-test)).
-2. **Dataset name vs. storage classes**: the new dataset is `hdd/general/k8s-prod`, but the storage classes still use
-   `share: '/mnt/hdd/general/k8s'`. Either change `share:` in both storage classes (and the NFS share path) or use the
-   old name.
+2. **Move the existing immich PVCs** to the new storage classes. `storageClassName` of a PVC is immutable and a PV keeps
+   the share and subdirectory it was provisioned with, so the old PVCs stay on `/mnt/hdd/general/k8s` until they are
+   recreated (or their data is copied and bound to static PVs).
 3. **Snapshot cron job** failed with exit status 1 when started via "Run Now". Likely cause: `snapshot-manager` has
    no `zfs allow` on the new dataset yet (see [Snapshot before rsync](#snapshot-before-rsync)).
 
-## Dataset
-`hdd/general/k8s-prod`:
+## Storage classes
+Each PVC gets the subdirectory `<ns>--<pvc>` on the class's share.
+
+| Class | Dataset | Backup | reclaimPolicy | Use for |
+|---|---|---|---|---|
+| `truenas-nfs` | `hdd/general/k8s-prod` | yes | Retain | data that exists nowhere else (photos) |
+| `truenas-nfs-no-backup` | `hdd/general/k8s-prod-no-backup` | no | Retain | data with its own backup (the CNPG database: Immich's dump lives on the media PVC) |
+| `truenas-nfs-temp` | `hdd/general/k8s-prod-no-backup` | no | Delete | caches that can be rebuilt (ML model cache) |
+
+Each class has a `-soft` variant. `hard` blocks I/O until the NFS server is back; `soft` returns `EIO` after a timeout,
+which can lose or corrupt writes, so use it only when the workload tolerates I/O errors.
+
+With `Retain`, deleting a PVC leaves the PV `Released` and the subdirectory on the share. A new PVC with the same name
+and namespace provisions into the same subdirectory again. Clean up by hand: `k8s01d delete pv <pv>`, then remove
+the subdirectory on TrueNAS.
+
+## Datasets
+`hdd/general/k8s-prod` and `hdd/general/k8s-prod-no-backup` (a sibling, not a child, so it is not in the snapshot
+below), both with:
 - Dataset preset: **Generic** (POSIX ACLs). Not SMB/Multiprotocol: pods and kubelet (`fsGroup`) need plain
   `chown`/`chmod`, and Postgres refuses a data directory that is not `0700`/`0750`.
 - Sync: Standard (Postgres runs on it), compression LZ4, atime off, snapdir hidden.
 - Owner `root:root`, mode `755`, no ACL entries. The per-PVC subdirectories get their ownership from the pods.
 
-## NFS share
+## NFS shares
+One share per dataset, both with:
 - Path: the dataset's mount point. Networks/Hosts: only the prod nodes.
 - Maproot User `root`, Maproot Group `root` (no Mapall): the csi-nfs controller creates and deletes the
-  `prod--<ns>--<pvc>` subdirectories as root, and kubelet applies `fsGroup`.
+  `<ns>--<pvc>` subdirectories as root, and kubelet applies `fsGroup`.
 - Services → NFS: NFSv4 enabled (storage classes mount with `nfsvers=4.2`). SCALE uses numeric UIDs/GIDs with
   `sec=sys` by default; the "NFSv3 ownership model" option only exists on TrueNAS CORE.
 
@@ -30,9 +48,9 @@ Check after the first PVC exists: `ls -ln` shows the same numbers on TrueNAS and
 `nobody`/`4294967294`, check that `/sys/module/nfs/parameters/nfs4_disable_idmapping` is `Y` there.
 
 ## Snapshot before rsync
-rsync reads from a ZFS snapshot instead of the live dataset. The snapshot is atomic, so the CNPG Postgres directory in
-it is crash-consistent (data and WAL are on the same dataset) and Postgres recovers from it like after a power loss.
-Immich's own database dump on the media PVC is a second copy.
+rsync reads from a ZFS snapshot of `hdd/general/k8s-prod` instead of the live dataset, so all files are from the same
+moment. The CNPG database is on `k8s-prod-no-backup` and not part of it; its backup is Immich's own database dump
+(daily by default) on the media PVC.
 
 Same setup as in [rsync.md](rsync.md#snapshot-before-rsync), with the `snapshot-manager` user:
 ```sh
@@ -81,5 +99,5 @@ On the Synology all files belong to `truenas-backup`; real ownership only comes 
 ## Restore test
 Second rsync task: Direction **Pull**, same SSH connection, user `root`, same auxiliary parameters, Path a scratch
 dataset such as `/mnt/hdd/general/restore-test`. Then compare `ls -ln` with the source. Matching UIDs/GIDs (e.g.
-`26 26` for the Postgres directory) mean fake-super works; everything owned by root means the xattrs were not written
+for the `immich--immich-media` directory) mean fake-super works; everything owned by root means the xattrs were not written
 (check the task log for xattr errors).
