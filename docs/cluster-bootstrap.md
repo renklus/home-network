@@ -76,6 +76,7 @@ Should work similar to chapter above, but there is a lower privilege token under
 - In LAN: Setup Destination NAT on WAN interface for WAN IP:80 to haproxy.haproxy.rancher.k8s.renklus.ch:8000 (For Let's Encrypt ACME check)
 - Not anymore: In LAN: Setup Destination NAT on LAN interface for WAN IP:80 to haproxy.haproxy.rancher.k8s.renklus.ch:8000 (For Cert Manager ACME self check)
 - Not anymore: In LAN: Setup Source NAT
+- In LAN: Setup Source NAT from 10.1.0.0/24 to 10.1.1.0/24 (rewrite to 10.1.1.1) and back: from 10.1.1.0/24 to 10.1.0.0/24 (rewrite to 10.1.0.1). Otherwise large packets are dropped (e.g. immich file upload).
 - In Cloudflare: forward domain *.k8s.renklus.ch to public WAN IP
 
 ## Install applications
