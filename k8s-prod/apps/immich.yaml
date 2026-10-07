@@ -114,6 +114,9 @@ spec:
                     limits:
                       cpu: '2'
                       memory: '3Gi'
+                  env:
+                    # temporary, introduced in v3.3.0
+                    MACHINE_LEARNING_MODEL_REVISION: 'v2'
   - path: k8s-prod/apps/immich
     repoURL: 'https://github.com/renklus/home-network'
     targetRevision: HEAD
