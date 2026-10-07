@@ -6,3 +6,20 @@ metadata:
   annotations:
     # statically assign IPs at the upper end of the pool because when another service snags it before this one, then this service will not get an IP.
     metallb.universe.tf/loadBalancerIPs: 10.1.1.253
+---
+# Values merged by the k3s Helm controller into its bundled Traefik chart.
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    ports:
+      websecure:
+        transport:
+          respondingTimeouts:
+            # Long-running Immich uploads and downloads exceed Traefik's 60s default readTimeout.
+            # Timeouts are per entrypoint, so they apply to every ingress on this cluster.
+            readTimeout: 600s
+            idleTimeout: 600s
