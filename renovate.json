@@ -117,6 +117,13 @@
       "groupName": "{{{replace 'k8s.*\\/(?<FileName>[^/]*)\\.yaml' 'app $<FileName> (regex-match)' packageFile}}}"
     },
     {
+      "description": "Give new releases for the prod cluster a day to surface regressions or get pulled before updating",
+      "matchFileNames": [
+        "k8s-prod/**"
+      ],
+      "minimumReleaseAge": "1 day"
+    },
+    {
       "description": "Rancher only supports new k3s releases some time after they are published",
       "matchDepNames": [
         "k3s"
