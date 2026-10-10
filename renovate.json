@@ -131,6 +131,16 @@
       "allowedVersions": "/^\\d+\\.\\d+-1\\.\\d+\\.\\d+$/"
     },
     {
+      "description": "A new Postgres major makes CNPG run an in-place major upgrade that cannot be rolled back. Test restoring a database dump first, then approve it on the Dependency Dashboard",
+      "matchPackageNames": [
+        "ghcr.io/tensorchord/cloudnative-vectorchord"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "dependencyDashboardApproval": true
+    },
+    {
       "matchPackageNames": [
         "plexinc/pms-docker"
       ],

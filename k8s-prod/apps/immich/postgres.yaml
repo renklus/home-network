@@ -6,6 +6,9 @@ kind: Cluster
 metadata:
   name: immich-database
   namespace: immich
+  annotations:
+    # Keep the database when the immich app is deleted: CNPG would delete its PVC through owner references.
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
 spec:
   instances: 1
 

@@ -3,11 +3,6 @@ Auto-generated - no human review yet
 Manual setup outside Argo CD: the TrueNAS SCALE dataset behind the `truenas-nfs-*` storage classes
 (`k8s-prod/apps/csi-nfs/storage-classes.yaml`) and its rsync backup to a Synology.
 
-## Open steps
-1. **Move the existing immich PVCs** to the new storage classes. `storageClassName` of a PVC is immutable and a PV keeps
-   the share and subdirectory it was provisioned with, so the old PVCs stay on `/mnt/hdd/general/k8s` until they are
-   recreated (or their data is copied and bound to static PVs).
-
 ## Storage classes
 Each PVC gets the subdirectory `<ns>--<pvc>` on the class's share.
 
@@ -15,7 +10,7 @@ Each PVC gets the subdirectory `<ns>--<pvc>` on the class's share.
 |---|---|---|---|---|
 | `truenas-nfs` | `hdd/general/k8s-prod` | yes | Retain | data that exists nowhere else (photos) |
 | `truenas-nfs-no-backup` | `hdd/general/k8s-prod-no-backup` | no | Retain | data with its own backup (the CNPG database: Immich's dump lives on the media PVC) |
-| `truenas-nfs-temp` | `hdd/general/k8s-prod-no-backup` | no | Delete | caches that can be rebuilt (ML model cache) |
+| `truenas-nfs-temp` | `hdd/general/k8s-prod-no-backup` | no | Delete | caches that can be rebuilt (ML model cache, Valkey job queues) |
 
 Each class has a `-soft` variant. `hard` blocks I/O until the NFS server is back; `soft` returns `EIO` after a timeout,
 which can lose or corrupt writes, so use it only when the workload tolerates I/O errors.

@@ -1,7 +1,5 @@
-# The 'immich' namespace (immich/namespaces.yaml) has 'Prune=false,Delete=false', so deleting this Application
-# keeps the namespace and the PVCs in it, including 'immich-media' from the no-auto-delete app.
-# The finalizer below still deletes resources this app owns, e.g. the CNPG Cluster (immich/postgres.yaml),
-# whose PVC CNPG then deletes; its storage class uses reclaimPolicy 'Retain', so the data stays on the NFS share.
+# The 'immich' namespace, the 'immich-media' PVC and the CNPG Cluster (immich/) have 'Prune=false,Delete=false',
+# so deleting this Application keeps the photos and the database. The finalizer below deletes everything else.
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -25,8 +23,9 @@ spec:
           value: 'true'
         - name: 'valkey.persistence.data.type'
           value: 'persistentVolumeClaim'
+        # Valkey only holds job queues, which Immich can rebuild: no backup needed.
         - name: 'valkey.persistence.data.storageClass'
-          value: 'truenas-nfs'
+          value: 'truenas-nfs-temp'
         - name: 'valkey.persistence.data.size'
           value: '5Gi'
         - name: 'valkey.persistence.data.accessMode'
