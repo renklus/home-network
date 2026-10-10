@@ -11,7 +11,7 @@
 #   # Prune/Delete=false: removing this file or the rancher app does not make Rancher deprovision the cluster.
 #   argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true,Prune=false,Delete=false
 # spec:
-#   kubernetesVersion: 'v1.36.4+k3s1'
+#   kubernetesVersion: 'v1.36.5+k3s1'
 #   rkeConfig:
 #     machineGlobalConfig:
 #       disable:
