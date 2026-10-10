@@ -10,4 +10,4 @@ metadata:
 spec:
   k3sConfig:
     # update takes ~5 minutes and only works if rancher has support for this version
-    kubernetesVersion: 'v1.36.5+k3s1'
+    kubernetesVersion: 'v1.37.1+k3s1'
