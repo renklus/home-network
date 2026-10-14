@@ -1,0 +1,26 @@
+# A second CoreDNS replica keeps cluster DNS (and the LAN forward via coredns-expose.yaml) up while kured drains a node.
+# (draining deletes before creating the replacement pod)
+# Path the deployment that comes as part of k3s.
+# The k3s manifest already spreads the pods across nodes with topologySpreadConstraints. No need to repeat it here.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coredns
+  namespace: kube-system
+  annotations:
+    # The Deployment belongs to k3s: pruning this file or deleting the app must not delete it.
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+spec:
+  replicas: 2
+---
+# Makes a drain wait until the other replica is ready. Never set minAvailable >= replicas: kured would stall on that node.
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: coredns
+  namespace: kube-system
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      k8s-app: kube-dns

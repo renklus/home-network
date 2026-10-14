@@ -1,3 +1,5 @@
+# Single-node cluster, so a second replica and a PDB would not help (a PDB with one replica would even block kured).
+# When adding nodes, copy replicas, PDB and spread from k8s-prod/apps/system-config/traefik.yaml.
 apiVersion: v1
 kind: Service
 metadata:
@@ -6,3 +8,5 @@ metadata:
   annotations:
     # statically assign IPs at the upper end of the pool because when another service snags it before this one, then this service will not get an IP.
     metallb.universe.tf/loadBalancerIPs: 10.1.0.244
+    # The Service belongs to k3s: pruning this file or deleting the app must not delete it.
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false

@@ -1,3 +1,4 @@
+# Single-node cluster, so CoreDNS keeps k3s's single replica. When adding nodes, copy k8s-prod/apps/system-config/coredns-replicas.yaml.
 # adapted from https://www.reddit.com/r/homelab/comments/ipsc4r/howto_k8s_metallb_and_external_dns_access_for/
 apiVersion: v1
 kind: ConfigMap

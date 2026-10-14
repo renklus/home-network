@@ -6,6 +6,8 @@ metadata:
   annotations:
     # statically assign IPs at the upper end of the pool because when another service snags it before this one, then this service will not get an IP.
     metallb.universe.tf/loadBalancerIPs: 10.1.1.253
+    # The Service belongs to k3s: pruning this file or deleting the app must not delete it.
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
 ---
 # Values merged by the k3s Helm controller into its bundled Traefik chart.
 apiVersion: helm.cattle.io/v1
@@ -15,6 +17,21 @@ metadata:
   namespace: kube-system
 spec:
   valuesContent: |-
+    # A second replica keeps ingress up while kured drains a node; the PDB makes the drain wait until the other replica is ready.
+    # Never set minAvailable >= replicas: the drain could then never evict a pod and kured would stall on that node.
+    deployment:
+      replicas: 2
+    podDisruptionBudget:
+      enabled: true
+      minAvailable: 1
+    topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: traefik
+          app.kubernetes.io/instance: traefik-kube-system
     ports:
       websecure:
         transport:
