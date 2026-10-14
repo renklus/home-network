@@ -15,14 +15,14 @@ spec:
     helm:
       parameters:
         - name: 'configuration.startTime'
-          value: '05:00'
+          value: '19:00'
         - name: 'configuration.endTime'
-          value: '07:00'
+          value: '22:00'
         - name: 'configuration.timeZone'
           value: 'Europe/Zurich'
         # How often kured checks for reboot requests. Also defines the time how quick one node can reboot after the other.
         - name: 'configuration.period'
-          value: '10m' # 1h is default
+          value: '1m' # 1h is default
         # A drain blocked by a PodDisruptionBudget would otherwise postpone security reboots forever
         - name: 'configuration.drainTimeout'
           value: '30m'
