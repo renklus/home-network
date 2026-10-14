@@ -24,6 +24,8 @@ nano ~/.kube/config-k8s01d
 echo "alias k8s01d='kubectl --kubeconfig ~/.kube/config-k8s01d'" >> ~/.bashrc
 source ~/.bashrc
 ```
+Once Rancher is accessible, simply download the kubeconfig from the cluster overview page. Then use
+`kubectl --context=''`
 
 ### Install Helm
 https://helm.sh/docs/intro/install/
