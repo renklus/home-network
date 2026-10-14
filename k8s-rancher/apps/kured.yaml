@@ -1,0 +1,49 @@
+# Reboots nodes one at a time (cordon, drain, reboot, uncordon) when unattended-upgrades leaves /var/run/reboot-required.
+# OS setup on the nodes: docs/cluster-bootstrap.md, section "OS updates".
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kured-rancher
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+  - repoURL: 'https://kubereboot.github.io/charts'
+    chart: 'kured'
+    targetRevision: '6.1.0'
+    helm:
+      parameters:
+        - name: 'configuration.startTime'
+          value: '03:00'
+        - name: 'configuration.endTime'
+          value: '07:00'
+        - name: 'configuration.timeZone'
+          value: 'Europe/Zurich'
+        # How often kured checks for reboot requests. Also defines the time how quick one node can reboot after the other.
+        - name: 'configuration.period'
+          value: '10m' # 1h is default
+        # A drain blocked by a PodDisruptionBudget would otherwise postpone security reboots forever
+        - name: 'configuration.drainTimeout'
+          value: '30m'
+        - name: 'configuration.forceReboot'
+          value: 'true'
+      valuesObject:
+        image:
+          repository: 'ghcr.io/kubereboot/kured'
+          tag: '1.23.0@sha256:8dfd3c2e889337595731d801afc5c031b545876a29427897b3f711d2983f30c4'
+  - path: k8s-rancher/apps/kured
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  project: rancher-cluster
+  destination:
+    namespace: kured
+    name: in-cluster
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true

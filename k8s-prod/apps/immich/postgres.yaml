@@ -10,7 +10,12 @@ metadata:
     # Keep the database when the immich app is deleted: CNPG would delete its PVC through owner references.
     argocd.argoproj.io/sync-options: Prune=false,Delete=false
 spec:
-  instances: 1
+  # 3+ instances for quorum during reboot of 1 replica. Replicas let node drains (kured) proceed: CNPG switches the primary over to a replica
+  # before the old primary is evicted, and with one node down there is still a replica to confirm synchronous commits.
+  instances: 3
+  affinity:
+    # CNPG's default is 'preferred', which can leave two instances on one node after a reboot; draining it would then take both down
+    podAntiAffinityType: required
 
   storage:
     storageClass: truenas-nfs-no-backup
@@ -29,6 +34,13 @@ spec:
   postgresql:
     shared_preload_libraries:
       - 'vchord.so'
+    # A commit returns only once a replica has it too, so a failover loses no committed data.
+    # 'required' never falls back to asynchronous; writes block only if both replicas are down at the same time.
+    # https://cloudnative-pg.io/documentation/current/replication/#data-durability-and-synchronous-replication
+    synchronous:
+      method: any
+      number: 1
+      dataDurability: required # required is default
 
   managed:
     roles:

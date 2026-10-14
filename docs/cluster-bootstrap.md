@@ -57,6 +57,7 @@ sudo k3s check-config
 
 
 ## Add additional server node to rancher management cluster
+Every server runs etcd, which needs a majority of servers up. Go from 1 to 3 servers, never stay at 2: with 2, rebooting either one (e.g. by kured) stops the Kubernetes API until it is back.
 ```sh
 # On first node
 sudo cat /var/lib/rancher/k3s/server/token
@@ -67,6 +68,19 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL="stable" INSTALL_K3S_VERSION=
 ## Add additional worker node to rancher management cluster
 Probably not required \
 Should work similar to chapter above, but there is a lower privilege token under a different path for just adding agents and the install command is slightly different so it configures the new node as just a worker
+
+## OS updates (every node in every cluster)
+unattended-upgrades installs security updates, and kured (`k8s-rancher/apps/kured.yaml`, `k8s-prod/apps/kured.yaml`) does the reboots: one node per cluster at a time, cordoned and drained, inside a nightly window. unattended-upgrades must therefore not reboot on its own.
+```sh
+# expect "1" in both lines, otherwise run: sudo dpkg-reconfigure -plow unattended-upgrades
+cat /etc/apt/apt.conf.d/20auto-upgrades
+sudo tee /etc/apt/apt.conf.d/52unattended-upgrades-local <<'EOF'
+Unattended-Upgrade::Automatic-Reboot "false";
+Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
+EOF
+sudo unattended-upgrade --dry-run --debug
+```
+Ubuntu release upgrades (`do-release-upgrade`) stay manual: one node at a time, rancher cluster first.
 
 ## External setup
 - In LAN: Query forward domain rancher.k8s.renklus.ch to 10.1.0.245 (IP from coredns.yaml)
@@ -90,6 +104,11 @@ k8s01d -n argocd get secret argocd-initial-admin-secret -o go-template='{{.data.
 - log in to https://argo.rancher.k8s.renklus.ch with 'admin' and the secret from before
 
 ## Add additional worker/server node to any cluster (except rancher management cluster)
+The prod cluster has 3 server nodes (roles etcd and Control Plane) and 3 worker nodes (role Worker):
+- 3 servers keep etcd quorum while one is down (e.g. rebooted by kured). Keep an odd number; 2 is worse than 1.
+- The Immich Postgres (`k8s-prod/apps/immich/postgres.yaml`) runs one instance per worker (`instances: 3`, required anti-affinity). With fewer than 3 workers available, an instance stays Pending; with fewer than 2, synchronous commits block.
+
+Steps:
 - log in to rancher.ingress.rancher.k8s.renklus.ch `k8s01d -n cattle-system get secret bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}{{"\n"}}'`
 - Navigate to the cluster and copy the node-join command from the web interface. Remember to specify a node name under advanced settings
   - If the command is not displayed correctly delete cluster from rancher web UI or reboot rancher host OS. Command will be correct afterwards.
