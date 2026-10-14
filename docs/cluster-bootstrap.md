@@ -71,15 +71,65 @@ Should work similar to chapter above, but there is a lower privilege token under
 
 ## OS updates (every node in every cluster)
 unattended-upgrades installs security updates, and kured (`k8s-rancher/apps/kured.yaml`, `k8s-prod/apps/kured.yaml`) does the reboots: one node per cluster at a time, cordoned and drained, inside a nightly window. unattended-upgrades must therefore not reboot on its own.
+
+Run on every node, also when adding one:
 ```sh
-# expect "1" in both lines, otherwise run: sudo dpkg-reconfigure -plow unattended-upgrades
+sudo apt update
+sudo apt install unattended-upgrades
+
 cat /etc/apt/apt.conf.d/20auto-upgrades
+# run the following if not "1" on both lines
+sudo dpkg-reconfigure unattended-upgrades
+# same as:
+# sudo tee /etc/apt/apt.conf.d/20auto-upgrades <<'EOF'
+# APT::Periodic::Update-Package-Lists "1";
+# APT::Periodic::Unattended-Upgrade "1";
+# EOF
+
+# Local overrides in a separate file, so 50unattended-upgrades stays as shipped and package updates don't ask about it.
+# The allowed origins stay at the default: security updates only.
 sudo tee /etc/apt/apt.conf.d/52unattended-upgrades-local <<'EOF'
-Unattended-Upgrade::Automatic-Reboot "false";
-Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
+// kured reboots the node, see docs/cluster-bootstrap.md
+Unattended-Upgrade::Automatic-Reboot "false"; # default is false
+Unattended-Upgrade::Remove-Unused-Kernel-Packages "true"; # default is true
+Unattended-Upgrade::Remove-Unused-Dependencies "true"; # default is false
 EOF
-sudo unattended-upgrade --dry-run --debug
+
+# Narrower schedule than the default (lists 06:00/18:00 + up to 12h, upgrade 06:00 + up to 1h):
+# refresh package lists 04:00-04:20, upgrade 04:30-04:40, so kured reboots in the same night's window (rancher 03:00-07:00, prod 05:00-07:00).
+# The random delay spreads the nodes' downloads and dpkg runs; the lists are always refreshed before the upgrade starts.
+# The time zone is explicit because OnCalendar otherwise uses the node's system time zone.
+sudo mkdir -p /etc/systemd/system/apt-daily.timer.d /etc/systemd/system/apt-daily-upgrade.timer.d
+sudo tee /etc/systemd/system/apt-daily.timer.d/override.conf <<'EOF'
+[Timer]
+OnCalendar=
+OnCalendar=*-*-* 04:00 Europe/Zurich
+RandomizedDelaySec=20m
+EOF
+sudo tee /etc/systemd/system/apt-daily-upgrade.timer.d/override.conf <<'EOF'
+[Timer]
+OnCalendar=
+OnCalendar=*-*-* 04:30 Europe/Zurich
+RandomizedDelaySec=10m
+EOF
+sudo systemctl daemon-reload
 ```
+
+Verify:
+```sh
+# shows the merged config, expect the values from above
+apt-config dump | grep -E 'APT::Periodic|Unattended-Upgrade::(Automatic-Reboot|Remove-Unused)'
+# lists what would be upgraded, without changing anything
+sudo unattended-upgrade --dry-run --debug
+# expect the next runs between 04:00-04:20 (apt-daily) and 04:30-04:40 (apt-daily-upgrade)
+systemctl list-timers 'apt-daily*'
+```
+
+Day to day:
+- Logs: `/var/log/unattended-upgrades/unattended-upgrades.log`
+- Reboot pending: `/var/run/reboot-required` exists, the packages that need it are in `/var/run/reboot-required.pkgs`. kured picks it up within its window, so a node usually reboots in the same night as the upgrade. If kured reboots a node while an upgrade is still running, `unattended-upgrades.service` delays the shutdown until the upgrade has finished.
+- k3s and its bundled containerd are installed by script, not apt, so unattended-upgrades never touches them. Kubernetes versions are upgraded separately (k3s install script on the rancher cluster, `kubernetesVersion` in `k8s-rancher/apps/rancher/cluster-*.yaml` for Rancher-provisioned clusters).
+
 Ubuntu release upgrades (`do-release-upgrade`) stay manual: one node at a time, rancher cluster first.
 
 ## External setup
