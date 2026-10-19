@@ -1,2 +1,2 @@
-FROM nginx:latest@sha256:f9ea18bfa4fad859e1ed38259d711da7ccad2c3516e875cec3351a57c859f571
+FROM nginx:latest@sha256:bc4cad49969aaf95eb4eecec5572846f86e59f1e8332aba36ed64b91aff8b724
 COPY data/index.html /usr/share/nginx/html/index.html
