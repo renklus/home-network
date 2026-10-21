@@ -9,7 +9,7 @@ spec:
   sources:
   - repoURL: https://kyverno.github.io/kyverno
     chart: kyverno
-    targetRevision: '3.9.1'
+    targetRevision: '3.9.2'
     helm:
       parameters:
         # recommended for Argo CD: otherwise the app may stay OutOfSync and isn't cleaned up on deletion
