@@ -13,6 +13,8 @@ spec:
   # 3+ instances for quorum during reboot of 1 replica. Replicas let node drains (kured) proceed: CNPG switches the primary over to a replica
   # before the old primary is evicted, and with one node down there is still a replica to confirm synchronous commits.
   instances: 3
+  # Shorten the time Immich has no writable database from a full pod restart to a few seconds.
+  primaryUpdateMethod: switchover
   affinity:
     # CNPG's default is 'preferred', which can leave two instances on one node after a reboot; draining it would then take both down
     podAntiAffinityType: required
