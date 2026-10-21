@@ -20,6 +20,13 @@ spec:
   storage:
     storageClass: truenas-nfs-no-backup
     size: '10Gi'
+  # fsGroupChangePolicy: 'OnRootMismatch' is done to skip kubelet's recursive chown/chmod of the NFS volume on every pod start, which slows down failovers and node drains.
+  # Setting podSecurityContext replaces CNPG's default, which only re-adds runAsUser, runAsGroup and seccompProfile,
+  # so fsGroup (26 = postgres) and runAsNonRoot must be set explicitly.
+  podSecurityContext:
+    # fsGroup: 26
+    # runAsNonRoot: true
+    fsGroupChangePolicy: 'OnRootMismatch'
   # Tag is '<postgres>-<vectorchord>'.
   imageName: 'ghcr.io/tensorchord/cloudnative-vectorchord:18.6-1.1.1@sha256:c7672bc011351a587cc292a94aac7eeebb593ed2e120077bd9c9944c9467db93'
 
