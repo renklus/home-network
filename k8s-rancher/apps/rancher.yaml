@@ -32,6 +32,12 @@ spec:
         # https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-references/tls-settings#agent-tls-enforcement
         - name: 'agentTLSMode'
           value: 'system-store'
+        - name: 'resources.requests.cpu'
+          value: '100m'
+        - name: 'resources.requests.memory'
+          value: '768Mi'
+        - name: 'resources.limits.memory'
+          value: '2Gi'
         # no need to specify image tags because the default is same as chart version. Dependabot can just update the chart
   - path: k8s-rancher/apps/rancher
     repoURL: 'https://github.com/renklus/home-network'

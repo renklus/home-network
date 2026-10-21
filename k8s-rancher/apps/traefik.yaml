@@ -10,3 +10,18 @@ metadata:
     metallb.universe.tf/loadBalancerIPs: 10.1.0.244
     # The Service belongs to k3s: pruning this file or deleting the app must not delete it.
     argocd.argoproj.io/sync-options: Prune=false,Delete=false
+---
+# Values merged by the k3s Helm controller into its bundled Traefik chart.
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    resources:
+      requests:
+        cpu: '50m'
+        memory: '64Mi'
+      limits:
+        memory: '256Mi'

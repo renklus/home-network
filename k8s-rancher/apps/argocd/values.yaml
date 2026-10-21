@@ -26,3 +26,56 @@ configs:
     # required for https://github.com/argoproj/argo-cd/issues/11143#issuecomment-1664144190
     # see also Server-Side Diff: https://argo-cd.readthedocs.io/en/stable/user-guide/diff-strategies/
     "controller.diff.server.side": 'true'
+
+# The chart sets no resources. Requests keep Argo CD from being evicted first on the memory-tight single node;
+# memory limits stop a runaway component. No CPU limits: throttling would slow syncs even on an idle node.
+controller:
+  resources:
+    requests:
+      cpu: '100m'
+      memory: '768Mi'
+    limits:
+      memory: '1536Mi'
+# Rendering large charts (e.g. Rancher, Kyverno CRDs) needs far more memory than the idle usage
+repoServer:
+  resources:
+    requests:
+      cpu: '10m'
+      memory: '128Mi'
+    limits:
+      memory: '1Gi'
+server:
+  resources:
+    requests:
+      cpu: '10m'
+      memory: '64Mi'
+    limits:
+      memory: '256Mi'
+applicationSet:
+  resources:
+    requests:
+      cpu: '10m'
+      memory: '64Mi'
+    limits:
+      memory: '256Mi'
+notifications:
+  resources:
+    requests:
+      cpu: '10m'
+      memory: '64Mi'
+    limits:
+      memory: '256Mi'
+dex:
+  resources:
+    requests:
+      cpu: '10m'
+      memory: '64Mi'
+    limits:
+      memory: '256Mi'
+redis:
+  resources:
+    requests:
+      cpu: '10m'
+      memory: '32Mi'
+    limits:
+      memory: '256Mi'

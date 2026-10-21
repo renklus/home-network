@@ -36,7 +36,6 @@ spec:
               memory: '64Mi'
             limits:
               memory: '256Mi'
-        # Bundled frr-k8s backend (DaemonSet and status cleaner)
         frr-k8s:
           frrk8s:
             resources:
