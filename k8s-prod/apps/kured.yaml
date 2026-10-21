@@ -28,6 +28,12 @@ spec:
           value: '30m'
         - name: 'configuration.forceReboot'
           value: 'true'
+        - name: 'resources.requests.cpu'
+          value: '10m'
+        - name: 'resources.requests.memory'
+          value: '64Mi'
+        - name: 'resources.limits.memory'
+          value: '256Mi'
       valuesObject:
         image:
           repository: 'ghcr.io/kubereboot/kured'

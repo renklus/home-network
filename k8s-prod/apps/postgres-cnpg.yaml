@@ -13,6 +13,14 @@ spec:
   - repoURL: 'https://cloudnative-pg.github.io/charts'
     chart: 'cloudnative-pg'
     targetRevision: '0.29.1'
+    helm:
+      parameters:
+        - name: 'resources.requests.cpu'
+          value: '10m'
+        - name: 'resources.requests.memory'
+          value: '64Mi'
+        - name: 'resources.limits.memory'
+          value: '256Mi'
   - path: k8s-prod/apps/postgres-cnpg
     repoURL: 'https://github.com/renklus/home-network'
     targetRevision: HEAD
