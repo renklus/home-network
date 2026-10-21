@@ -38,6 +38,18 @@ spec:
           value: '768Mi'
         - name: 'resources.limits.memory'
           value: '2Gi'
+        - name: 'webhook.resources.requests.cpu'
+          value: '10m'
+        - name: 'webhook.resources.requests.memory'
+          value: '128Mi'
+        - name: 'webhook.resources.limits.memory'
+          value: '512Mi'
+        - name: 'fleet.resources.requests.cpu'
+          value: '10m'
+        - name: 'fleet.resources.requests.memory'
+          value: '64Mi'
+        - name: 'fleet.resources.limits.memory'
+          value: '256Mi'
         # no need to specify image tags because the default is same as chart version. Dependabot can just update the chart
   - path: k8s-rancher/apps/rancher
     repoURL: 'https://github.com/renklus/home-network'

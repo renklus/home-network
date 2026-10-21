@@ -8,6 +8,13 @@ metadata:
   # Prune/Delete=false: removing this file or the app does not delete the local cluster
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true,Prune=false,Delete=false
 spec:
+  fleetAgentDeploymentCustomization:
+    overrideResourceRequirements:
+      requests:
+        cpu: '10m'
+        memory: '64Mi'
+      limits:
+        memory: '256Mi'
   k3sConfig:
     # update takes ~5 minutes and only works if rancher has support for this version
     kubernetesVersion: 'v1.36.5+k3s1'
