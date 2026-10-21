@@ -24,8 +24,8 @@ spec:
   # Setting podSecurityContext replaces CNPG's default, which only re-adds runAsUser, runAsGroup and seccompProfile,
   # so fsGroup (26 = postgres) and runAsNonRoot must be set explicitly.
   podSecurityContext:
-    # fsGroup: 26
-    # runAsNonRoot: true
+    fsGroup: 26
+    runAsNonRoot: true
     fsGroupChangePolicy: 'OnRootMismatch'
   # Tag is '<postgres>-<vectorchord>'.
   imageName: 'ghcr.io/tensorchord/cloudnative-vectorchord:18.6-1.1.1@sha256:c7672bc011351a587cc292a94aac7eeebb593ed2e120077bd9c9944c9467db93'
