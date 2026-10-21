@@ -32,7 +32,7 @@ configs:
 controller:
   resources:
     requests:
-      cpu: '100m'
+      cpu: '500m'
       memory: '768Mi'
     limits:
       memory: '1536Mi'
