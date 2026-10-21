@@ -12,7 +12,7 @@ GitOps configuration for a home-lab Kubernetes setup, deployed by Argo CD from `
 - `docs/k8s-rancher-cluster-connection.md` — how Argo CD on the rancher cluster authenticates to Rancher-managed clusters via the Rancher auth proxy.
 
 ## Working in this repository
-- Use 'k8s01d' instead of 'kubectl'.
+- Use 'k8s01d' instead of 'kubectl' for commands affecting the rancher cluster.
 - "Don't run cluster commands, tell me what to run"
 - Don't commit changes. Work in the worktree as usual, but once I am happy with the change don't push or merge to master but build me a git diff command (git -C .claude/worktrees/<worktree-name> diff -- . | git apply) that applies the changes to the main working directory. Do not make tool calls just to build this command.
 - Avoid unnecessary CLI tool calls. Use on board tools where feasible. For example prefer Read over `cat`-ing or `grep`-ing files.
