@@ -12,6 +12,20 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true,Prune=false,Delete=false
 spec:
   kubernetesVersion: 'v1.36.5+k3s1'
+  clusterAgentDeploymentCustomization:
+    overrideResourceRequirements:
+      requests:
+        cpu: '50m'
+        memory: '512Mi'
+      limits:
+        memory: '1Gi'
+  fleetAgentDeploymentCustomization:
+    overrideResourceRequirements:
+      requests:
+        cpu: '10m'
+        memory: '128Mi'
+      limits:
+        memory: '512Mi'
   rkeConfig:
     machineGlobalConfig:
       disable:
