@@ -15,6 +15,8 @@ spec:
       labels:
         app: paperless
     spec:
+      # ServiceLinks collide with paperless variables if the service is named 'paperless' exactly.
+      enableServiceLinks: false
       # Rootless instead of USERMAP_UID/USERMAP_GID. 3003 is the UID of the legacy setup, which owns the copied export.
       securityContext:
         runAsUser: 3003
@@ -38,7 +40,7 @@ spec:
                 secretKeyRef:
                   name: paperless-database-app
                   key: password
-            # PAPERLESS_SECRET_KEY is kept out of git, created by hand:
+            # PAPERLESS_SECRET_KEY is kept out of git, created by hand. No need to back up
             # kubectl -n paperless create secret generic paperless-secret-key \
             #   --from-literal=secret-key="$(python3 -c 'import secrets; print(secrets.token_urlsafe(64))')"
             - name: PAPERLESS_SECRET_KEY
