@@ -1,0 +1,79 @@
+# Nightly backup: document_exporter writes documents, archive files and the database contents to the backed-up
+# paperless-export PVC (TrueNAS: /mnt/hdd/general/k8s-prod/paperless--paperless-export), which the TrueNAS snapshot and
+# rsync must run after. Restore into an empty instance of the same version with 'document_importer' and then
+# 'document_thumbnails' (thumbnails are not exported). API tokens are not exported.
+# https://docs.paperless-ngx.com/administration/#exporter
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: paperless-export
+  namespace: paperless
+spec:
+  schedule: '30 1 * * *'
+  timeZone: 'Europe/Zurich'
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 3600
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          restartPolicy: Never
+          enableServiceLinks: false # see paperless.yaml
+          securityContext:
+            runAsUser: 3003
+            runAsGroup: 3003
+            fsGroup: 3003
+            fsGroupChangePolicy: OnRootMismatch
+          containers:
+            - name: export
+              image: ghcr.io/paperless-ngx/paperless-ngx:3.2.1@sha256:5fa76604a81df6945086e0837b14b56543d137e8ce4f311cc5d9ebe907e74e79
+              # Bypasses the image's s6 '/init', which would also start a webserver, worker and consumer.
+              command:
+                - python3
+                - manage.py
+                - document_exporter
+                - /usr/src/paperless/export
+                - --use-filename-format
+                - --use-folder-prefix
+                - --no-thumbnail
+                - --delete
+                - --no-progress-bar
+              envFrom:
+                - configMapRef:
+                    name: paperless-env
+              env:
+                - name: PAPERLESS_DBPASS
+                  valueFrom:
+                    secretKeyRef:
+                      name: paperless-database-app
+                      key: password
+                - name: PAPERLESS_SECRET_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: paperless-secret-key
+                      key: secret-key
+              volumeMounts:
+                - name: data
+                  mountPath: /usr/src/paperless/data
+                - name: media
+                  mountPath: /usr/src/paperless/media
+                - name: export
+                  mountPath: /usr/src/paperless/export
+              resources:
+                requests:
+                  cpu: '100m'
+                  memory: '512Mi'
+                limits:
+                  cpu: '1'
+                  memory: '2Gi'
+          volumes:
+            # The exporter reads the database and media only; the data dir (search index etc.) belongs to the Deployment.
+            - name: data
+              emptyDir: {}
+            - name: media
+              persistentVolumeClaim:
+                claimName: paperless-media
+            - name: export
+              persistentVolumeClaim:
+                claimName: paperless-export
