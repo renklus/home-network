@@ -1,0 +1,31 @@
+# CNPG creates the database 'app' owned by user 'app' and stores the credentials in Secret 'paperless-database-app'.
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: paperless-database
+  namespace: paperless
+  annotations:
+    # Keep the database when the paperless app is deleted: CNPG would delete its PVC through owner references.
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+spec:
+  # 3+ instances for quorum during reboot of 1 replica. Replicas let node drains (kured) proceed: CNPG switches the primary over to a replica
+  # before the old primary is evicted, and with one node down there is still a replica to confirm synchronous commits.
+  instances: 3
+  # Shorten the time Paperless has no writable database from a full pod restart to a few seconds.
+  primaryUpdateMethod: switchover
+  affinity:
+    # CNPG's default is 'preferred', which can leave two instances on one node after a reboot; draining it would then take both down
+    podAntiAffinityType: required
+
+  storage:
+    storageClass: truenas-nfs-no-backup
+    size: '5Gi'
+  imageName: 'ghcr.io/cloudnative-pg/postgresql:18.6-minimal-trixie'
+
+  # Memory request equals the limit, as CNPG recommends, so the database is the last to be evicted under memory pressure.
+  resources:
+    requests:
+      cpu: '50m'
+      memory: '512Mi'
+    limits:
+      memory: '512Mi'

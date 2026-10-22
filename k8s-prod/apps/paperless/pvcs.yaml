@@ -1,0 +1,62 @@
+# Storage classes: docs/truenas-backup.md. Only the export is backed up: it is a complete, restorable copy of the
+# documents and the database (paperless/export.yaml)
+# ReadWriteMany because the export CronJob runs next to the Deployment, possibly on another node.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-media
+  namespace: paperless
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: truenas-nfs-no-backup
+  resources:
+    requests:
+      storage: 100Gi
+---
+# Search index, classifier and other state that paperless rebuilds.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-data
+  namespace: paperless
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: truenas-nfs-no-backup
+  resources:
+    requests:
+      storage: 10Gi
+---
+# Scanner drop folder on TrueNAS: /mnt/hdd/general/k8s-prod-no-backup/paperless--paperless-consume
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-consume
+  namespace: paperless
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: truenas-nfs-no-backup
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-export
+  namespace: paperless
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: truenas-nfs
+  resources:
+    requests:
+      storage: 100Gi

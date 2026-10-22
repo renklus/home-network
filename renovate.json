@@ -77,6 +77,18 @@
       ],
       "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)-(?<patch>\\d+)\\.(?<build>\\d+)\\.(?<revision>\\d+)$",
       "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "CloudNativePG Cluster imageName. Tags are '<postgres>-<variant>-<distro>', e.g. '18.6-minimal-trixie'; docker versioning keeps the suffix",
+      "managerFilePatterns": [
+        "/k8s-rancher/apps/.+\\.yaml$/",
+        "/k8s-prod/apps/.+\\.yaml$/"
+      ],
+      "matchStrings": [
+        "imageName: '(?<depName>ghcr\\.io/cloudnative-pg/postgresql):(?<currentValue>[^'@]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?'"
+      ],
+      "datasourceTemplate": "docker"
     }
   ],
   "customDatasources": {

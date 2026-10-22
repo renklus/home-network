@@ -1,0 +1,42 @@
+# Flower (Celery monitoring, enabled in paperless.yaml) has no login of its own
+# so Traefik asks for a password first. The htpasswd entries are kept out of git, created by hand
+# (bcrypt; htpasswd is in apache2-utils):
+# kubectl -n paperless create secret generic flower-basic-auth --from-literal=users="$(htpasswd -nB admin)"
+# https://doc.traefik.io/traefik/reference/routing-configuration/http/middlewares/basicauth/
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: flower-auth
+  namespace: paperless
+spec:
+  basicAuth:
+    secret: flower-basic-auth
+    removeHeader: true # Flower doesn't need the credentials
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: paperless-flower
+  namespace: paperless
+  annotations:
+    cert-manager.io/cluster-issuer: 'letsencrypt-shortlived'
+    # HTTPS only, so the password is never sent in plain text
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: paperless-flower-auth@kubernetescrd
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: paperless-flower.ingress.prod.k8s.renklus.ch
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: paperless
+                port:
+                  name: flower
+  tls:
+    - hosts:
+        - paperless-flower.ingress.prod.k8s.renklus.ch
+      secretName: paperless-flower-tls

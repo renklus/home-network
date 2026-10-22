@@ -1,0 +1,18 @@
+# Argo CD renders this directory with Kustomize (because kustomization.yaml exists), so every manifest must be listed here.
+# The generated ConfigMap name carries a hash of its content and Kustomize updates the references to it,
+# so a settings change in paperless.env rolls out the Deployment without a manual restart.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespaces.yaml
+  - pvcs.yaml
+  - postgres.yaml
+  - redis.yaml
+  - paperless.yaml
+  - flower.yaml
+  - export.yaml
+configMapGenerator:
+  - name: paperless-env
+    namespace: paperless
+    envs:
+      - paperless.env

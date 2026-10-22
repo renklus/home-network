@@ -1,0 +1,31 @@
+# The 'paperless' namespace (paperless/namespaces.yaml) and its document PVCs have 'Prune=false,Delete=false', so deleting
+# this Application keeps them. The finalizer below still deletes the CNPG Cluster (paperless/postgres.yaml), whose PVC
+# CNPG then deletes; its storage class uses reclaimPolicy 'Retain', and the nightly export (paperless/export.yaml) holds
+# a full copy of the database.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: paperless
+  namespace: argocd
+  annotations:
+    # after the CNPG operator (postgres-cnpg.yaml, wave 1), whose CRDs the database Cluster needs
+    argocd.argoproj.io/sync-wave: "2"
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+  - path: k8s-prod/apps/paperless
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  project: prod-cluster
+  destination:
+    namespace: paperless
+    name: production
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true

@@ -1,0 +1,39 @@
+# Broker for paperless' task queue. No persistence: on restart, paperless picks up files still in the consume folder.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paperless-redis
+  namespace: paperless
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paperless-redis
+  template:
+    metadata:
+      labels:
+        app: paperless-redis
+    spec:
+      containers:
+        - name: redis
+          image: docker.io/library/redis:8.10.0@sha256:344e3945a0b431c8ff1eecd58c5573538126bd756f02fc7e218ddf1fc2546366
+          ports:
+            - containerPort: 6379
+          resources:
+            requests:
+              cpu: '20m'
+              memory: '32Mi'
+            limits:
+              memory: '256Mi'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-redis
+  namespace: paperless
+spec:
+  selector:
+    app: paperless-redis
+  ports:
+    - name: redis
+      port: 6379
