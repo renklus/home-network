@@ -43,6 +43,7 @@ spec:
             # PAPERLESS_SECRET_KEY is kept out of git, created by hand. No need to back up
             # kubectl -n paperless create secret generic paperless-secret-key \
             #   --from-literal=secret-key="$(python3 -c 'import secrets; print(secrets.token_urlsafe(64))')"
+            # alternative: an init container that creates the value and mounts it as a PVC or a job that creates a kubernetes secret if it's missing (but needs argocd RBAC and a fitting image) or a Kyverno `random()` rule
             - name: PAPERLESS_SECRET_KEY
               valueFrom:
                 secretKeyRef:
