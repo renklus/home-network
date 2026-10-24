@@ -9,6 +9,7 @@ GitOps configuration for a home-lab Kubernetes setup, deployed by Argo CD from `
 - `images/` — Dockerfiles for small custom images, published by `.github/workflows/` (note the workflows reference `./container/images/...` paths and the `master` branch, which don't match the current layout).
 - `docs/cluster-bootstrap.md` — manual steps outside Argo CD: workstation setup, k3s install, LAN DNS/NAT and Cloudflare, the Argo CD bootstrap install, node joins.
 - `docs/truenas-backup.md` — TrueNAS dataset/NFS share behind the prod storage classes and its rsync backup to a Synology, with open steps (start here when asked what to do next on backups). `docs/rsync.md` is the general TrueNAS → Synology rsync (module mode) and snapshot setup.
+- `docs/paperless-scanner-smb.md` — TrueNAS SMB share and POSIX ACL that let the scanner (UID 3004) write into Paperless' consume folder, used by the pods as the shared k8s user 3003.
 - `docs/k8s-rancher-cluster-connection.md` — how Argo CD on the rancher cluster authenticates to Rancher-managed clusters via the Rancher auth proxy.
 - `docs/resource-requests.md` — commands to see current container usage and configured requests/limits/QoS, and how to size them.
 

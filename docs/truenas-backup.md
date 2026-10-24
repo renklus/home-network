@@ -35,6 +35,9 @@ One share per dataset, both with:
 - Services → NFS: NFSv4 enabled (storage classes mount with `nfsvers=4.2`). SCALE uses numeric UIDs/GIDs with
   `sec=sys` by default; the "NFSv3 ownership model" option only exists on TrueNAS CORE.
 
+The Paperless consume folder is additionally shared over SMB for the scanner, with a POSIX ACL:
+[paperless-scanner-smb.md](paperless-scanner-smb.md).
+
 Check after the first PVC exists: `ls -ln` shows the same numbers on TrueNAS and on the node. If the node shows
 `nobody`/`4294967294`, check that `/sys/module/nfs/parameters/nfs4_disable_idmapping` is `Y` there.
 
