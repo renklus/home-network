@@ -38,7 +38,8 @@ spec:
                 - --use-folder-prefix
                 - --no-thumbnail
                 - --delete
-                - --no-progress-bar
+                # The exporter prints nothing else on success. Without a terminal, the progress bar is printed once at
+                # the end (document count and duration), so keep it for the pod log.
               envFrom:
                 - configMapRef:
                     name: paperless-env
