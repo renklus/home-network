@@ -10,7 +10,7 @@ resources:
   - redis.yaml
   - paperless.yaml
   - flower.yaml
-#  - export.yaml
+  - export.yaml
 configMapGenerator:
   - name: paperless-env
     namespace: paperless
