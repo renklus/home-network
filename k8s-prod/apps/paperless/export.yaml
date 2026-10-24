@@ -65,7 +65,6 @@ spec:
                   cpu: '100m'
                   memory: '512Mi'
                 limits:
-                  cpu: '1'
                   memory: '2Gi'
           volumes:
             # The exporter reads the database and media only; the data dir (search index etc.) belongs to the Deployment.

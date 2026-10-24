@@ -49,6 +49,9 @@ spec:
                 secretKeyRef:
                   name: paperless-secret-key
                   key: secret-key
+            # on cluster bootstrap: create a login for traefik. Run
+            # kubectl -n paperless create secret generic flower-basic-auth --from-literal=users="$(htpasswd -nB admin)"
+            # when accessing flower in a browser the password entered in the above command needs to be entered to access flower (username 'admin')
           volumeMounts:
             - name: data
               mountPath: /usr/src/paperless/data
