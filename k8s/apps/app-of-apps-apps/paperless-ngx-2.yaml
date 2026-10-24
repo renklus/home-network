@@ -1,5 +1,6 @@
-# Backup: on k8s host: sudo k3s kubectl exec --stdin --tty paperless-ngx-2-webserver-595d5df5d7-dfw45 -n paperless-ngx-2 -- /bin/bash
-# then run: document_exporter --use-filename-format --use-folder-prefix --no-thumbnail --delete /usr/src/backup-target
+# Upgraded to v3 only to export the data for the move to the prod cluster (k8s-prod/apps/paperless), whose import needs
+# the same version. Export on the k8s host:
+# sudo k3s kubectl -n paperless-ngx-2 exec deploy/paperless-ngx-2-webserver -- document_exporter /usr/src/backup-target/v3-migration
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -22,7 +23,7 @@ spec:
     spec:
       containers:
         - name: webserver
-          image: ghcr.io/renklus/paperless-ngx-backup:v36@sha256:f06bf2d97b70e7ca764d8d0ac9d93e9449b47340b07d3c8d8763d400d0c6df9c
+          image: ghcr.io/paperless-ngx/paperless-ngx:3.2.1@sha256:5fa76604a81df6945086e0837b14b56543d137e8ce4f311cc5d9ebe907e74e79
           ports:
             - containerPort: 8000
           env:
@@ -46,10 +47,19 @@ spec:
               value: "7200" # default: 1800 seconds
             - name: PAPERLESS_ENABLE_FLOWER
               value: "SET"
-            - name: PAPERLESS_CONSUMER_POLLING
+            - name: PAPERLESS_CONSUMER_POLLING_INTERVAL
               value: "30" # seconds
-            - name: PAPERLESS_CONSUMER_POLLING_RETRY_COUNT
-              value: "10"
+            # v3 runs SQLite in WAL mode, which does not work on NFS
+            - name: PAPERLESS_DB_OPTIONS
+              value: "init_command=PRAGMA journal_mode=DELETE"
+            # Required since v3. Created by hand on the k8s host:
+            # sudo k3s kubectl -n paperless-ngx-2 create secret generic paperless-secret-key \
+            #   --from-literal=secret-key="$(python3 -c 'import secrets; print(secrets.token_urlsafe(64))')"
+            - name: PAPERLESS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-secret-key
+                  key: secret-key
             - name: PAPERLESS_OCR_LANGUAGE
               value: "deu+eng"
             - name: PAPERLESS_TIME_ZONE
@@ -82,7 +92,7 @@ spec:
             httpGet:
               path: /
               port: 8000
-            failureThreshold: 60
+            failureThreshold: 360 # 1 h: the v3 database migration and search index rebuild run before the webserver starts
             periodSeconds: 10
       volumes:
         - name: 'paperless-ngx-2-webserver'
