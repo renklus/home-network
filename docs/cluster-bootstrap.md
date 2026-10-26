@@ -129,7 +129,7 @@ systemctl list-timers 'apt-daily*'
 
 ### Disable overriding shutdown delay on prod cluster nodes
 Reason: kubelet also does this in the prod cluster and it should win the override \
-unattended-upgrades's logind drop-in /usr/lib/systemd/logind.conf.d/unattended-upgrades-logind-maxdelay.conf caps InhibitDelayMaxSec at 30s and is read after the kubelet's 99-kubelet.conf, so the kubelet can't get the delay for graceful node shutdown (kubelet-arg in k8s-rancher/apps/rancher/cluster-production.yaml). A same-named /dev/null symlink in /etc masks it, as the Kubernetes docs advise. (https://kubernetes.io/docs/concepts/cluster-administration/node-shutdown/#graceful-node-shutdown) \
+unattended-upgrades's logind drop-in /usr/lib/systemd/logind.conf.d/unattended-upgrades-logind-maxdelay.conf caps InhibitDelayMaxSec at 30s and is read after the kubelet's 99-kubelet.conf, so the kubelet can't get the delay for graceful node shutdown (kubelet config in k8s-rancher/apps/rancher/cluster-production.yaml). A same-named /dev/null symlink in /etc masks it, as the Kubernetes docs advise. (https://kubernetes.io/docs/concepts/cluster-administration/node-shutdown/#graceful-node-shutdown) \
 On a node that already runs k3s, restart k3s / k3s-agent afterwards: restarting logind drops the kubelet's inhibitor lock.
 ```sh
 sudo mkdir -p /etc/systemd/logind.conf.d

@@ -36,8 +36,27 @@ spec:
       tls-san:
         - k8s02d.dev.renklus.ch
         - prod.k8s.renklus.ch
-      # Graceful node shutdown: the kubelet stops pods before the network goes down, so writes to hard NFS mounts can't hang the shutdown.
-      # 210s for regular pods covers CNPG's default 180s smart shutdown; the Proxmox VM shutdown timeout must exceed the total (use 300s).
-      kubelet-arg:
-        - shutdown-grace-period=240s
-        - shutdown-grace-period-critical-pods=30s
+    # Delivered to every node; k3s loads kubelet config drop-ins from kubelet.conf.d (settings like shutdownGracePeriod have no kubelet flag).
+    machineSelectorFiles:
+      - fileSources:
+          - configMap:
+              name: production-kubelet-config
+              items:
+                - key: graceful-shutdown.conf
+                  path: /var/lib/rancher/k3s/agent/etc/kubelet.conf.d/50-graceful-shutdown.conf
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: production-kubelet-config
+  namespace: fleet-default
+  annotations:
+    rke.cattle.io/object-authorized-for-clusters: production # Rancher only hands this to the listed clusters' machineSelectorFiles
+data:
+  # Graceful node shutdown: the kubelet stops pods before the network goes down, so writes to hard NFS mounts can't hang the shutdown.
+  # 210s for regular pods covers CNPG's default 180s smart shutdown; the Proxmox VM shutdown timeout must exceed the total (use 300s).
+  graceful-shutdown.conf: |
+    apiVersion: kubelet.config.k8s.io/v1beta1
+    kind: KubeletConfiguration
+    shutdownGracePeriod: 240s
+    shutdownGracePeriodCriticalPods: 30s
