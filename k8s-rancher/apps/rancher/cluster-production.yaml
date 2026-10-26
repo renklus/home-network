@@ -36,3 +36,8 @@ spec:
       tls-san:
         - k8s02d.dev.renklus.ch
         - prod.k8s.renklus.ch
+      # Graceful node shutdown: the kubelet stops pods before the network goes down, so writes to hard NFS mounts can't hang the shutdown.
+      # 210s for regular pods covers CNPG's default 180s smart shutdown; the Proxmox VM shutdown timeout must exceed the total (use 300s).
+      kubelet-arg:
+        - shutdown-grace-period=240s
+        - shutdown-grace-period-critical-pods=30s
