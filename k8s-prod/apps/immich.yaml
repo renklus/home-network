@@ -49,7 +49,7 @@ spec:
                   image:
                     repository: 'docker.io/valkey/valkey'
                     # Use 3 part version number tag because the 2 part tag is not marked as pre release and would be used too early.
-                    tag: '9.1.2-alpine@sha256:48332870af354a799964c0012ae1194a0bf2bf894eb508f945810596dc2d8d11'
+                    tag: '9.1.3-alpine@sha256:bf09d58e96d6b4524a15396b65b242bbe18beebbcc15a04d8ee75ddac62fae0b'
                   # Valkey only holds Immich's job queues; the limit leaves headroom for bulk jobs over the whole library.
                   resources:
                     requests:
