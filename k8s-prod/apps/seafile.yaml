@@ -1,0 +1,30 @@
+# The 'seafile' namespace, the 'seafile-data' and 'seafile-database-backup' PVCs and the MariaDB (seafile/) have
+# 'Prune=false,Delete=false', so deleting this Application keeps the files and the database. The finalizer below
+# deletes everything else.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: seafile
+  namespace: argocd
+  annotations:
+    # after the MariaDB operator (mariadb-operator.yaml, wave 1), whose CRDs the database resources need
+    argocd.argoproj.io/sync-wave: "2"
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+  - path: k8s-prod/apps/seafile
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  project: prod-cluster
+  destination:
+    namespace: seafile
+    name: production
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true

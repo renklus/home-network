@@ -160,6 +160,17 @@
       "dependencyDashboardApproval": true
     },
     {
+      "description": "MariaDB and Seafile majors upgrade the database schema and can need manual steps (Seafile upgrade notes, mariadb-upgrade with Galera). Read the notes first, then approve on the Dependency Dashboard",
+      "matchPackageNames": [
+        "/(^|/)mariadb$/",
+        "/(^|/)seafileltd/seafile-mc$/"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "dependencyDashboardApproval": true
+    },
+    {
       "matchPackageNames": [
         "plexinc/pms-docker"
       ],

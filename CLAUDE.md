@@ -4,7 +4,7 @@ GitOps configuration for a home-lab Kubernetes setup, deployed by Argo CD from `
 
 ## Active vs. legacy directories
 - `k8s-rancher/apps/` — **active**. The management ("rancher") cluster: Argo CD, Rancher, cert-manager, MetalLB, HAProxy, CoreDNS customisation.
-- `k8s-prod/apps/` — **active**. Workloads for the Rancher-provisioned `prod` cluster (immich, CNPG Postgres, csi-nfs, MetalLB, system config).
+- `k8s-prod/apps/` — **active**. Workloads for the Rancher-provisioned `prod` cluster (immich, paperless, seafile, CNPG Postgres, mariadb-operator, csi-nfs, MetalLB, system config).
 - `k8s/`, `k8s-dmz/`, `k8s-old1/` — older cluster setups, unmaintained and listed in Renovate's `ignorePaths`. Don't use them as patterns for new work, and don't add Renovate rules for them.
 - `images/` — Dockerfiles for small custom images, published by `.github/workflows/` (note the workflows reference `./container/images/...` paths and the `master` branch, which don't match the current layout).
 - `docs/cluster-bootstrap.md` — manual steps outside Argo CD: workstation setup, k3s install, LAN DNS/NAT and Cloudflare, the Argo CD bootstrap install, node joins.
@@ -33,7 +33,7 @@ GitOps configuration for a home-lab Kubernetes setup, deployed by Argo CD from `
 **Conventions every Application follows:**
 - `syncOptions: CreateNamespace=false` and `ServerSideApply=true`. Namespaces are declared explicitly in `foo/namespaces.yaml` (or inline). One comment explains why.
 - Explicit `project` is required: the `default` AppProject is locked down in `k8s-rancher/apps/argocd/projects.yaml`. `prod-cluster` blocks `Application` resources and the `argocd` namespace.
-- Finalizer choice is deliberate: `resources-finalizer.argocd.argoproj.io` cascades deletion; it is intentionally omitted on `argo-cd`, `app-of-apps`, `app-of-prod`, `no-auto-delete` (which holds PVCs like the immich media claim) and `postgres` (the CNPG operator; deleting its CRDs would delete every database).
+- Finalizer choice is deliberate: `resources-finalizer.argocd.argoproj.io` cascades deletion; it is intentionally omitted on `argo-cd`, `app-of-apps`, `app-of-prod`, `no-auto-delete` (which holds PVCs like the immich media claim) `postgres` (the CNPG operator) and `mariadb-operator`: deleting an operator's CRDs would delete every database.
 - Helm config uses `helm.parameters` for scalar settings and `helm.valuesObject` for image pins.
 
 **Image pinning and Renovate.** Images are pinned as `repository: '...'` + `tag: 'vX.Y.Z@sha256:...'` with single quotes, and chart versions in `targetRevision: 'x.y.z'`

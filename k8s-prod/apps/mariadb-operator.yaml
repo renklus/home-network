@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mariadb-operator
+  namespace: argocd
+  annotations:
+    # CRDs and webhook must be ready before apps that contain a MariaDB resource sync
+    argocd.argoproj.io/sync-wave: "1"
+  finalizers:
+    # No cascading delete: removing the CRDs would delete every MariaDB and its databases.
+spec:
+  sources:
+  - repoURL: 'https://helm.mariadb.com/mariadb-operator'
+    chart: 'mariadb-operator'
+    targetRevision: '26.10.2'
+    helm:
+      parameters:
+        # CRDs as a subchart of this release, so Argo CD updates them together with the operator
+        - name: 'crds.enabled'
+          value: 'true'
+        - name: 'resources.requests.cpu'
+          value: '10m'
+        - name: 'resources.requests.memory'
+          value: '64Mi'
+        - name: 'resources.limits.memory'
+          value: '256Mi'
+        - name: 'webhook.resources.requests.cpu'
+          value: '10m'
+        - name: 'webhook.resources.requests.memory'
+          value: '32Mi'
+        - name: 'webhook.resources.limits.memory'
+          value: '128Mi'
+        - name: 'certController.resources.requests.cpu'
+          value: '10m'
+        - name: 'certController.resources.requests.memory'
+          value: '32Mi'
+        - name: 'certController.resources.limits.memory'
+          value: '128Mi'
+  - path: k8s-prod/apps/mariadb-operator
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  project: prod-cluster
+  destination:
+    namespace: mariadb-operator
+    name: production
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true

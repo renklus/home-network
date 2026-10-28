@@ -1,0 +1,158 @@
+# Plain manifests instead of the official chart (haiwen/seafile-helm-chart), which chowns the whole data volume
+# on every start and can't protect its PVC from pruning.
+# Environment variables: https://manual.seafile.com/13.0/config/env/
+#
+# Secrets are kept out of git, created by hand before the first sync (the database user needs the password too):
+# kubectl -n seafile create secret generic seafile-secret \
+#   --from-literal=JWT_PRIVATE_KEY="$(python3 -c 'import secrets; print(secrets.token_urlsafe(40))')" \
+#   --from-literal=SEAFILE_MYSQL_DB_PASSWORD="$(python3 -c 'import secrets; print(secrets.token_urlsafe(32))')" \
+#   --from-literal=INIT_SEAFILE_ADMIN_EMAIL='<admin e-mail>' \
+#   --from-literal=INIT_SEAFILE_ADMIN_PASSWORD='<initial admin password>'
+# The admin values are only used while no admin account exists, i.e. on the first start.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seafile
+  namespace: seafile
+spec:
+  replicas: 1
+  strategy:
+    # Seafile CE supports only one instance, and a new version upgrades on start. A rolling update would keep the
+    # old version serving the same data until the startupProbe passes.
+    type: Recreate
+  selector:
+    matchLabels:
+      app: seafile
+  template:
+    metadata:
+      labels:
+        app: seafile
+    spec:
+      # Service links would set SEAFILE_PORT etc., which collide with Seafile's own variables.
+      enableServiceLinks: false
+      containers:
+        - name: seafile
+          image: docker.io/seafileltd/seafile-mc:13.0.28@sha256:b0c90832126bf432db908449f1bb450211e6bbf75a2193bab3399e2a9636eccf
+          ports:
+            - name: http
+              containerPort: 80 # the image's nginx in front of seahub and the file server
+          env:
+            - name: TIME_ZONE
+              value: 'Europe/Zurich'
+            - name: SEAFILE_SERVER_HOSTNAME
+              value: 'seafile.ingress.prod.k8s.renklus.ch'
+            - name: SEAFILE_SERVER_PROTOCOL
+              value: 'https' # TLS ends at Traefik
+            - name: SEAFILE_LOG_TO_STDOUT
+              value: 'true'
+            # Database from mariadb.yaml. The operator creates the databases, user and grants, so Seafile's
+            # first-start setup uses them as they are and needs no root password.
+            - name: USE_EXISTING_DB
+              value: '1'
+            - name: SEAFILE_MYSQL_DB_HOST
+              value: 'seafile-database-primary'
+            - name: SEAFILE_MYSQL_DB_USER
+              value: 'seafile'
+            - name: SEAFILE_MYSQL_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: seafile-secret
+                  key: SEAFILE_MYSQL_DB_PASSWORD
+            - name: SEAFILE_MYSQL_DB_CCNET_DB_NAME
+              value: 'ccnet_db'
+            - name: SEAFILE_MYSQL_DB_SEAFILE_DB_NAME
+              value: 'seafile_db'
+            - name: SEAFILE_MYSQL_DB_SEAHUB_DB_NAME
+              value: 'seahub_db'
+            - name: CACHE_PROVIDER
+              value: 'redis'
+            - name: REDIS_HOST
+              value: 'seafile-redis'
+            - name: JWT_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: seafile-secret
+                  key: JWT_PRIVATE_KEY
+            - name: INIT_SEAFILE_ADMIN_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: seafile-secret
+                  key: INIT_SEAFILE_ADMIN_EMAIL
+            - name: INIT_SEAFILE_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: seafile-secret
+                  key: INIT_SEAFILE_ADMIN_PASSWORD
+          volumeMounts:
+            - name: data
+              mountPath: /shared
+          resources:
+            requests:
+              cpu: '250m'
+              memory: '1Gi'
+            limits:
+              memory: '2Gi'
+          startupProbe:
+            httpGet:
+              path: /api2/ping/
+              port: http
+            failureThreshold: 180 # database migrations run before seahub starts, e.g. on major upgrades
+            periodSeconds: 10
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: seafile-data
+---
+# Libraries, configuration (conf/) and logs. Backed up together with the nightly database dump (mariadb.yaml).
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: seafile-data
+  namespace: seafile
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: truenas-nfs
+  resources:
+    requests:
+      storage: 200Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: seafile
+  namespace: seafile
+spec:
+  selector:
+    app: seafile
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: seafile
+  namespace: seafile
+  annotations:
+    cert-manager.io/cluster-issuer: 'letsencrypt-shortlived'
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: seafile.ingress.prod.k8s.renklus.ch
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: seafile
+                port:
+                  name: http
+  tls:
+    - hosts:
+        - seafile.ingress.prod.k8s.renklus.ch
+      secretName: seafile-tls
