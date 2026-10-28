@@ -1,0 +1,27 @@
+# The 'opencloud' namespace and the 'opencloud-data' PVC (opencloud/) have 'Prune=false,Delete=false', so deleting
+# this Application keeps the files, the configuration and the users. The finalizer below deletes everything else.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: opencloud
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+  - path: k8s-prod/apps/opencloud
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  project: prod-cluster
+  destination:
+    namespace: opencloud
+    name: production
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      # The namespace is declared in opencloud/namespaces.yaml, so it can carry the Prune=false,Delete=false annotation.
+      - CreateNamespace=false
+      - ServerSideApply=true

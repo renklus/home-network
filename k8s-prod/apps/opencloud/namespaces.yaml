@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: opencloud
+  annotations:
+    # Keep the namespace when the opencloud app is deleted so the PVC is not removed.
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
