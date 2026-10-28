@@ -4,7 +4,7 @@ GitOps configuration for a home-lab Kubernetes setup, deployed by Argo CD from `
 
 ## Active vs. legacy directories
 - `k8s-rancher/apps/` — **active**. The management ("rancher") cluster: Argo CD, Rancher, cert-manager, MetalLB, HAProxy, CoreDNS customisation.
-- `k8s-prod/apps/` — **active**. Workloads for the Rancher-provisioned `prod` cluster (immich, CNPG Postgres, csi-nfs, MetalLB, system config).
+- `k8s-prod/apps/` — **active**. Workloads for the Rancher-provisioned `prod` cluster (immich, paperless, nextcloud, CNPG Postgres, csi-nfs, MetalLB, system config).
 - `k8s/`, `k8s-dmz/`, `k8s-old1/` — older cluster setups, unmaintained and listed in Renovate's `ignorePaths`. Don't use them as patterns for new work, and don't add Renovate rules for them.
 - `images/` — Dockerfiles for small custom images, published by `.github/workflows/` (note the workflows reference `./container/images/...` paths and the `master` branch, which don't match the current layout).
 - `docs/cluster-bootstrap.md` — manual steps outside Argo CD: workstation setup, k3s install, LAN DNS/NAT and Cloudflare, the Argo CD bootstrap install, node joins.

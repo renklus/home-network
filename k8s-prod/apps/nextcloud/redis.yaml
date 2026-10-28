@@ -1,0 +1,39 @@
+# Memory cache and transactional file locking for Nextcloud. No persistence: both are rebuilt on restart.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud-redis
+  namespace: nextcloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nextcloud-redis
+  template:
+    metadata:
+      labels:
+        app: nextcloud-redis
+    spec:
+      containers:
+        - name: redis
+          image: docker.io/library/redis:8.10.3@sha256:3466b24cc1232a254fc4753963cbe93392a30b3d24c2cad445fbc72c80b654a0
+          ports:
+            - containerPort: 6379
+          resources:
+            requests:
+              cpu: '20m'
+              memory: '32Mi'
+            limits:
+              memory: '256Mi'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nextcloud-redis
+  namespace: nextcloud
+spec:
+  selector:
+    app: nextcloud-redis
+  ports:
+    - name: redis
+      port: 6379

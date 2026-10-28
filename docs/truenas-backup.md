@@ -8,7 +8,7 @@ Each PVC gets the subdirectory `<ns>--<pvc>` on the class's share.
 
 | Class | Dataset | Backup | reclaimPolicy | Use for |
 |---|---|---|---|---|
-| `truenas-nfs` | `hdd/general/k8s-prod` | yes | Retain | data that exists nowhere else (photos) |
+| `truenas-nfs` | `hdd/general/k8s-prod` | yes | Retain | data that exists nowhere else (photos, Nextcloud files, database dumps) |
 | `truenas-nfs-no-backup` | `hdd/general/k8s-prod-no-backup` | no | Retain | data with its own backup (the CNPG database: Immich's dump lives on the media PVC) |
 | `truenas-nfs-temp` | `hdd/general/k8s-prod-no-backup` | no | Delete | caches that can be rebuilt (ML model cache, Valkey job queues) |
 
@@ -58,6 +58,35 @@ A restore was tested: files come back, owned by the task user.
 When adding a PVC on `truenas-nfs`, check that the backup user can read it. An app that writes `0700` directories or
 `0600` files (like Postgres) is skipped by rsync (exit code 23); put such data on `truenas-nfs-no-backup` with its own
 backup instead.
+
+### Nextcloud
+Nextcloud (`k8s-prod/apps/nextcloud/`) keeps its data directory at `0770`, owned by www-data (33:33), and refuses to run
+otherwise, so the backup user needs a named entry in a POSIX ACL on `nextcloud--nextcloud-data` and
+`nextcloud--nextcloud-html`. A `chmod` by Nextcloud only changes the `MASK`; `0770`/`0750`/`0640` still leave the backup
+user's read access. Same procedure and structure as [paperless-scanner-smb.md](paperless-scanner-smb.md#2-acl-on-the-consume-folder),
+once the pod has started (owner 33 is then set). `recursive` covers the files written before the ACL:
+```sh
+B=<UID of the rsync task user>
+for D in /mnt/hdd/general/k8s-prod/nextcloud--nextcloud-data /mnt/hdd/general/k8s-prod/nextcloud--nextcloud-html; do
+midclt call --job filesystem.setacl "$(cat <<EOF
+{"path": "$D", "acltype": "POSIX1E", "options": {"recursive": true}, "dacl": [
+  {"default": false, "tag": "USER_OBJ",  "id": -1, "perms": {"READ": true,  "WRITE": true,  "EXECUTE": true}},
+  {"default": false, "tag": "GROUP_OBJ", "id": -1, "perms": {"READ": true,  "WRITE": true,  "EXECUTE": true}},
+  {"default": false, "tag": "USER",      "id": $B, "perms": {"READ": true,  "WRITE": false, "EXECUTE": true}},
+  {"default": false, "tag": "MASK",      "id": -1, "perms": {"READ": true,  "WRITE": true,  "EXECUTE": true}},
+  {"default": false, "tag": "OTHER",     "id": -1, "perms": {"READ": false, "WRITE": false, "EXECUTE": false}},
+  {"default": true,  "tag": "USER_OBJ",  "id": -1, "perms": {"READ": true,  "WRITE": true,  "EXECUTE": true}},
+  {"default": true,  "tag": "GROUP_OBJ", "id": -1, "perms": {"READ": true,  "WRITE": true,  "EXECUTE": true}},
+  {"default": true,  "tag": "USER",      "id": $B, "perms": {"READ": true,  "WRITE": false, "EXECUTE": true}},
+  {"default": true,  "tag": "MASK",      "id": -1, "perms": {"READ": true,  "WRITE": true,  "EXECUTE": true}},
+  {"default": true,  "tag": "OTHER",     "id": -1, "perms": {"READ": false, "WRITE": false, "EXECUTE": false}}
+]}
+EOF
+)"
+done
+```
+The database is on `truenas-nfs-no-backup`; its nightly `pg_dump` lands on `nextcloud--nextcloud-db-dump` before the
+snapshot (restore steps in `k8s-prod/apps/nextcloud/db-dump.yaml`).
 
 ## Restore
 As in [rsync.md](rsync.md#restore), then restore the owner of each PVC directory before the pod starts again, e.g.

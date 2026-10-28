@@ -160,6 +160,17 @@
       "dependencyDashboardApproval": true
     },
     {
+      "description": "Nextcloud cannot skip major versions: upgrade one major at a time (image and chart together), then approve the next on the Dependency Dashboard",
+      "matchPackageNames": [
+        "docker.io/library/nextcloud",
+        "nextcloud"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "dependencyDashboardApproval": true
+    },
+    {
       "matchPackageNames": [
         "plexinc/pms-docker"
       ],

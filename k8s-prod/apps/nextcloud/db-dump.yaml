@@ -1,0 +1,54 @@
+# Nightly backup: pg_dump writes the database to the backed-up nextcloud-db-dump PVC (TrueNAS:
+# /mnt/hdd/general/k8s-prod/nextcloud--nextcloud-db-dump), which the TrueNAS snapshot and rsync must run after.
+# Restore: copy back the nextcloud-data and nextcloud-html directories and 'chown -R 33:33' them, 'pg_restore --no-owner
+# --role=app -d <uri> nextcloud.dump' into an empty CNPG Cluster, then run 'occ maintenance:data-fingerprint' and
+# 'occ files:scan --all' so files newer than the dump are picked up.
+# https://docs.nextcloud.com/server/latest/admin_manual/maintenance/restore.html
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nextcloud-db-dump
+  namespace: nextcloud
+spec:
+  schedule: '0 1 * * *'
+  timeZone: 'Europe/Zurich'
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 3600
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          restartPolicy: Never
+          securityContext:
+            runAsUser: 3003
+            runAsGroup: 3003
+            fsGroup: 3003
+            fsGroupChangePolicy: OnRootMismatch
+          containers:
+            - name: dump
+              image: ghcr.io/cloudnative-pg/postgresql:18.6-minimal-trixie@sha256:64abc98a4387361afd6821a3a99f975763bbd87bbdde9449e75ad6002528a318
+              # Write to a temporary file first, so a failed dump never replaces the last good one.
+              command:
+                - sh
+                - -c
+                - pg_dump --dbname="$DB_URI" --format=custom --file=/dump/nextcloud.dump.tmp && mv /dump/nextcloud.dump.tmp /dump/nextcloud.dump
+              env:
+                - name: DB_URI
+                  valueFrom:
+                    secretKeyRef:
+                      name: nextcloud-database-app
+                      key: uri
+              volumeMounts:
+                - name: dump
+                  mountPath: /dump
+              resources:
+                requests:
+                  cpu: '50m'
+                  memory: '64Mi'
+                limits:
+                  memory: '256Mi'
+          volumes:
+            - name: dump
+              persistentVolumeClaim:
+                claimName: nextcloud-db-dump

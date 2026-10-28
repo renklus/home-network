@@ -1,0 +1,50 @@
+# Storage classes: docs/truenas-backup.md. All three are backed up; the rsync user needs the POSIX ACL described there
+# to read the data and html directories, which Nextcloud keeps at 0770.
+# The user files (TrueNAS: /mnt/hdd/general/k8s-prod/nextcloud--nextcloud-data)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nextcloud-data
+  namespace: nextcloud
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: truenas-nfs
+  resources:
+    requests:
+      storage: 500Gi
+---
+# /var/www/html: the code (copied from the image on start), custom_apps and config/config.php, whose instanceid,
+# secret and passwordsalt a restore needs.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nextcloud-html
+  namespace: nextcloud
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: truenas-nfs
+  resources:
+    requests:
+      storage: 10Gi
+---
+# Nightly database dump (db-dump.yaml)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nextcloud-db-dump
+  namespace: nextcloud
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: truenas-nfs
+  resources:
+    requests:
+      storage: 10Gi
