@@ -59,10 +59,6 @@ When adding a PVC on `truenas-nfs`, check that the backup user can read it. An a
 `0600` files (like Postgres) is skipped by rsync (exit code 23); put such data on `truenas-nfs-no-backup` with its own
 backup instead.
 
-Open: OpenCloud (`opencloud--opencloud-data`) keeps files, metadata and its config with internal secrets in one PVC.
-Check its file modes with `ls -ln` after the first upload; if it writes `0600`/`0700`, the rsync user skips them and
-the task needs to run as root (or OpenCloud needs its own backup).
-
 ## Restore
 As in [rsync.md](rsync.md#restore), then restore the owner of each PVC directory before the pod starts again, e.g.
 for Immich (check the UID/GID on the source with `ls -ln` first):
