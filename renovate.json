@@ -103,7 +103,9 @@
   "ignorePaths": [
     "k8s-old1/**",
     "k8s-dmz/**",
-    "k8s/**"
+    "k8s/**",
+    "images/paperless-backup/**",
+    ".github/workflows/publish-paperless-backup.yml"
   ],
   "packageRules": [
     {
