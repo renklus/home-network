@@ -3,5 +3,5 @@ kind: Namespace
 metadata:
   name: immich
   annotations:
-    # Keep the namespace when the immich app is delete so the PVC is not removed.
+    # Keep the namespace when the immich app is delete so the CNPG cluster is not removed.
     argocd.argoproj.io/sync-options: Prune=false,Delete=false
