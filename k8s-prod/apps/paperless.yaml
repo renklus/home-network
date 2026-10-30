@@ -1,7 +1,7 @@
-# The 'paperless' namespace (paperless/namespaces.yaml) and its document PVCs have 'Prune=false,Delete=false', so deleting
-# this Application keeps them. The finalizer below still deletes the CNPG Cluster (paperless/postgres.yaml), whose PVC
-# CNPG then deletes; its storage class uses reclaimPolicy 'Retain', and the nightly export (paperless/export.yaml) holds
-# a full copy of the database.
+# The 'paperless' namespace (paperless/namespaces.yaml) and the CNPG Cluster (paperless/postgres.yaml) have
+# 'Prune=false,Delete=false', so deleting this Application keeps the database. The finalizer below deletes everything
+# else, including the document PVCs: their storage classes (csi-nfs/storage-classes.yaml) use reclaimPolicy 'Retain'
+# and a per-PVC subdir, so the documents stay on TrueNAS and recreated PVCs find them again.
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:

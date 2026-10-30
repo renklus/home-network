@@ -6,8 +6,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: paperless-media
   namespace: paperless
-  annotations:
-    argocd.argoproj.io/sync-options: Prune=false,Delete=false
 spec:
   accessModes:
     - ReadWriteMany
@@ -36,8 +34,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: paperless-consume
   namespace: paperless
-  annotations:
-    argocd.argoproj.io/sync-options: Prune=false,Delete=false
 spec:
   accessModes:
     - ReadWriteMany
@@ -51,8 +47,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: paperless-export
   namespace: paperless
-  annotations:
-    argocd.argoproj.io/sync-options: Prune=false,Delete=false
 spec:
   accessModes:
     - ReadWriteMany

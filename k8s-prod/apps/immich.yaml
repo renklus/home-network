@@ -1,5 +1,7 @@
-# The 'immich' namespace, the 'immich-media' PVC and the CNPG Cluster (immich/) have 'Prune=false,Delete=false',
-# so deleting this Application keeps the photos and the database. The finalizer below deletes everything else.
+# The 'immich' namespace and the CNPG Cluster (immich/) have 'Prune=false,Delete=false', so deleting this Application
+# keeps the database. The finalizer below deletes everything else, including the 'immich-media' PVC: its storage class
+# (csi-nfs/storage-classes.yaml) uses reclaimPolicy 'Retain' and a per-PVC subdir, so the photos stay on TrueNAS and a
+# recreated PVC finds them again.
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
