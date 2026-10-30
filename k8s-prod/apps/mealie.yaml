@@ -1,0 +1,31 @@
+# The 'mealie' namespace and the CNPG Cluster (mealie/) have 'Prune=false,Delete=false', so deleting this Application
+# keeps the database. The finalizer below deletes everything else, including the 'mealie' PVCs: its storage class
+# (csi-nfs/storage-classes.yaml) uses reclaimPolicy 'Retain' and a per-PVC subdir, so the data stays on TrueNAS and a
+# recreated PVC finds it again.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mealie
+  namespace: argocd
+  annotations:
+    # after the CNPG operator (postgres-cnpg.yaml, wave 1), whose CRDs the database Cluster needs
+    argocd.argoproj.io/sync-wave: "2"
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+  - path: k8s-prod/apps/mealie
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  project: prod-cluster
+  destination:
+    namespace: mealie
+    name: production
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true

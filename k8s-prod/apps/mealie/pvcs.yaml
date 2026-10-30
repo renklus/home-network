@@ -1,0 +1,27 @@
+# Recipe images, uploads and Mealie's own (manual) backups.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mealie-data
+  namespace: mealie
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: truenas-nfs
+  resources:
+    requests:
+      storage: 5Gi
+---
+# Nightly database dump (backup.yaml)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mealie-backup
+  namespace: mealie
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: truenas-nfs
+  resources:
+    requests:
+      storage: 1Gi

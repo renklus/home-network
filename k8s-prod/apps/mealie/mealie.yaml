@@ -1,0 +1,119 @@
+# https://docs.mealie.io/documentation/getting-started/installation/backend-config/
+# On first start, log in with changeme@example.com / MyPassword and change both right away.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mealie
+  namespace: mealie
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate # never run two instances (migrations) at once
+  selector:
+    matchLabels:
+      app: mealie
+  template:
+    metadata:
+      labels:
+        app: mealie
+    spec:
+      # ServiceLinks would set MEALIE_* variables from the service named 'mealie'.
+      enableServiceLinks: false
+      # 911 is the image's default PUID: run.sh then skips its root-only usermod, 'chown -R /app' and gosu.
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 911
+        runAsGroup: 911
+        fsGroup: 911
+        fsGroupChangePolicy: OnRootMismatch
+      containers:
+        - name: mealie
+          image: ghcr.io/mealie-recipes/mealie:v3.29.0@sha256:78eb28b8776d0bad40c5e605c72b3f4f5976793e491558c7dcbdfc04c835d4bc
+          ports:
+            - name: http
+              containerPort: 9000
+          env:
+            - name: BASE_URL
+              value: https://mealie.ingress.prod.k8s.renklus.ch
+            - name: TZ
+              value: Europe/Zurich
+            # Database from postgres.yaml; the password comes from the Secret CNPG generates
+            - name: DB_ENGINE
+              value: postgres
+            - name: POSTGRES_SERVER
+              value: mealie-database-rw
+            - name: POSTGRES_PORT
+              value: '5432'
+            - name: POSTGRES_DB
+              value: app
+            - name: POSTGRES_USER
+              value: app
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mealie-database-app
+                  key: password
+            - name: DAILY_SCHEDULE_TIME
+              value: '02:00'
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+          resources:
+            requests:
+              cpu: '50m'
+              memory: '512Mi'
+            limits:
+              memory: '1Gi'
+          # same endpoint as the image's own healthcheck
+          startupProbe:
+            httpGet:
+              path: /api/app/about
+              port: http
+            failureThreshold: 60 # database migrations run before the webserver starts, e.g. on major upgrades
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/app/about
+              port: http
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: mealie-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mealie
+  namespace: mealie
+spec:
+  selector:
+    app: mealie
+  ports: # comes from ingress, goes to container
+    - name: http
+      port: 9000
+      targetPort: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mealie
+  namespace: mealie
+  annotations:
+    cert-manager.io/cluster-issuer: 'letsencrypt-shortlived'
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: mealie.ingress.prod.k8s.renklus.ch
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mealie
+                port:
+                  name: http
+  tls:
+    - hosts:
+        - mealie.ingress.prod.k8s.renklus.ch
+      secretName: mealie-tls

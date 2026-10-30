@@ -9,7 +9,7 @@ Each PVC gets the subdirectory `<ns>--<pvc>` on the class's share.
 | Class | Dataset | Backup | reclaimPolicy | Use for |
 |---|---|---|---|---|
 | `truenas-nfs` | `hdd/general/k8s-prod` | yes | Retain | data that exists nowhere else (photos) |
-| `truenas-nfs-no-backup` | `hdd/general/k8s-prod-no-backup` | no | Retain | data with its own backup (the CNPG database: Immich's dump lives on the media PVC) |
+| `truenas-nfs-no-backup` | `hdd/general/k8s-prod-no-backup` | no | Retain | data with its own backup (the CNPG databases: Immich's dump lives on the media PVC, Mealie's on `mealie-backup`) |
 | `truenas-nfs-temp` | `hdd/general/k8s-prod-no-backup` | no | Delete | caches that can be rebuilt (ML model cache, Valkey job queues) |
 
 Each class has a `-soft` variant. `hard` blocks I/O until the NFS server is back; `soft` returns `EIO` after a timeout,
@@ -43,8 +43,9 @@ Check after the first PVC exists: `ls -ln` shows the same numbers on TrueNAS and
 
 ## Snapshot before rsync
 rsync reads from a ZFS snapshot of `hdd/general/k8s-prod` instead of the live dataset, so all files are from the same
-moment. The CNPG database is on `k8s-prod-no-backup` and not part of it; its backup is Immich's own database dump
-(daily by default) on the media PVC.
+moment. The CNPG databases are on `k8s-prod-no-backup` and not part of it; their backups are Immich's own database
+dump (daily by default) on the media PVC and Mealie's nightly `pg_dump` (`k8s-prod/apps/mealie/backup.yaml`) on the
+`mealie-backup` PVC.
 
 Snapshot cron job (`snapshot-manager`, `zfs allow` on `hdd/general/k8s-prod`) as in
 [rsync.md](rsync.md#snapshot-before-rsync).

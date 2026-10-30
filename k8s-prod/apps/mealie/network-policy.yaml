@@ -1,0 +1,44 @@
+# Mealie fetches recipes and images from arbitrary user-supplied URLs, so it may reach the public internet but nothing
+# on the LAN or in the cluster except DNS and its own database. Enforced by k3s' embedded network policy controller.
+# NetworkPolicies can't match hostnames: anything reachable through a public IP (e.g. the router's own WAN address)
+# is still allowed.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mealie-egress
+  namespace: mealie
+spec:
+  podSelector:
+    matchLabels:
+      app: mealie
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    - to:
+        - podSelector:
+            matchLabels:
+              cnpg.io/cluster: mealie-database
+      ports:
+        - protocol: TCP
+          port: 5432
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except:
+              - 10.0.0.0/8 # LAN, pod and service CIDRs
+              - 172.16.0.0/12
+              - 192.168.0.0/16
+              - 100.64.0.0/10 # carrier-grade NAT, used by some VPNs
+              - 169.254.0.0/16 # link-local
