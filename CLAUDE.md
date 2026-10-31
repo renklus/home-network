@@ -33,7 +33,8 @@ GitOps configuration for a home-lab Kubernetes setup, deployed by Argo CD from `
 **Conventions every Application follows:**
 - `syncOptions: CreateNamespace=false` and `ServerSideApply=true`. Namespaces are declared explicitly in `foo/namespaces.yaml` (or inline). One comment explains why.
 - Explicit `project` is required: the `default` AppProject is locked down in `k8s-rancher/apps/argocd/projects.yaml`. `prod-cluster` blocks `Application` resources and the `argocd` namespace.
-- Finalizer choice is deliberate: `resources-finalizer.argocd.argoproj.io` cascades deletion; it is intentionally omitted on `argo-cd`, `app-of-apps`, `app-of-prod`, `no-auto-delete` (which holds PVCs like the immich media claim) and `postgres` (the CNPG operator; deleting its CRDs would delete every database).
+- Finalizer choice is deliberate: `resources-finalizer.argocd.argoproj.io` cascades deletion; it is intentionally omitted on `argo-cd`, `app-of-apps`, `app-of-prod` and `postgres` (the CNPG operator; deleting its CRDs would delete every database).
+- `argocd.argoproj.io/sync-options: Prune=false,Delete=false` is reserved for what a cascade must not delete: CNPG Clusters and their namespaces (a new Cluster does not adopt leftover data; deleting the namespace would delete the Cluster despite its own annotation), Rancher Clusters and their `fleet-*` namespaces, and k3s-owned objects this repo only patches (Traefik Service, CoreDNS Deployment). PVCs don't need it: the data storage classes use `reclaimPolicy: Retain` with a per-PVC subdir, so a recreated PVC finds its data again.
 - Helm config uses `helm.parameters` for scalar settings and `helm.valuesObject` for image pins.
 
 **Image pinning and Renovate.** Images are pinned as `repository: '...'` + `tag: 'vX.Y.Z@sha256:...'` with single quotes, and chart versions in `targetRevision: 'x.y.z'`
