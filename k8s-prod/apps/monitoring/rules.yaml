@@ -1,0 +1,48 @@
+# Alert rules that are not part of the chart's default rules, for the monitoring itself and for apps that only run in the
+# rancher cluster (rules are only evaluated here). Rules of prod apps live next to the app, e.g. cert-manager/rules.yaml.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: home-network
+  namespace: monitoring
+spec:
+  groups:
+    - name: remote-clusters
+      rules:
+        # Without this, a rancher cluster that is down or a broken remote write would raise no alert at all:
+        # the default rules only fire on series that exist.
+        - alert: ClusterMetricsMissing
+          expr: absent(up{cluster="rancher"})
+          for: 15m
+          labels:
+            severity: critical
+          annotations:
+            summary: 'No metrics from the rancher cluster'
+            description: 'The monitoring agent in the rancher cluster (k8s-rancher/apps/monitoring-agent.yaml) has not remote-written any metrics for 15 minutes.'
+    # Argo CD runs in the rancher cluster and manages the Applications of both clusters
+    - name: argocd
+      rules:
+        - alert: ArgoCDAppUnhealthy
+          expr: argocd_app_info{health_status!~"Healthy|Progressing"} == 1
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Argo CD app {{ $labels.name }} is {{ $labels.health_status }}'
+            description: 'Check the app in Argo CD (argo.rancher.k8s.renklus.ch).'
+        - alert: ArgoCDAppStuckProgressing
+          expr: argocd_app_info{health_status="Progressing"} == 1
+          for: 1h
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Argo CD app {{ $labels.name }} has been Progressing for an hour'
+            description: 'A rollout or sync wave is stuck. Check the app in Argo CD (argo.rancher.k8s.renklus.ch).'
+        - alert: ArgoCDAppOutOfSync
+          expr: argocd_app_info{sync_status!="Synced"} == 1
+          for: 30m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Argo CD app {{ $labels.name }} is {{ $labels.sync_status }}'
+            description: 'Automated sync could not apply the state from git. Check the last sync result in Argo CD.'

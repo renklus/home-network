@@ -11,6 +11,12 @@ spec:
     chart: 'metallb'
     targetRevision: '0.16.1'
     helm:
+      parameters:
+        - name: 'prometheus.serviceMonitor.enabled'
+          value: 'true'
+        # The chart's extra Role for Prometheus isn't needed: kube-prometheus-stack's Prometheus reads targets cluster-wide.
+        - name: 'prometheus.rbacPrometheus'
+          value: 'false'
       valuesObject:
         speaker:
           image:

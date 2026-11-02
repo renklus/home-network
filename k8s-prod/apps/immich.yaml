@@ -21,6 +21,8 @@ spec:
       parameters:
         - name: 'immich.persistence.library.existingClaim'
           value: 'immich-media'
+        - name: 'immich.metrics.enabled'
+          value: 'true'
         - name: 'valkey.enabled'
           value: 'true'
         - name: 'valkey.persistence.data.type'

@@ -11,6 +11,7 @@ resources:
   - paperless.yaml
   - flower.yaml
   - export.yaml
+  - rules.yaml
 configMapGenerator:
   - name: paperless-env
     namespace: paperless

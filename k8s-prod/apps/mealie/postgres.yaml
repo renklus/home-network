@@ -36,3 +36,21 @@ spec:
       memory: '256Mi'
     limits:
       memory: '256Mi'
+---
+# Metrics of the database instances, as CNPG recommends instead of the deprecated spec.monitoring.enablePodMonitor.
+# Alert rules for all CNPG Clusters: postgres-cnpg/rules.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: mealie-database
+  namespace: mealie
+spec:
+  selector:
+    matchLabels:
+      cnpg.io/cluster: mealie-database
+      cnpg.io/podRole: instance
+  # becomes the label 'cnpg_io_cluster', used by the rules to compare instances of the same Cluster
+  podTargetLabels:
+    - cnpg.io/cluster
+  podMetricsEndpoints:
+    - port: metrics

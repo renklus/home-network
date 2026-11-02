@@ -1,0 +1,29 @@
+# CRDs of the Prometheus operator (ServiceMonitor, PodMonitor, PrometheusRule, ...) as their own app, so every app can ship
+# its monitors without a sync wave (k8s-prod/apps/prometheus-operator-crds.yaml explains why they aren't part of the chart).
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-operator-crds-rancher
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+  - repoURL: 'https://prometheus-community.github.io/helm-charts'
+    chart: 'prometheus-operator-crds'
+    # must match the operator version of kube-prometheus-stack in monitoring-agent.yaml
+    targetRevision: '32.0.2'
+  project: rancher-cluster
+  destination:
+    namespace: kube-system
+    name: in-cluster
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true

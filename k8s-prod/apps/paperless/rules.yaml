@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: paperless
+  namespace: paperless
+spec:
+  groups:
+    - name: paperless
+      rules:
+        # Most Celery tasks are document consumptions, so a failed task usually means a document wasn't imported.
+        - alert: PaperlessTaskFailed
+          expr: sum by (cluster, namespace, task) (increase(flower_events_total{namespace="paperless", type="task-failed"}[1h])) > 0
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Paperless task {{ $labels.task }} failed in the last hour'
+            description: 'Check the file tasks in the Paperless UI or Flower (paperless-flower.ingress.prod.k8s.renklus.ch).'

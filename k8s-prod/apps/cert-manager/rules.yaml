@@ -1,0 +1,27 @@
+# Rules are only evaluated in prod; they cover the certificates of both clusters ('cluster' label).
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cert-manager
+  namespace: cert-manager
+spec:
+  groups:
+    - name: cert-manager
+      rules:
+        - alert: CertificateNotReady
+          expr: max by (cluster, namespace, name) (certmanager_certificate_ready_status{condition!="True"}) == 1
+          for: 1h
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Certificate {{ $labels.namespace }}/{{ $labels.name }} in {{ $labels.cluster }} is not ready'
+            description: 'Check the Certificate, its CertificateRequest and the ACME Challenge (HTTP-01 through HAProxy).'
+        # The shortlived certificates live about 6 days and renew with about 2 days left, so 1 day means renewal has failed for a day.
+        - alert: CertificateExpiresSoon
+          expr: max by (cluster, namespace, name) (certmanager_certificate_expiration_timestamp_seconds - time()) < 86400
+          for: 15m
+          labels:
+            severity: critical
+          annotations:
+            summary: 'Certificate {{ $labels.namespace }}/{{ $labels.name }} in {{ $labels.cluster }} expires in less than a day'
+            description: 'Renewal has failed. Check the Certificate, its CertificateRequest and the ACME Challenge.'

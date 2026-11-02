@@ -1,0 +1,20 @@
+# Rules are only evaluated in prod; they cover the nodes of both clusters ('cluster' label).
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: kured
+  namespace: kured
+spec:
+  groups:
+    - name: kured
+      rules:
+        # kured reboots within its nightly window, so a node normally reboots the same night. Two days means the reboot is
+        # stuck, e.g. behind a drain that keeps failing or another node holding the lock.
+        - alert: KuredRebootPending
+          expr: max by (cluster, node) (kured_reboot_required) == 1
+          for: 2d
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Node {{ $labels.node }} in {{ $labels.cluster }} has been waiting 2 days for a reboot'
+            description: 'Security updates are not active until the reboot. Check the kured logs on that node.'

@@ -21,6 +21,8 @@ spec:
           value: 'http://haproxy.haproxy.rancher.k8s.renklus.ch:8000'
         - name: 'no_proxy'
           value: '127.0.0.1\,localhost\,.svc\,.cluster.local'
+        - name: 'prometheus.servicemonitor.enabled'
+          value: 'true'
         - name: 'resources.requests.cpu'
           value: '10m'
         - name: 'resources.requests.memory'

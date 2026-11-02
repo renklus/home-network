@@ -25,6 +25,8 @@ spec:
         # retry failed issuances (e.g. during cluster bootstrap) after 10m instead of 1h. Still doubles per failure up to the 32h max
         - name: 'config.certificateRequestMinimumBackoffDuration'
           value: '10m'
+        - name: 'prometheus.servicemonitor.enabled'
+          value: 'true'
         - name: 'resources.requests.cpu'
           value: '10m'
         - name: 'resources.requests.memory'

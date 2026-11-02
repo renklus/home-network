@@ -131,6 +131,17 @@
       "groupName": "{{{replace 'k8s.*\\/(?<FileName>[^/]*)\\.yaml' 'app $<FileName> (regex-match)' packageFile}}}"
     },
     {
+      "description": "prometheus-operator-crds must match the operator version of kube-prometheus-stack, on both clusters",
+      "matchDatasources": [
+        "helm"
+      ],
+      "matchPackageNames": [
+        "kube-prometheus-stack",
+        "prometheus-operator-crds"
+      ],
+      "groupName": "prometheus-operator"
+    },
+    {
       "description": "Give new releases for the prod cluster a day to surface regressions or get pulled before updating",
       "matchFileNames": [
         "k8s-prod/**"

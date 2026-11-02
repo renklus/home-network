@@ -1,0 +1,167 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring
+  namespace: argocd
+  annotations:
+    # after metallb and cert-manager-prod (wave 0): the Ingresses need Traefik's LoadBalancer IP and their certificates
+    argocd.argoproj.io/sync-wave: "1"
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+  - repoURL: 'https://prometheus-community.github.io/helm-charts'
+    chart: 'kube-prometheus-stack'
+    targetRevision: '92.17.0'
+    helm:
+      parameters:
+        # CRDs come from prometheus-operator-crds.yaml
+        - name: 'crds.enabled'
+          value: 'false'
+        # k3s runs these components inside its own process with metrics bound to localhost, and etcd is not a pod.
+        # Disabling them also disables their rules, which would otherwise report them as down forever.
+        - name: 'kubeControllerManager.enabled'
+          value: 'false'
+        - name: 'kubeScheduler.enabled'
+          value: 'false'
+        - name: 'kubeProxy.enabled'
+          value: 'false'
+        - name: 'kubeEtcd.enabled'
+          value: 'false'
+        - name: 'grafana.sidecar.dashboards.multicluster.global.enabled'
+          value: 'true'
+        # By default (true), Prometheus only selects monitors/rules labelled 'release: <this Helm release>', so every app would
+        # need that label. false: select all of them in all namespaces.
+        - name: 'prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues'
+          value: 'false'
+        - name: 'prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues'
+          value: 'false'
+        - name: 'prometheus.prometheusSpec.ruleSelectorNilUsesHelmValues'
+          value: 'false'
+        - name: 'prometheus.prometheusSpec.probeSelectorNilUsesHelmValues'
+          value: 'false'
+        - name: 'prometheus.prometheusSpec.scrapeConfigSelectorNilUsesHelmValues'
+          value: 'false'
+        # Grafana loads the dashboard ConfigMaps that charts ship next to their app (e.g. CNPG), from all namespaces.
+        # ConfigMaps only: the default also reads Secrets labelled as dashboards, cluster-wide.
+        - name: 'grafana.sidecar.dashboards.searchNamespace'
+          value: 'ALL'
+        - name: 'grafana.sidecar.dashboards.resource'
+          value: 'configmap'
+        - name: 'prometheus.prometheusSpec.enableRemoteWriteReceiver'
+          value: 'true'
+        - name: 'prometheus.prometheusSpec.retention'
+          value: '15d'
+        - name: 'prometheus.prometheusSpec.retentionSize'
+          value: '15GB'
+        # skip kubelet's recursive chown of the NFS volume on every pod start
+        - name: 'prometheus.prometheusSpec.securityContext.fsGroupChangePolicy'
+          value: 'OnRootMismatch'
+        # Created manually, the repo is public (docs/monitoring.md). Dashboards and datasources are provisioned, so Grafana needs no persistence.
+        - name: 'grafana.admin.existingSecret'
+          value: 'grafana-admin'
+        - name: 'prometheus.prometheusSpec.resources.requests.cpu'
+          value: '200m'
+        - name: 'prometheus.prometheusSpec.resources.requests.memory'
+          value: '1536Mi'
+        - name: 'prometheus.prometheusSpec.resources.limits.memory'
+          value: '3Gi'
+        - name: 'alertmanager.alertmanagerSpec.resources.requests.cpu'
+          value: '10m'
+        - name: 'alertmanager.alertmanagerSpec.resources.requests.memory'
+          value: '64Mi'
+        - name: 'alertmanager.alertmanagerSpec.resources.limits.memory'
+          value: '256Mi'
+        - name: 'prometheusOperator.resources.requests.cpu'
+          value: '10m'
+        - name: 'prometheusOperator.resources.requests.memory'
+          value: '64Mi'
+        - name: 'prometheusOperator.resources.limits.memory'
+          value: '256Mi'
+        - name: 'kube-state-metrics.resources.requests.cpu'
+          value: '10m'
+        - name: 'kube-state-metrics.resources.requests.memory'
+          value: '64Mi'
+        - name: 'kube-state-metrics.resources.limits.memory'
+          value: '256Mi'
+        - name: 'prometheus-node-exporter.resources.requests.cpu'
+          value: '10m'
+        - name: 'prometheus-node-exporter.resources.requests.memory'
+          value: '32Mi'
+        - name: 'prometheus-node-exporter.resources.limits.memory'
+          value: '128Mi'
+        - name: 'grafana.resources.requests.cpu'
+          value: '10m'
+        - name: 'grafana.resources.requests.memory'
+          value: '256Mi'
+        - name: 'grafana.resources.limits.memory'
+          value: '512Mi'
+        # no need to specify image tags because the defaults follow the chart version. Renovate can just update the chart
+      valuesObject:
+        defaultRules:
+          # Keep the series of both clusters apart in the default recording and alerting rules
+          additionalAggregationLabels: ['cluster']
+        prometheus:
+          prometheusSpec:
+            scrapeClasses:
+              - name: 'cluster-label'
+                default: true
+                relabelings:
+                  - targetLabel: 'cluster'
+                    replacement: 'production'
+            # Prometheus doesn't officially support its TSDB on NFS. Data corruption is acceptable. The metrics are disposable, so a temp volume is accepted.
+            storageSpec:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: 'truenas-nfs-temp'
+                  accessModes: ['ReadWriteOnce']
+                  resources:
+                    requests:
+                      storage: '20Gi'
+          ingress:
+            enabled: true
+            ingressClassName: 'traefik'
+            annotations:
+              cert-manager.io/cluster-issuer: 'letsencrypt-shortlived'
+            hosts: ['prometheus.ingress.prod.k8s.renklus.ch']
+            tls:
+              - hosts: ['prometheus.ingress.prod.k8s.renklus.ch']
+                secretName: 'prometheus-tls'
+        # The chart's default config routes every alert to the 'null' receiver: alerts are only shown in the Alertmanager UI and Grafana.
+        # To get notified, add a receiver here whose credential is read from a manually created Secret (alertmanagerSpec.secrets,
+        # mounted at /etc/alertmanager/secrets/<name>/) through a *_file setting, and point the route at it (docs/monitoring.md).
+        alertmanager:
+          ingress:
+            enabled: true
+            ingressClassName: 'traefik'
+            annotations:
+              cert-manager.io/cluster-issuer: 'letsencrypt-shortlived'
+            hosts: ['alertmanager.ingress.prod.k8s.renklus.ch']
+            tls:
+              - hosts: ['alertmanager.ingress.prod.k8s.renklus.ch']
+                secretName: 'alertmanager-tls'
+        grafana:
+          ingress:
+            enabled: true
+            ingressClassName: 'traefik'
+            annotations:
+              cert-manager.io/cluster-issuer: 'letsencrypt-shortlived'
+            hosts: ['grafana.ingress.prod.k8s.renklus.ch']
+            tls:
+              - hosts: ['grafana.ingress.prod.k8s.renklus.ch']
+                secretName: 'grafana-tls'
+  - path: k8s-prod/apps/monitoring
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  project: prod-cluster
+  destination:
+    namespace: monitoring
+    name: production
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true

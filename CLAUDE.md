@@ -4,13 +4,14 @@ GitOps configuration for a home-lab Kubernetes setup, deployed by Argo CD from `
 
 ## Active vs. legacy directories
 - `k8s-rancher/apps/` — **active**. The management ("rancher") cluster: Argo CD, Rancher, cert-manager, MetalLB, HAProxy, CoreDNS customisation.
-- `k8s-prod/apps/` — **active**. Workloads for the Rancher-provisioned `prod` cluster (immich, paperless, mealie, CNPG Postgres, csi-nfs, MetalLB, system config).
+- `k8s-prod/apps/` — **active**. Workloads for the Rancher-provisioned `prod` cluster (immich, paperless, mealie, CNPG Postgres, csi-nfs, MetalLB, monitoring, system config).
 - `k8s/`, `k8s-dmz/`, `k8s-old1/` — older cluster setups, unmaintained and listed in Renovate's `ignorePaths`. Don't use them as patterns for new work, and don't add Renovate rules for them.
 - `images/` — Dockerfiles for small custom images, published by `.github/workflows/` (note the workflows reference `./container/images/...` paths and the `master` branch, which don't match the current layout).
 - `docs/cluster-bootstrap.md` — manual steps outside Argo CD: workstation setup, k3s install, LAN DNS/NAT and Cloudflare, the Argo CD bootstrap install, node joins.
 - `docs/truenas-backup.md` — TrueNAS dataset/NFS share behind the prod storage classes and its rsync backup to a Synology, with open steps (start here when asked what to do next on backups). `docs/rsync.md` is the general TrueNAS → Synology rsync (module mode) and snapshot setup.
 - `docs/paperless-scanner-smb.md` — TrueNAS SMB share and POSIX ACL that let the scanner (UID 3004) write into Paperless' consume folder, used by the pods as the shared k8s user 3003.
 - `docs/k8s-rancher-cluster-connection.md` — how Argo CD on the rancher cluster authenticates to Rancher-managed clusters via the Rancher auth proxy.
+- `docs/monitoring.md` — kube-prometheus-stack in prod plus the rancher agent that remote-writes to it: URLs, the manual Grafana admin Secret, how to add an alert receiver later.
 - `docs/resource-requests.md` — commands to see current container usage and configured requests/limits/QoS, and how to size them.
 
 ## Working in this repository
@@ -29,6 +30,14 @@ GitOps configuration for a home-lab Kubernetes setup, deployed by Argo CD from `
 5. `k8s-rancher/apps/argocd/values.yaml` holds the Argo CD values shared by the bootstrap install (command in `docs/cluster-bootstrap.md`) and `argocd.yaml`. It includes the Application health check that makes sync waves between Applications wait (haproxy 0 → cert-manager 1 → apps with production certificates 2). The staging `demo-certificate` in cert-manager acts as a canary for the public HTTP-01 path.
 
 **Per-app file layout.** An app `foo` is `foo.yaml` (the Application) plus an optional `foo/` subdirectory with extra manifests. Helm-based apps use multiple `sources`: the chart first, then `path: <cluster>/apps/foo` from this repo. Resources that depend on a chart's CRDs (e.g. MetalLB `IPAddressPool`, cert-manager `ClusterIssuer`) must live in that app's subdirectory, not at the top level, so they sync with the chart.
+
+**Monitoring** (`docs/monitoring.md` has the per-app table):
+- An app exposing metrics ships its own ServiceMonitor/PodMonitor: the chart's toggle, or a manifest in its subdirectory.
+- The CRDs come from `prometheus-operator-crds.yaml` (wave -1) on each cluster, so monitors need no sync wave. Keep them out of kube-prometheus-stack (`crds.enabled=false`).
+- Dashboards come from the app's chart where it has one.
+- Rules are only evaluated in prod: put them in the prod app's directory, covering both clusters via the `cluster` label (`production`/`rancher`). Rules for rancher-only apps go in `k8s-prod/apps/monitoring/rules.yaml`.
+- Monitors for k3s-owned components (Traefik) are PodMonitors, never HelmChartConfig values. On rancher they go in `monitoring-agent/`, because app-of-apps dry-runs its top-level files before the CRDs exist.
+- Don't enable ServiceMonitors in `argocd/values.yaml`: the bootstrap install runs before the CRDs exist.
 
 **Conventions every Application follows:**
 - `syncOptions: CreateNamespace=false` and `ServerSideApply=true`. Namespaces are declared explicitly in `foo/namespaces.yaml` (or inline). One comment explains why.

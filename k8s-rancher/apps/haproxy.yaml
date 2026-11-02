@@ -45,6 +45,13 @@ spec:
             stats uri /
             stats show-modules
 
+          # HAProxy's built-in Prometheus exporter, scraped through the chart's ServiceMonitor (port 'prometheus')
+          frontend prometheus
+            mode http
+            bind :8405
+            http-request use-service prometheus-exporter if { path /metrics }
+            http-request return status 404 content-type text/plain lf-string "not found"
+
           frontend incoming-http
             bind [::]:8000 v4v6
             acl allowed-path path_beg /.well-known/acme-challenge/
@@ -95,6 +102,9 @@ spec:
         containerPorts:
           http: 8000
           stat: 1024
+          prometheus: 8405
+        serviceMonitor:
+          enabled: true
   - path: k8s-rancher/apps/haproxy
     repoURL: 'https://github.com/renklus/home-network'
     targetRevision: HEAD

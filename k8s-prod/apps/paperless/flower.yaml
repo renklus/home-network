@@ -40,3 +40,18 @@ spec:
     - hosts:
         - paperless-flower.ingress.prod.k8s.renklus.ch
       secretName: paperless-flower-tls
+---
+# Flower's Celery metrics (failed tasks are mostly failed document consumptions; rule in rules.yaml). A PodMonitor, because
+# the Service has no labels to select it by. The scrape goes to the pod directly, so the ingress' basic auth doesn't apply.
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: paperless-flower
+  namespace: paperless
+spec:
+  selector:
+    matchLabels:
+      app: paperless
+  podMetricsEndpoints:
+    - port: flower
+      path: /metrics

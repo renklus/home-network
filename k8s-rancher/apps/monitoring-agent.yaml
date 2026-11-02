@@ -1,0 +1,102 @@
+# Prometheus in agent mode: scrapes this cluster and remote-writes everything to the Prometheus in the prod cluster
+# (k8s-prod/apps/monitoring.yaml), which evaluates the rules and runs Alertmanager and Grafana (docs/monitoring.md).
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring-agent
+  namespace: argocd
+  annotations:
+    # after the Prometheus operator CRDs (prometheus-operator-crds.yaml, wave -1)
+    argocd.argoproj.io/sync-wave: "0"
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+  - repoURL: 'https://prometheus-community.github.io/helm-charts'
+    chart: 'kube-prometheus-stack'
+    targetRevision: '92.17.0'
+    helm:
+      parameters:
+        # CRDs come from prometheus-operator-crds.yaml
+        - name: 'crds.enabled'
+          value: 'false'
+        - name: 'prometheus.agentMode'
+          value: 'true'
+        # Rules, Alertmanager and Grafana run in the prod cluster
+        - name: 'defaultRules.create'
+          value: 'false'
+        - name: 'alertmanager.enabled'
+          value: 'false'
+        - name: 'grafana.enabled'
+          value: 'false'
+        # k3s runs these components inside its own process with metrics bound to localhost, and etcd is not a pod.
+        - name: 'kubeControllerManager.enabled'
+          value: 'false'
+        - name: 'kubeScheduler.enabled'
+          value: 'false'
+        - name: 'kubeProxy.enabled'
+          value: 'false'
+        - name: 'kubeEtcd.enabled'
+          value: 'false'
+        # By default (true), Prometheus only selects monitors labelled 'release: <this Helm release>', so every app would
+        # need that label. false: select all of them in all namespaces.
+        - name: 'prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues'
+          value: 'false'
+        - name: 'prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues'
+          value: 'false'
+        - name: 'prometheus.prometheusSpec.probeSelectorNilUsesHelmValues'
+          value: 'false'
+        - name: 'prometheus.prometheusSpec.scrapeConfigSelectorNilUsesHelmValues'
+          value: 'false'
+        - name: 'prometheus.prometheusSpec.resources.requests.cpu'
+          value: '50m'
+        - name: 'prometheus.prometheusSpec.resources.requests.memory'
+          value: '256Mi'
+        - name: 'prometheus.prometheusSpec.resources.limits.memory'
+          value: '1Gi'
+        - name: 'prometheusOperator.resources.requests.cpu'
+          value: '10m'
+        - name: 'prometheusOperator.resources.requests.memory'
+          value: '64Mi'
+        - name: 'prometheusOperator.resources.limits.memory'
+          value: '256Mi'
+        - name: 'kube-state-metrics.resources.requests.cpu'
+          value: '10m'
+        - name: 'kube-state-metrics.resources.requests.memory'
+          value: '64Mi'
+        - name: 'kube-state-metrics.resources.limits.memory'
+          value: '256Mi'
+        - name: 'prometheus-node-exporter.resources.requests.cpu'
+          value: '10m'
+        - name: 'prometheus-node-exporter.resources.requests.memory'
+          value: '32Mi'
+        - name: 'prometheus-node-exporter.resources.limits.memory'
+          value: '128Mi'
+        # no need to specify image tags because the defaults follow the chart version. Renovate can just update the chart
+      valuesObject:
+        prometheus:
+          prometheusSpec:
+            scrapeClasses:
+              - name: 'cluster-label'
+                default: true
+                relabelings:
+                  - targetLabel: 'cluster'
+                    replacement: 'rancher'
+            # The ingress host resolves to the prod Traefik through the LAN DNS (docs/cluster-bootstrap.md, "External setup").
+            remoteWrite:
+              - url: 'https://prometheus.ingress.prod.k8s.renklus.ch/api/v1/write'
+  - path: k8s-rancher/apps/monitoring-agent
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  project: rancher-cluster
+  destination:
+    namespace: monitoring
+    name: in-cluster
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true

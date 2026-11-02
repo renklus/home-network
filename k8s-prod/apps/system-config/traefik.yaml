@@ -46,3 +46,18 @@ spec:
             # Timeouts are per entrypoint, so they apply to every ingress on this cluster.
             readTimeout: 600s
             idleTimeout: 600s
+---
+# k3s' Traefik serves Prometheus metrics on its 'metrics' port (9100). The monitor is defined here and not through the
+# HelmChartConfig: there, a missing ServiceMonitor CRD would fail k3s' whole Traefik install.
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+      app.kubernetes.io/instance: traefik-kube-system
+  podMetricsEndpoints:
+    - port: metrics

@@ -1,0 +1,30 @@
+# CRDs of the Prometheus operator (ServiceMonitor, PodMonitor, PrometheusRule, ...) as their own app, so every app can ship
+# its monitors without a sync wave. Inside kube-prometheus-stack (monitoring.yaml uses crds.enabled=false) they would wait
+# for its health, and its Ingresses only become healthy once MetalLB, itself an app with monitors, has given Traefik an IP.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-operator-crds-prod
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+  - repoURL: 'https://prometheus-community.github.io/helm-charts'
+    chart: 'prometheus-operator-crds'
+    # must match the operator version of kube-prometheus-stack in monitoring.yaml
+    targetRevision: '32.0.2'
+  project: prod-cluster
+  destination:
+    namespace: kube-system
+    name: production
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true

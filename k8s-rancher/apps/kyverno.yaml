@@ -23,6 +23,10 @@ spec:
           value: 'false'
         - name: 'cleanupController.enabled'
           value: 'false'
+        - name: 'admissionController.serviceMonitor.enabled'
+          value: 'true'
+        - name: 'backgroundController.serviceMonitor.enabled'
+          value: 'true'
         # no need to specify image tags because the default is same as chart version. Renovate can just update the chart
   - path: k8s-rancher/apps/kyverno
     repoURL: 'https://github.com/renklus/home-network'

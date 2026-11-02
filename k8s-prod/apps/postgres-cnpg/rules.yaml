@@ -1,0 +1,38 @@
+# Alert rules for every CNPG Cluster. Each Cluster's PodMonitor (e.g. immich/postgres.yaml) adds the label 'cnpg_io_cluster'.
+# Pods that aren't running or ready are already covered by the default KubePodNotReady/KubePodCrashLooping rules.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cnpg
+  namespace: cnpg-system
+spec:
+  groups:
+    - name: cnpg
+      rules:
+        - alert: CNPGInstanceDown
+          expr: cnpg_collector_up == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: 'Postgres instance {{ $labels.namespace }}/{{ $labels.pod }} is not responding'
+            description: 'The instance manager is running, but cannot query Postgres.'
+        # Synchronous replication needs a replica to confirm every commit (dataDurability: required), so missing replicas can block writes.
+        - alert: CNPGReplicaNotStreaming
+          expr: |
+            max by (cluster, namespace, cnpg_io_cluster) (cnpg_pg_replication_streaming_replicas)
+              < count by (cluster, namespace, cnpg_io_cluster) (cnpg_collector_up) - 1
+          for: 30m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Postgres {{ $labels.namespace }}/{{ $labels.cnpg_io_cluster }} has fewer streaming replicas than instances'
+            description: 'A replica is not streaming from the primary. Check the instance logs and `kubectl cnpg status`.'
+        - alert: CNPGReplicationLag
+          expr: max by (cluster, namespace, cnpg_io_cluster, pod) (cnpg_pg_replication_lag) > 300
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Postgres replica {{ $labels.namespace }}/{{ $labels.pod }} is more than 5 minutes behind'
+            description: 'The replica replays WAL too slowly; a failover to it would take long.'

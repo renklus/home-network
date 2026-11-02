@@ -15,6 +15,10 @@ spec:
     targetRevision: '0.29.1'
     helm:
       parameters:
+        - name: 'monitoring.podMonitorEnabled'
+          value: 'true'
+        - name: 'monitoring.grafanaDashboard.create'
+          value: 'true'
         - name: 'resources.requests.cpu'
           value: '10m'
         - name: 'resources.requests.memory'

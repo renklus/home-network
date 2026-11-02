@@ -32,6 +32,24 @@ spec:
           value: 'letsencrypt-shortlived'
         - name: 'server.certificate.additionalHosts[0]'
           value: 'argo-cd-argocd-server.argocd.rancher.k8s.renklus.ch'
+        # Metrics and ServiceMonitors here, not in values.yaml, so the bootstrap install stays minimal. The chart only renders the
+        # ServiceMonitors once the CRDs exist (prometheus-operator-crds.yaml).
+        - name: 'controller.metrics.enabled'
+          value: 'true'
+        - name: 'controller.metrics.serviceMonitor.enabled'
+          value: 'true'
+        - name: 'server.metrics.enabled'
+          value: 'true'
+        - name: 'server.metrics.serviceMonitor.enabled'
+          value: 'true'
+        - name: 'repoServer.metrics.enabled'
+          value: 'true'
+        - name: 'repoServer.metrics.serviceMonitor.enabled'
+          value: 'true'
+        - name: 'applicationSet.metrics.enabled'
+          value: 'true'
+        - name: 'applicationSet.metrics.serviceMonitor.enabled'
+          value: 'true'
       valuesObject:
         global:
           image:
