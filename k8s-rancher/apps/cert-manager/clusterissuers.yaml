@@ -71,7 +71,7 @@ spec:
 
   dnsNames:
     - canary-cert.ingress.rancher.k8s.renklus.ch
-    - canary-cert.rancher.k8s.renklus.ch
+#    - canary-cert.rancher.k8s.renklus.ch
 
   # Issuer references are always required.
   issuerRef:
