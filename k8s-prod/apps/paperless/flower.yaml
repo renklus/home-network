@@ -19,7 +19,7 @@ metadata:
   name: paperless-flower
   namespace: paperless
   annotations:
-    cert-manager.io/cluster-issuer: 'letsencrypt-shortlived'
+    cert-manager.io/cluster-issuer: 'letsencrypt-classic'
     # HTTPS only, so the password is never sent in plain text
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.middlewares: paperless-flower-auth@kubernetescrd
