@@ -34,6 +34,41 @@ spec:
           ingressClassName: traefik
 ---
 apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging-classic
+  annotations:
+    # after the chart (wave 0) is healthy, otherwise the cert-manager webhook rejects it on first sync
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  acme:
+    profile: classic
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-staging-classic-key
+    solvers:
+    - http01:
+        ingress:
+          ingressClassName: traefik
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-classic
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  acme:
+    profile: classic
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-classic-key
+    solvers:
+    - http01:
+        ingress:
+          ingressClassName: traefik
+---
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: canary-certificate
@@ -48,6 +83,6 @@ spec:
     - canary-cert.ingress.prod.k8s.renklus.ch
     - canary-cert.prod.k8s.renklus.ch
   issuerRef:
-    name: letsencrypt-staging-shortlived
+    name: letsencrypt-staging-classic
     kind: ClusterIssuer
     group: cert-manager.io
