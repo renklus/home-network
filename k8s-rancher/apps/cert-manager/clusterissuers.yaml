@@ -116,7 +116,7 @@ spec:
 
   # Issuer references are always required.
   issuerRef:
-    name: letsencrypt-staging-classic
+    name: letsencrypt-classic
     # We can reference ClusterIssuers by changing the kind here.
     # The default value is Issuer (i.e. a locally namespaced Issuer)
     kind: ClusterIssuer
