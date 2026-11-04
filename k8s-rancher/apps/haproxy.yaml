@@ -66,6 +66,7 @@ spec:
             use_backend ingress-prod if { req.hdr(host) -m end -i .prod.k8s.renklus.ch }
             use_backend testing if { req.hdr(host) -i haproxy.haproxy.rancher.k8s.renklus.ch:8000 }
             default_backend rejected
+            option httplog
 
           backend rejected
             http-request return status 404 content-type text/plain lf-string "not-found"
