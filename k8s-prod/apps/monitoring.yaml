@@ -122,7 +122,7 @@ spec:
             enabled: true
             ingressClassName: 'traefik'
             annotations:
-              cert-manager.io/cluster-issuer: 'letsencrypt-shortlived'
+              cert-manager.io/cluster-issuer: 'letsencrypt-classic'
             hosts: ['prometheus.ingress.prod.k8s.renklus.ch']
             tls:
               - hosts: ['prometheus.ingress.prod.k8s.renklus.ch']
@@ -135,7 +135,7 @@ spec:
             enabled: true
             ingressClassName: 'traefik'
             annotations:
-              cert-manager.io/cluster-issuer: 'letsencrypt-shortlived'
+              cert-manager.io/cluster-issuer: 'letsencrypt-classic'
             hosts: ['alertmanager.ingress.prod.k8s.renklus.ch']
             tls:
               - hosts: ['alertmanager.ingress.prod.k8s.renklus.ch']
@@ -145,7 +145,7 @@ spec:
             enabled: true
             ingressClassName: 'traefik'
             annotations:
-              cert-manager.io/cluster-issuer: 'letsencrypt-shortlived'
+              cert-manager.io/cluster-issuer: 'letsencrypt-classic'
             hosts: ['grafana.ingress.prod.k8s.renklus.ch']
             tls:
               - hosts: ['grafana.ingress.prod.k8s.renklus.ch']
