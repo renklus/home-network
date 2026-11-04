@@ -29,7 +29,7 @@ spec:
         - name: 'server.certificate.issuer.kind'
           value: 'ClusterIssuer'
         - name: 'server.certificate.issuer.name'
-          value: 'letsencrypt-shortlived'
+          value: 'letsencrypt-classic'
         - name: 'server.certificate.additionalHosts[0]'
           value: 'argo-cd-argocd-server.argocd.rancher.k8s.renklus.ch'
         # Metrics and ServiceMonitors here, not in values.yaml, so the bootstrap install stays minimal. The chart only renders the
