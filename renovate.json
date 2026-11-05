@@ -109,6 +109,7 @@
   ],
   "packageRules": [
     {
+      "description": "One PR per app and cluster. Same-named apps on both clusters would otherwise share a branch and PR title, and a merged PR for one cluster blocks the other's identical update",
       "matchFileNames": [
         "k8s-rancher/apps/*.yaml",
         "k8s-prod/apps/*.yaml"
@@ -118,7 +119,6 @@
         "kubernetes",
         "helm-values"
       ],
-      "description": "One PR per app and cluster. Same-named apps on both clusters would otherwise share a branch and PR title, and a merged PR for one cluster blocks the other's identical update",
       "groupName": "{{{replace 'k8s-(?<Cluster>[^/]+)\\/apps\\/(?<FileName>[^/]+)\\.yaml' '$<Cluster> app $<FileName>' packageFile}}}"
     },
     {
@@ -143,8 +143,9 @@
       "groupName": "prometheus-operator"
     },
     {
-      "description": "Give new releases for the prod cluster a day to surface regressions or get pulled before updating",
+      "description": "Give new releases a day to surface regressions or get pulled before updating",
       "matchFileNames": [
+        "k8s-rancher/**",
         "k8s-prod/**"
       ],
       "minimumReleaseAge": "1 day"
