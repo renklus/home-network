@@ -118,7 +118,8 @@
         "kubernetes",
         "helm-values"
       ],
-      "groupName": "{{{replace 'k8s.*\\/(?<FileName>[^/]*)\\.yaml' 'app $<FileName>' packageFile}}}"
+      "description": "One PR per app and cluster. Same-named apps on both clusters would otherwise share a branch and PR title, and a merged PR for one cluster blocks the other's identical update",
+      "groupName": "{{{replace 'k8s-(?<Cluster>[^/]+)\\/apps\\/(?<FileName>[^/]+)\\.yaml' '$<Cluster> app $<FileName>' packageFile}}}"
     },
     {
       "matchFileNames": [
@@ -128,7 +129,7 @@
       "matchManagers": [
         "custom.regex"
       ],
-      "groupName": "{{{replace 'k8s.*\\/(?<FileName>[^/]*)\\.yaml' 'app $<FileName> (regex-match)' packageFile}}}"
+      "groupName": "{{{replace 'k8s-(?<Cluster>[^/]+)\\/apps\\/(?<FileName>[^/]+)\\.yaml' '$<Cluster> app $<FileName> (regex-match)' packageFile}}}"
     },
     {
       "description": "prometheus-operator-crds must match the operator version of kube-prometheus-stack, on both clusters",
