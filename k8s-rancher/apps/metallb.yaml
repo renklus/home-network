@@ -42,6 +42,7 @@ spec:
               memory: '64Mi'
             limits:
               memory: '256Mi'
+        # the statuscleaner's update strategy is set by kyverno/metallb-statuscleaner-strategy.yaml (no chart value for it)
         frr-k8s:
           frrk8s:
             resources:

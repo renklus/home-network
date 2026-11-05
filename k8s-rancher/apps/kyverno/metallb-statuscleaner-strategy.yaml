@@ -1,0 +1,44 @@
+# Lets MetalLB chart upgrades roll out the frr-k8s statuscleaner on a single node.
+# The chart runs it as a one-replica Deployment with hostNetwork and webhook port 19443, but sets no strategy. The default
+# RollingUpdate (maxSurge 25% → 1) starts the new pod while the old one still holds the port, so it stays Pending with
+# "didn't have free ports for the requested pod ports": https://redhat.atlassian.net/browse/OCPBUGS-64582
+# The chart has no value for the strategy, so this sets maxSurge 0 (old pod is stopped first). Recreate would do the same,
+# but the live object already carries the defaulted rollingUpdate block, which a patch can't remove and Recreate forbids.
+# Remove this once the frr-k8s chart sets a strategy itself.
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
+metadata:
+  name: metallb-statuscleaner-strategy
+  annotations:
+    # after the chart (wave 0) is healthy, so the CRD exists
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  # without Kyverno, updates go through unchanged: the rollout just needs the old pod deleted by hand, as before
+  failurePolicy: Ignore
+  matchConstraints:
+    resourceRules:
+    - apiGroups: ['apps']
+      apiVersions: ['v1']
+      operations: ['CREATE', 'UPDATE']
+      resources: ['deployments']
+    namespaceSelector:
+      matchLabels:
+        kubernetes.io/metadata.name: metallb-system
+    objectSelector:
+      matchLabels:
+        app.kubernetes.io/component: statuscleaner
+  mutations:
+  - patchType: ApplyConfiguration
+    applyConfiguration:
+      expression: >-
+        Object{
+          spec: Object.spec{
+            strategy: Object.spec.strategy{
+              type: "RollingUpdate",
+              rollingUpdate: Object.spec.strategy.rollingUpdate{
+                maxSurge: 0,
+                maxUnavailable: 1
+              }
+            }
+          }
+        }

@@ -16,7 +16,7 @@ spec:
         # https://kyverno.io/docs/installation/platform-notes/
         - name: 'config.preserve'
           value: 'false'
-        # only generating policies are used (kyverno/argocd-clusters.yaml): no policy reports or cleanup policies needed
+        # only generating and mutating policies are used (kyverno/): no policy reports or cleanup policies needed
         - name: 'features.admissionReports.enabled'
           value: 'false'
         - name: 'reportsController.enabled'
