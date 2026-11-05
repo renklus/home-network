@@ -111,25 +111,25 @@
     {
       "description": "One PR per app and cluster. Same-named apps on both clusters would otherwise share a branch and PR title, and a merged PR for one cluster blocks the other's identical update",
       "matchFileNames": [
-        "k8s-rancher/apps/*.yaml",
-        "k8s-prod/apps/*.yaml"
+        "k8s-rancher/apps/**",
+        "k8s-prod/apps/**"
       ],
       "matchManagers": [
         "argocd",
         "kubernetes",
         "helm-values"
       ],
-      "groupName": "{{{replace 'k8s-(?<Cluster>[^/]+)\\/apps\\/(?<FileName>[^/]+)\\.yaml' '$<Cluster> app $<FileName>' packageFile}}}"
+      "groupName": "{{{replace 'k8s-(?<Cluster>[^/]+)\\/apps\\/(?<App>[^/.]+).*' '$<Cluster> app $<App>' packageFile}}}"
     },
     {
       "matchFileNames": [
-        "k8s-rancher/apps/*.yaml",
-        "k8s-prod/apps/*.yaml"
+        "k8s-rancher/apps/**",
+        "k8s-prod/apps/**"
       ],
       "matchManagers": [
         "custom.regex"
       ],
-      "groupName": "{{{replace 'k8s-(?<Cluster>[^/]+)\\/apps\\/(?<FileName>[^/]+)\\.yaml' '$<Cluster> app $<FileName> (regex-match)' packageFile}}}"
+      "groupName": "{{{replace 'k8s-(?<Cluster>[^/]+)\\/apps\\/(?<App>[^/.]+).*' '$<Cluster> app $<App> (regex-match)' packageFile}}}"
     },
     {
       "description": "prometheus-operator-crds must match the operator version of kube-prometheus-stack, on both clusters",
