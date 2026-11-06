@@ -14,7 +14,7 @@ spec:
   - repoURL: 'https://prometheus-community.github.io/helm-charts'
     chart: 'prometheus-operator-crds'
     # must match the operator version of kube-prometheus-stack in monitoring-agent.yaml
-    targetRevision: '32.0.2'
+    targetRevision: '33.0.0'
   project: rancher-cluster
   destination:
     namespace: kube-system
