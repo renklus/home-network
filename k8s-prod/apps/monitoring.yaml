@@ -51,9 +51,9 @@ spec:
         - name: 'prometheus.prometheusSpec.enableRemoteWriteReceiver'
           value: 'true'
         - name: 'prometheus.prometheusSpec.retention'
-          value: '15d'
+          value: '180d'
         - name: 'prometheus.prometheusSpec.retentionSize'
-          value: '15GB'
+          value: '250GB'
         # skip kubelet's recursive chown of the NFS volume on every pod start
         - name: 'prometheus.prometheusSpec.securityContext.fsGroupChangePolicy'
           value: 'OnRootMismatch'
@@ -117,7 +117,7 @@ spec:
                   accessModes: ['ReadWriteOnce']
                   resources:
                     requests:
-                      storage: '20Gi'
+                      storage: '280Gi'
           ingress:
             enabled: true
             ingressClassName: 'traefik'
