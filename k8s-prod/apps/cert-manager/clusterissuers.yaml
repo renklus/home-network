@@ -83,6 +83,7 @@ spec:
   dnsNames:
     - canary-cert.ingress.prod.k8s.renklus.ch
     - canary-cert.prod.k8s.renklus.ch
+    - tmp001-cert.prod.k8s.renklus.ch
   issuerRef:
     name: letsencrypt-staging-shortlived
     kind: ClusterIssuer
