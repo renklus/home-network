@@ -5,7 +5,10 @@ kube-prometheus-stack runs in the prod cluster (`k8s-prod/apps/monitoring.yaml`)
 kube-state-metrics and node-exporter. The rancher cluster runs the same chart in agent mode
 (`k8s-rancher/apps/monitoring-agent.yaml`), which scrapes that cluster and remote-writes to the prod Prometheus. Rules are
 only evaluated in prod. Every series has a `cluster` label (`production` or `rancher`) set by a default scrape class, and the
-default rules and dashboards aggregate by it.
+default rules and dashboards aggregate by it. Exception: some metrics of CNPG's database instances (e.g.
+`cnpg_collector_up`) carry the CNPG Cluster name as `cluster` (e.g. `mealie-database`). Their PodMonitors keep it with
+`honorLabels: true` instead of renaming it to `exported_cluster`, because CNPG's dashboard selects the pods by that name. CNPG
+only runs in prod. Rules group CNPG metrics by `cnpg_io_cluster`, which every series of an instance has.
 
 ## How apps are monitored
 
@@ -90,7 +93,7 @@ those components (`machineGlobalConfig` in `k8s-rancher/apps/rancher/cluster-pro
 
 ## Storage
 
-Prometheus keeps 15 days (at most 15GB) on a `truenas-nfs-temp` PVC. Prometheus doesn't officially support its TSDB on NFS;
+Prometheus keeps 180 days (at most 250GB) on a `truenas-nfs-temp` PVC. Prometheus doesn't officially support its TSDB on NFS;
 the metrics are disposable, so the corruption risk is accepted. If the TSDB breaks, delete the PVC and the Prometheus pod.
 The agent only buffers its write-ahead log in an emptyDir.
 

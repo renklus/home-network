@@ -76,8 +76,11 @@ spec:
     matchLabels:
       cnpg.io/cluster: immich-database
       cnpg.io/podRole: instance
-  # becomes the label 'cnpg_io_cluster', used by the rules to compare instances of the same Cluster
+  # becomes the label 'cnpg_io_cluster' on every series, used by the rules to compare instances of the same Cluster
   podTargetLabels:
     - cnpg.io/cluster
   podMetricsEndpoints:
     - port: metrics
+      # Some CNPG metrics carry the CNPG Cluster name as 'cluster', which CNPG's Grafana dashboard relies on.
+      # Let it win over the scrape class's Kubernetes cluster name 'production' (docs/monitoring.md).
+      honorLabels: true
