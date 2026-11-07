@@ -26,8 +26,8 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=false
+    - CreateNamespace=true
+    - ServerSideApply=false
   ignoreDifferences:
     - name: 'longhorn-frontend'
       namespace: 'longhorn-system'

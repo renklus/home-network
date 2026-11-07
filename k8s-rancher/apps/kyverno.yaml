@@ -41,5 +41,5 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=false
-      - ServerSideApply=true # also needed because the Kyverno CRDs are too large for client-side apply
+    - CreateNamespace=false
+    - ServerSideApply=true # also needed because the Kyverno CRDs are too large for client-side apply

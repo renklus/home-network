@@ -65,5 +65,5 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=false # 'false' as an attempt to get cert-manager out of endless sync - looks good for now
-      - ServerSideApply=true
+    - CreateNamespace=false # 'false' as an attempt to get cert-manager out of endless sync - looks good for now
+    - ServerSideApply=true

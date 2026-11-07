@@ -48,8 +48,8 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=false
+    - CreateNamespace=true
+    - ServerSideApply=false
 ---
 apiVersion: v1
 kind: Namespace

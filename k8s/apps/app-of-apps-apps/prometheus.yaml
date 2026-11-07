@@ -43,8 +43,8 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+    - CreateNamespace=true
+    - ServerSideApply=true
 # # https://github.com/prometheus-community/helm-charts/issues/4914
 #   ignoreDifferences:
 #   - group: apps
