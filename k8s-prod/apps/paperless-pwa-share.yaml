@@ -1,0 +1,26 @@
+# Static share-sheet PWA for Paperless (https://github.com/renklus/paperless-pwa-share). It is stateless (URL and token
+# live in the phone's browser), so the finalizer below may delete everything, the namespace included.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: paperless-pwa-share
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+  - path: k8s-prod/apps/paperless-pwa-share
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  project: prod-cluster
+  destination:
+    namespace: paperless-pwa-share
+    name: production
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=false # declared in paperless-pwa-share/namespaces.yaml
+    - ServerSideApply=true
