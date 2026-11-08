@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paperless-test
+  namespace: paperless-test
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate # never run two instances (migrations, consumer) at once
+  selector:
+    matchLabels:
+      app: paperless-test
+  template:
+    metadata:
+      labels:
+        app: paperless-test
+    spec:
+      # same as prod
+      enableServiceLinks: false
+      # same as prod
+      securityContext:
+        runAsUser: 3003
+        runAsGroup: 3003
+        fsGroup: 3003
+        fsGroupChangePolicy: OnRootMismatch # don't walk all documents on every start
+      containers:
+        - name: paperless-test
+          image: ghcr.io/paperless-ngx/paperless-ngx:3.4.2@sha256:d704e84f88300eb6ab001ab15720a2330ff99169cf9f94d6b8fcc44b63a84c84
+          ports:
+            - name: http
+              containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: paperless-test-env # generated from paperless.env (kustomization.yaml)
+          env:
+            - name: PAPERLESS_DBPASS
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-test-database-app
+                  key: password
+            # PAPERLESS_SECRET_KEY is kept out of git, created by hand. No need to back up
+            # kubectl -n paperless-test create secret generic paperless-test-secret-key --from-literal=secret-key="$(python3 -c 'import secrets; print(secrets.token_urlsafe(64))')"
+            # alternative: an init container that creates the value and mounts it as a PVC or a job that creates a kubernetes secret if it's missing (but needs argocd RBAC and a fitting image) or a Kyverno `random()` rule
+            - name: PAPERLESS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-test-secret-key
+                  key: secret-key
+          volumeMounts:
+            - name: data
+              mountPath: /usr/src/paperless/data
+            - name: media
+              mountPath: /usr/src/paperless/media
+            - name: consume
+              mountPath: /usr/src/paperless/consume
+          resources:
+            requests:
+              cpu: '100m'
+              memory: '2Gi'
+            limits:
+              memory: '3Gi'
+          startupProbe:
+            httpGet:
+              path: /
+              port: 8000
+            failureThreshold: 180 # database migrations run before the webserver starts, e.g. on major upgrades
+            periodSeconds: 10
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: paperless-test-data
+        - name: media
+          persistentVolumeClaim:
+            claimName: paperless-test-media
+        # Paperless requires a consume folder writable by UID 3003 (the image's own is not). No scanner feeds the test
+        # instance, so a pod-local folder is enough; files can be dropped in with 'kubectl cp'.
+        - name: consume
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-test
+  namespace: paperless-test
+spec:
+  selector:
+    app: paperless-test
+  ports: # comes from ingress, goes to container
+    - name: http
+      port: 8000
+      targetPort: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: paperless-test
+  namespace: paperless-test
+  annotations:
+    cert-manager.io/cluster-issuer: 'letsencrypt-classic'
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: paperless-test.ingress.prod.k8s.renklus.ch
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: paperless-test
+                port:
+                  name: http
+  tls:
+    - hosts:
+        - paperless-test.ingress.prod.k8s.renklus.ch
+      secretName: paperless-test-tls

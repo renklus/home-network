@@ -1,0 +1,24 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: paperless-test-database
+  namespace: paperless-test
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=true,Delete=true
+spec:
+  instances: 1
+  # With a single instance there is no replica to switch over to, so CNPG's primary PodDisruptionBudget would block
+  # node drains (kured) forever. The test database may go down during a drain instead.
+  enablePDB: false
+  storage:
+    storageClass: truenas-nfs-temp
+    size: '5Gi'
+  imageName: 'ghcr.io/cloudnative-pg/postgresql:18.6-minimal-trixie@sha256:26d15a12723510b0b416e8aec2bc65f2da7ac9b77ef3182a0911e4b8b991420a'
+
+  # Memory request equals the limit, as CNPG recommends, so the database is the last to be evicted under memory pressure.
+  resources:
+    requests:
+      cpu: '50m'
+      memory: '512Mi'
+    limits:
+      memory: '512Mi'
