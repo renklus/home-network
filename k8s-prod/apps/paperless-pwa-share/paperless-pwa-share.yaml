@@ -22,7 +22,7 @@ spec:
         runAsGroup: 65534
       containers:
         - name: paperless-pwa-share
-          image: ghcr.io/renklus/paperless-pwa-share:0.1.0
+          image: ghcr.io/renklus/paperless-pwa-share:0.1.1-dev.9
           ports:
             - name: http
               containerPort: 8080
