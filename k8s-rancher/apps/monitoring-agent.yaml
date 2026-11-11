@@ -38,6 +38,11 @@ spec:
           value: 'false'
         - name: 'kubeEtcd.enabled'
           value: 'false'
+        # cAdvisor metrics carry their own timestamps, which the kubelet refreshes only every 10-15s. At the chart's 10s
+        # interval a scrape often repeats the previous timestamp; the TSDB in prod silently drops such a duplicate, but agent
+        # mode rejects it as out of order (prometheus_agent_out_of_order_samples_total). Every 30s, each scrape is new.
+        - name: 'kubelet.serviceMonitor.cAdvisorInterval'
+          value: '30s'
         # By default (true), Prometheus only selects monitors labelled 'release: <this Helm release>', so every app would
         # need that label. false: select all of them in all namespaces.
         - name: 'prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues'
