@@ -6,6 +6,8 @@ Nov 7, 2026
 
 Creating a Docker Sandboxes (sbx) VM is slow when containerd's erofs snapshot directory sits on a ZFS dataset. Block size=16k, disabling sync writes and disabling direct I/O on the dataset doesn't help.
 
+`sbx diagnose` shows `zfs_dmu_offset_next_sync` must be 0 and instructs to do that system wide. If the system wide change is not desired, see below.
+
 The snapshot directory is:
 
 ```sh
