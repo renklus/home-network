@@ -1,0 +1,37 @@
+# Pings hosts through the blackbox exporter's 'icmp' module. Each target becomes a series probe_success{job="ping", instance="<host>"}.
+# Add hosts to 'static.targets'.
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: ping
+  namespace: blackbox-exporter
+spec:
+  jobName: 'ping'
+  module: 'icmp'
+  interval: '30s'
+  prober:
+    url: 'blackbox-exporter.blackbox-exporter.svc:9115'
+  targets:
+    staticConfig:
+      static:
+        - '192.168.4.1'
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: ping
+  namespace: blackbox-exporter
+spec:
+  groups:
+    - name: ping
+      rules:
+        # A single answered ping resets the 10 minutes. If the exporter itself is down, probe_success is missing and the default
+        # TargetDown rule fires instead.
+        - alert: HostUnreachable
+          expr: probe_success{job="ping"} == 0
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: '{{ $labels.instance }} has not answered pings for 10 minutes'
+            description: 'Pinged from the prod cluster by the blackbox exporter (k8s-prod/apps/blackbox-exporter/ping.yaml).'

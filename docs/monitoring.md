@@ -39,6 +39,7 @@ Prometheus picks up every monitor and rule in every namespace.
 | argo-cd (rancher) | chart ServiceMonitors (controller, server, repo-server, applicationset) | `ArgoCDAppUnhealthy`, `ArgoCDAppStuckProgressing`, `ArgoCDAppOutOfSync` |
 | haproxy (rancher) | built-in Prometheus exporter on port 8405, chart ServiceMonitor | – (backends have no health checks; a broken ACME path shows up as `CertificateNotReady`) |
 | kyverno (rancher) | chart ServiceMonitors (admission, background controller) | – |
+| blackbox-exporter (prod) | `Probe` `ping` in `blackbox-exporter/ping.yaml` (ICMP, every 30s, e.g. `192.168.4.1`) | `HostUnreachable` (no answer for 10 minutes) |
 | mealie, csi-nfs, rancher | no metrics endpoint or chart option | – |
 | everything | kubelet/cAdvisor, kube-state-metrics, node-exporter, CoreDNS | chart default rules: crash loops, pods not ready, failed Jobs (e.g. backups), PVCs filling up, nodes |
 

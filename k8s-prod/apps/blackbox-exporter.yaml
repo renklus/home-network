@@ -1,0 +1,53 @@
+# Probes endpoints from inside the prod cluster on behalf of Prometheus (ping, ...). The Probes and their alert rules are in
+# blackbox-exporter/.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: blackbox-exporter
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+  - repoURL: 'https://prometheus-community.github.io/helm-charts'
+    chart: 'prometheus-blackbox-exporter'
+    targetRevision: '11.20.1'
+    helm:
+      parameters:
+        - name: 'resources.requests.cpu'
+          value: '10m'
+        - name: 'resources.requests.memory'
+          value: '32Mi'
+        - name: 'resources.limits.memory'
+          value: '128Mi'
+        # no need to specify image tags because the defaults follow the chart version. Renovate can just update the chart
+      valuesObject:
+        config:
+          modules:
+            icmp:
+              prober: 'icmp'
+              timeout: '5s'
+              icmp:
+                preferred_ip_protocol: 'ip4'
+        # The chart runs the exporter as non-root without capabilities, so it can't open raw ICMP sockets. This namespaced
+        # (safe) sysctl allows unprivileged ICMP sockets for all groups in the pod's network namespace instead of granting NET_RAW.
+        podSecurityContext:
+          sysctls:
+            - name: 'net.ipv4.ping_group_range'
+              value: '0 2147483647'
+  - path: k8s-prod/apps/blackbox-exporter
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  project: prod-cluster
+  destination:
+    namespace: blackbox-exporter
+    name: production
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    # namespace is declared in blackbox-exporter/namespaces.yaml, so Argo CD manages (and prunes) it like any other resource
+    syncOptions:
+    - CreateNamespace=false
+    - ServerSideApply=true
