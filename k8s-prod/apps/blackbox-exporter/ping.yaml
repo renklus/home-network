@@ -10,7 +10,7 @@ spec:
   module: 'icmp'
   interval: '30s'
   prober:
-    url: 'blackbox-exporter.blackbox-exporter.svc:9115'
+    url: 'blackbox-exporter-prometheus-blackbox-exporter.blackbox-exporter.svc:9115'
   targets:
     staticConfig:
       static:
