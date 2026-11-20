@@ -14,7 +14,7 @@ spec:
   sources:
   - repoURL: https://haproxytech.github.io/helm-charts
     chart: haproxy
-    targetRevision: '1.31.0'
+    targetRevision: '1.31.1'
     helm:
       valuesObject:
         image:
