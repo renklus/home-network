@@ -8,6 +8,7 @@
     ":disableRateLimiting",
     ":docker"
   ],
+  "minimumReleaseAge": "1 day",
   "argocd": {
     "managerFilePatterns": [
       "/k8s-rancher/apps/.+\\.yaml$/",
@@ -143,19 +144,22 @@
       "groupName": "prometheus-operator"
     },
     {
-      "description": "Give new releases a day to surface regressions or get pulled before updating",
-      "matchFileNames": [
-        "k8s-rancher/**",
-        "k8s-prod/**"
+      "description": "Major releases get more time for breaking-change reports and quick follow-up fixes",
+      "matchUpdateTypes": [
+        "major"
       ],
-      "minimumReleaseAge": "1 day"
+      "minimumReleaseAge": "5 days"
     },
     {
-      "description": "Rancher only supports new k3s releases some time after they are published",
+      "description": "Rancher only supports new k3s major and minor releases some time after they are published",
       "matchDepNames": [
         "k3s"
       ],
-      "minimumReleaseAge": "7 days"
+      "matchUpdateTypes": [
+        "major",
+        "minor"
+      ],
+      "minimumReleaseAge": "60 days"
     },
     {
       "description": "Immich supports VectorChord >= 0.3, < 2.0 (https://immich.app/docs/administration/postgres-standalone). Tags are '<postgres>-<vectorchord>'",
