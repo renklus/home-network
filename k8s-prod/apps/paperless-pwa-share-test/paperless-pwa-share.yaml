@@ -1,4 +1,4 @@
-# Same as paperless-pwa-share/paperless-pwa-share.yaml except for namespace, host and image tag.
+# Same as paperless-pwa-share/paperless-pwa-share.yaml except for namespace, host, image tag and APP_NAME.
 # Paperless must allow this origin: PAPERLESS_CORS_ALLOWED_HOSTS=https://pps-test.ingress.prod.k8s.renklus.ch
 apiVersion: apps/v1
 kind: Deployment
@@ -24,6 +24,9 @@ spec:
       containers:
         - name: paperless-pwa-share
           image: ghcr.io/renklus/paperless-pwa-share:0.2.1-dev.13
+          env:
+            - name: APP_NAME
+              value: 'PPS Test'
           ports:
             - name: http
               containerPort: 8080
