@@ -23,7 +23,7 @@ spec:
         runAsGroup: 65534
       containers:
         - name: paperless-pwa-share
-          image: ghcr.io/renklus/paperless-pwa-share:0.2.1-dev.14@sha256:da5faf0e00b648d4263d818561621773975a399e6473c5106b3d73f32e9d5f6c
+          image: ghcr.io/renklus/paperless-pwa-share:0.2.1-dev.15@sha256:5cc3c54e81fd3d04df6659519fabc7516db89fb338a0f8dfed563ace327c39d8
           env:
             - name: APP_NAME
               value: 'PPS Test'
