@@ -9,6 +9,7 @@
     ":docker"
   ],
   "minimumReleaseAge": "1 day",
+  "minimumReleaseAgeBehaviour": "timestamp-optional",
   "argocd": {
     "managerFilePatterns": [
       "/k8s-rancher/apps/.+\\.yaml$/",
