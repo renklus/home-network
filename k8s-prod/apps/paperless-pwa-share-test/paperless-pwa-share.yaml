@@ -1,0 +1,83 @@
+# Same as paperless-pwa-share/paperless-pwa-share.yaml except for namespace, host and image tag.
+# Paperless must allow this origin: PAPERLESS_CORS_ALLOWED_HOSTS=https://pps-test.ingress.prod.k8s.renklus.ch
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paperless-pwa-share
+  namespace: paperless-pwa-share-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paperless-pwa-share
+  template:
+    metadata:
+      labels:
+        app: paperless-pwa-share
+    spec:
+      enableServiceLinks: false
+      # 65534 is the image's own USER
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+      containers:
+        - name: paperless-pwa-share
+          image: ghcr.io/renklus/paperless-pwa-share:0.2.1-dev.13
+          ports:
+            - name: http
+              containerPort: 8080
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests:
+              cpu: '10m'
+              memory: '32Mi'
+            limits:
+              memory: '64Mi'
+          # the image has no health endpoint; the static index page is enough
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-pwa-share
+  namespace: paperless-pwa-share-test
+spec:
+  selector:
+    app: paperless-pwa-share
+  ports: # comes from ingress, goes to container
+    - name: http
+      port: 8080
+      targetPort: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: paperless-pwa-share
+  namespace: paperless-pwa-share-test
+  annotations:
+    cert-manager.io/cluster-issuer: 'letsencrypt-classic'
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: pps-test.ingress.prod.k8s.renklus.ch
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: paperless-pwa-share
+                port:
+                  name: http
+  tls:
+    - hosts:
+        - pps-test.ingress.prod.k8s.renklus.ch
+      secretName: paperless-pwa-share-tls

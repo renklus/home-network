@@ -1,0 +1,27 @@
+# Test instance of paperless-pwa-share. Renovate deploys every prerelease to it right away (rule in renovate.json),
+# while paperless-pwa-share.yaml only gets released versions. Stateless, so the finalizer below may delete everything,
+# the namespace included.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: paperless-pwa-share-test
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  sources:
+  - path: k8s-prod/apps/paperless-pwa-share-test
+    repoURL: 'https://github.com/renklus/home-network'
+    targetRevision: HEAD
+  project: prod-cluster
+  destination:
+    namespace: paperless-pwa-share-test
+    name: production
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=false
+    - ServerSideApply=true

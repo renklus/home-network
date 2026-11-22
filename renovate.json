@@ -180,6 +180,27 @@
       "dependencyDashboardApproval": true
     },
     {
+      "description": "paperless-pwa-share tags releases '0.2.0' and prereleases '0.2.1-dev.13'. Docker versioning would read '-dev.13' as a compatibility suffix and never leave it; semver also skips the floating tags '0', '0.2', 'latest' and 'dev'. Own app, so no release-age wait (after the 'major' rule to override it too). Prod gets released versions only (ignoreUnstable default)",
+      "matchPackageNames": [
+        "ghcr.io/renklus/paperless-pwa-share"
+      ],
+      "versioning": "semver",
+      "minimumReleaseAge": "0 days"
+    },
+    {
+      "description": "The paperless-pwa-share test instance follows every prerelease and deploys it without a PR. ignoreTests: the repo has no CI checks, which would otherwise block automerge",
+      "matchFileNames": [
+        "k8s-prod/apps/paperless-pwa-share-test/**"
+      ],
+      "matchPackageNames": [
+        "ghcr.io/renklus/paperless-pwa-share"
+      ],
+      "ignoreUnstable": false,
+      "automerge": true,
+      "automergeType": "branch",
+      "ignoreTests": true
+    },
+    {
       "matchPackageNames": [
         "plexinc/pms-docker"
       ],
