@@ -63,6 +63,10 @@ spec:
             httpGet:
               path: /
               port: 8000
+              # Set a host header for the startup probe, otherwise PAPERLESS_ALLOWED_HOSTS rejects the request.
+              httpHeaders:
+                - name: Host
+                  value: paperless-test.ingress.prod.k8s.renklus.ch
             failureThreshold: 180 # database migrations run before the webserver starts, e.g. on major upgrades
             periodSeconds: 10
       volumes:
