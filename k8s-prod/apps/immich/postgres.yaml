@@ -18,6 +18,8 @@ spec:
   affinity:
     # CNPG's default is 'preferred', which can leave two instances on one node after a reboot; draining it would then take both down
     podAntiAffinityType: required
+  # Because of anti-affinity, it might only fit one node. Needs to evict other workloads
+  priorityClassName: database
 
   storage:
     storageClass: truenas-nfs-no-backup

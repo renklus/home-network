@@ -1,0 +1,11 @@
+# Pods without a priorityClassName have priority 0. When a database instance can't be scheduled, the scheduler
+# evicts lower-priority pods from a node until the instance's resource requests fit; the evicted pods go Pending.
+# Kept far below system-cluster-critical (2000000000) so it never displaces cluster components.
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: database
+value: 1000000
+globalDefault: false
+preemptionPolicy: PreemptLowerPriority
+description: 'CNPG database instances; preempt regular workloads when a node lacks room.'
