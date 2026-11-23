@@ -31,7 +31,7 @@ spec:
           containers:
             - name: backup
               # Same image as the database, so pg_dump matches the server's major version
-              image: ghcr.io/cloudnative-pg/postgresql:19.0-minimal-trixie@sha256:28f6604b4e142cadd8b0154ae82a5541e321d6f33b27fc5a054ced3dde53e6e8
+              image: ghcr.io/cloudnative-pg/postgresql:19.0-minimal-trixie@sha256:12688a494f25aa0b7e1e3cd1800abe85b427fd1a09c991668a48162e3431a2af
               # Dump to a temporary file first, so a failed run never replaces the last good dump.
               command:
                 - sh
