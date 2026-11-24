@@ -14,7 +14,7 @@ spec:
   sources:
   - repoURL: https://argoproj.github.io/argo-helm
     chart: 'argo-cd'
-    targetRevision: '10.18.2'
+    targetRevision: '10.18.3'
     helm:
       # also used for the manual install during cluster bootstrap (see the file), so it must not depend on other apps
       valueFiles:
@@ -54,7 +54,7 @@ spec:
         global:
           image:
             repository: 'quay.io/argoproj/argocd'
-            tag: 'v3.6.2@sha256:bbcc3b6e79c5963439bdc5170f6e20a52365b41878133fac5ce8d6810d2641dc' # Keep this one as it auto-shows good changenotes in renovate.
+            tag: 'v3.6.3@sha256:f2e45010dbd6aeff01b845d212b436b2d8e7f44d90d437274906c2ab21e59e0d' # Keep this one as it auto-shows good changenotes in renovate.
         # do not set these explicitly. The helm chart will update it when it is time. (probably not best practice but ok for now)
         # server:
         #   extensions:
