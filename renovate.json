@@ -201,6 +201,26 @@
       "ignoreTests": true
     },
     {
+      "description": "Low risk updates. The wait is mandatory: 'strict' keeps the branch from being created before then (ignoreTests would otherwise let a branch with a pending stability check merge), and 'timestamp-required' skips releases without a publish timestamp instead of treating them as old enough. ignoreTests: the repo has no CI checks, which would otherwise block automerge",
+      "matchDatasources": [
+        "helm"
+      ],
+      "matchPackageNames": [
+        "prometheus-blackbox-exporter",
+        "kube-prometheus-stack",
+        "prometheus-operator-crds"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "internalChecksFilter": "strict",
+      "minimumReleaseAgeBehaviour": "timestamp-required",
+      "automerge": true,
+      "automergeType": "branch",
+      "ignoreTests": true
+    },
+    {
       "matchPackageNames": [
         "plexinc/pms-docker"
       ],
