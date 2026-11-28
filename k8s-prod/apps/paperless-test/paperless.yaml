@@ -100,7 +100,7 @@ metadata:
   name: paperless-test
   namespace: paperless-test
   annotations:
-    cert-manager.io/cluster-issuer: 'letsencrypt-classic'
+    cert-manager.io/cluster-issuer: 'letsencrypt-shortlived'
 spec:
   ingressClassName: traefik
   rules:
