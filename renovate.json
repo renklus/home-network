@@ -208,7 +208,8 @@
       "matchPackageNames": [
         "prometheus-blackbox-exporter",
         "kube-prometheus-stack",
-        "prometheus-operator-crds"
+        "prometheus-operator-crds",
+        "haproxy"
       ],
       "matchUpdateTypes": [
         "minor",
