@@ -50,6 +50,9 @@ spec:
           value: '64Mi'
         - name: 'fleet.resources.limits.memory'
           value: '256Mi'
+        # slow startup because it does many disk operations at startup (git clone, etcd) and at proxmox reboot all VMs at the same time is too much for the physical disk.
+        - name: 'startupProbe.failureThreshold'
+          value: '30' # 30 * 10s = 5 minutes
         # no need to specify image tags because the default is same as chart version. Dependabot can just update the chart
   - path: k8s-rancher/apps/rancher
     repoURL: 'https://github.com/renklus/home-network'
