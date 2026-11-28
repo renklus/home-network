@@ -209,11 +209,13 @@
         "prometheus-blackbox-exporter",
         "kube-prometheus-stack",
         "prometheus-operator-crds",
-        "haproxy"
+        "haproxy",
+        "docker.io/haproxytech/haproxy-alpine"
       ],
       "matchUpdateTypes": [
         "minor",
-        "patch"
+        "patch",
+        "digest"
       ],
       "internalChecksFilter": "strict",
       "minimumReleaseAgeBehaviour": "timestamp-required",
